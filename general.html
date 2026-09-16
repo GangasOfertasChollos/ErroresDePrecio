@@ -1,4 +1,87 @@
-<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chollos de General en Amazon España | Gangas Ofertas y Chollos</title>
-<meta name="description" content="Chollos y ofertas de General en Amazon España. Productos rebajados y oportunidades seleccionadas."><meta name="robots" content="index,follow"><link rel="canonical" href="https://gangasofertaschollos.github.io/ErroresDePrecio/general.html"><style>body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#172033}header{background:#111827;color:#fff;padding:25px}.wrap{max-width:1100px;margin:auto}nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}nav a{color:#fff;text-decoration:none;background:#273449;padding:8px 11px;border-radius:20px;font-size:14px}.cta,.buy{display:inline-block;padding:11px 16px;border-radius:9px;text-decoration:none;font-weight:bold}.cta{background:#fff;color:#111827}main{padding:28px 20px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}.card,.offer,.empty{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:18px}.offer{margin-bottom:14px}.offer-title{font-size:19px;font-weight:bold}.price{font-size:22px;font-weight:bold;margin:8px 0}.buy{background:#ff9900;color:#111}.meta{color:#667085;font-size:13px}footer{margin-top:35px;padding:22px 0;color:#667085}</style></head>
-<body><header><div class="wrap"><h1>Chollos de General en Amazon España</h1><p>Ofertas actualizadas automáticamente desde el canal.</p><a class="cta" href="https://t.me/GangasOfertasChollos">Canal de Telegram</a><nav><a href="general.html">General</a><a href="videojuegos.html">Videojuegos</a><a href="electronica.html">Electronica</a><a href="informatica.html">Informatica</a><a href="hogar.html">Hogar</a><a href="herramientas.html">Herramientas</a><a href="moda.html">Moda</a><a href="juguetes.html">Juguetes</a><a href="libros.html">Libros</a><a href="cocina.html">Cocina</a><a href="deportes.html">Deportes</a><a href="automovil.html">Automovil</a><a href="mascotas.html">Mascotas</a><a href="belleza.html">Belleza</a><a href="bebe.html">Bebe</a><a href="tv.html">TV</a><a href="errores-de-precio.html">ErroresDePrecio</a></nav></div></header><main class="wrap"><div id="offers"><div class="empty">Las ofertas aparecerán aquí al procesar nuevas publicaciones.</div></div><footer>Los botones llevan directamente a Amazon.</footer></main></body></html>
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General | Gangas Ofertas y Chollos</title>
+<meta name="description" content="Chollos y ofertas de general en Amazon España. Productos rebajados y oportunidades seleccionadas.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://gangasofertaschollos.github.io/ErroresDePrecio/general.html">
+<meta name="google-site-verification" content="E4_nuunpXWLlV4jpR5qmBPKLhB2kFV_MTM6N_J9xRSc">
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#172033}
+header{background:#111827;color:#fff;padding:25px}
+.wrap{max-width:1100px;margin:auto}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+nav a{color:#fff;text-decoration:none;background:#273449;padding:8px 11px;border-radius:20px;font-size:14px}
+main{padding:28px 20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
+.offer{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.offer-title{font-size:18px;font-weight:bold;line-height:1.35}
+.price{font-size:23px;font-weight:bold;margin:10px 0}
+.buy{display:inline-block;background:#ff9900;color:#111;padding:11px 16px;border-radius:9px;text-decoration:none;font-weight:bold}
+.meta{color:#667085;font-size:13px;margin-bottom:12px}
+.empty{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:22px}
+footer{margin-top:35px;padding:22px 0;color:#667085}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<h1>General</h1>
+<p>Ofertas y chollos seleccionados de Amazon España.</p>
+<nav><a href="ropa-y-calzado.html">Ropa y calzado</a>
+<a href="higiene-cuidado-personal.html">Higiene y cuidado personal</a>
+<a href="gaming-consolas.html">Gaming y consolas</a>
+<a href="juguetes-infantil.html">Juguetes e infantil</a>
+<a href="papeleria-oficina.html">Papelería y oficina</a>
+<a href="moviles-electronica.html">Móviles y electrónica</a>
+<a href="general.html">General</a></nav>
+</div></header>
+<main class="wrap">
+<div id="estado" class="empty">Cargando ofertas...</div>
+<section id="ofertas" class="grid" aria-live="polite"></section>
+<p style="margin-top:25px"><a href="https://t.me/GangasOfertasChollos">Únete al canal de Telegram de Gangas Ofertas y Chollos</a></p>
+</main>
+<footer><div class="wrap">Gangas Ofertas y Chollos · Amazon España</div></footer>
+<script>
+const DATA_URL = "data/general.json";
+const container = document.getElementById("ofertas");
+const estado = document.getElementById("estado");
+
+function esc(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+function render(ofertas) {
+  if (!Array.isArray(ofertas) || ofertas.length === 0) {
+    estado.textContent = "No hay ofertas disponibles en esta categoría.";
+    return;
+  }
+  estado.remove();
+  container.innerHTML = ofertas.map(o => {
+    const fecha = o.date ? new Date(o.date).toLocaleDateString("es-ES") : "";
+    const url = o.amazon_url || "#";
+    return `<article class="offer">
+      <div class="offer-title">${esc(o.title || "Oferta Amazon")}</div>
+      <div class="price">${esc(o.price || "")}</div>
+      <div class="meta">${esc(fecha)}</div>
+      <a class="buy" href="${esc(url)}" target="_blank" rel="nofollow sponsored noopener">Ver oferta en Amazon</a>
+    </article>`;
+  }).join("");
+}
+
+fetch(DATA_URL + "?v=" + Date.now(), {cache:"no-store"})
+  .then(r => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(render)
+  .catch(err => {
+    console.error(err);
+    estado.textContent = "No se han podido cargar las ofertas.";
+  });
+</script>
+</body>
+</html>

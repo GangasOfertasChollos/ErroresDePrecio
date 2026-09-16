@@ -1,32 +1,17 @@
-# Escaparate de Amazon + bot Termux
+# Gangas Ofertas y Chollos
 
-Un único canal. El bot NO reenvía a otros canales. Lee nuevas publicaciones, detecta el hashtag, extrae el enlace de Amazon y actualiza la página de categoría.
+Web de ofertas Amazon España y bot Telethon.
 
-Instalación:
-```bash
-pkg update
-pkg install python git
-git clone https://github.com/gangasofertaschollos/ErroresDePrecio.git
-cd ErroresDePrecio
-pip install -r requirements.txt
-cp .env.example .env
-python bot.py
-```
+## JSON
+Las ofertas se guardan localmente en `data/*.json`.
 
-Añade el bot como administrador de `@GangasOfertasChollos`.
+## Diccionario
+Las palabras de clasificación se editan en `categorias.json`.
 
-El botón de cada oferta es **VER OFERTA EN AMAZON** y apunta directamente al enlace de Amazon de la publicación, incluidos enlaces de afiliado.
+## Bot
+`bot.py` no hace commits ni push. Los cambios de Git se hacen manualmente.
 
-El bot recibe publicaciones nuevas; Bot API no permite recorrer arbitrariamente todo el historial anterior.
-
-
-## Categorías
-
-Usa uno de estos hashtags en cada publicación del canal para clasificar la oferta:
-- `#ropaycalzado` → Ropa y calzado
-- `#higieneycuidadopersonal` → Higiene y cuidado personal
-- `#gamingyconsolas` → Gaming y consolas
-- `#jugueteseinfantil` → Juguetes e infantil
-- `#papeleriayoficina` → Papelería y oficina
-- `#movileselectronica` → Móviles y electrónica
-- `#general` → General
+## Publicación
+git add data/
+git commit -m "Actualizar ofertas"
+git push
