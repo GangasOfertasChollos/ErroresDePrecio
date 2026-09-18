@@ -1,91 +1,33 @@
-import json
-import re
+import asyncio,json,re
 from pathlib import Path
-from telethon import TelegramClient, events
-
-API_ID = 31029230
-API_HASH = '027e3d6b82fc3330defc4fcd1ee0a06a'
-MI_CANAL = '@GangasOfertasChollos'
-
-REPO_PATH = Path('.').resolve()
-DATA_PATH = REPO_PATH / 'data'
-DICCIONARIO_PATH = REPO_PATH / 'categorias.json'
-MAX_OFERTAS = 30
-
-client = TelegramClient('sesion_json_bot', API_ID, API_HASH)
-
-def cargar_diccionario():
-    with open(DICCIONARIO_PATH, 'r', encoding='utf-8') as f:
-        return json.load(f)
-
-PALABRAS_CATEGORIAS = cargar_diccionario()
-
-def clasificar_oferta(texto):
-    texto = texto.lower()
-    puntuaciones = {}
-    for categoria, palabras in PALABRAS_CATEGORIAS.items():
-        puntuaciones[categoria] = sum(
-            1 for palabra in palabras
-            if re.search(r'(?<!\w)' + re.escape(palabra.lower()) + r'(?!\w)', texto)
-        )
-    categoria = max(puntuaciones, key=puntuaciones.get)
-    return categoria if puntuaciones[categoria] else 'general'
-
-def extraer_enlace_amazon(texto):
-    m = re.search(r'https?://(?:www\.)?amazon\.es/[^\s<>)]+', texto, re.I)
-    if m:
-        return m.group(0).rstrip('.,')
-    m = re.search(r'https?://amzn\.to/[^\s<>)]+', texto, re.I)
-    return m.group(0).rstrip('.,') if m else ''
-
-def extraer_precio(texto):
-    for patron in [r'(\d+[,.]\d{2})\s*€', r'€\s*(\d+[,.]\d{2})', r'(\d+)\s*€']:
-        m = re.search(patron, texto)
-        if m:
-            return m.group(1).replace(',', '.') + ' €'
-    return ''
-
-def extraer_titulo(texto):
-    lineas = [x.strip() for x in texto.splitlines() if x.strip()]
-    return lineas[0][:200] if lineas else 'Oferta Amazon'
-
-def actualizar_json(categoria, mensaje):
-    archivo = DATA_PATH / f'{categoria}.json'
-    DATA_PATH.mkdir(parents=True, exist_ok=True)
-    try:
-        datos = json.loads(archivo.read_text(encoding='utf-8')) if archivo.exists() else []
-    except Exception:
-        datos = []
-
-    enlace = extraer_enlace_amazon(mensaje.text or '')
-    if enlace and any(x.get('amazon_url') == enlace for x in datos):
-        print('[=] Oferta duplicada')
-        return
-
-    datos.insert(0, {
-        'id': mensaje.id,
-        'date': mensaje.date.isoformat() if mensaje.date else '',
-        'title': extraer_titulo(mensaje.text or ''),
-        'price': extraer_precio(mensaje.text or ''),
-        'amazon_url': enlace,
-        'categoria': categoria
-    })
-    archivo.write_text(json.dumps(datos[:MAX_OFERTAS], ensure_ascii=False, indent=4), encoding='utf-8')
-    print(f'[✓] Guardado local: {archivo}')
-
+from telethon import TelegramClient,events
+API_ID=31029230
+API_HASH="027e3d6b82fc3330defc4fcd1ee0a06a"
+MI_CANAL="@GangasOfertasChollos"; ROOT=Path(".").resolve(); DATA=ROOT/"data"; IMAGES=ROOT/"images"
+def cats(): return json.loads((ROOT/"categorias.json").read_text(encoding="utf8"))
+def classify(t):
+ s=(t or "").lower(); scores={c:sum(w.lower() in s for w in ws) for c,ws in cats().items()}
+ c=max(scores,key=scores.get); return c if scores[c] else "general"
+def url(t):
+ for u in re.findall(r"https?://\S+",t or ""):
+  if "amazon." in u.lower(): return u.rstrip(").,;]}>'\"")
+ return ""
+async def main_msg(m):
+ t=m.raw_text or ""; u=url(t)
+ if not u:return
+ c=classify(t); p=DATA/f"{c}.json"; a=json.loads(p.read_text(encoding="utf8"))
+ if any(x.get("amazon_url")==u for x in a):return
+ img=""
+ if m.media:
+  d=IMAGES/c; d.mkdir(parents=True,exist_ok=True); f=d/f"{m.id}.jpg"
+  if await m.download_media(file=str(f)): img=f"images/{c}/{f.name}"
+ a.insert(0,{"id":m.id,"date":m.date.isoformat(),"title":t.splitlines()[0][:200],"price":"","amazon_url":u,"categoria":c,"image_url":img})
+ for old in a[30:]:
+  if old.get("image_url","").startswith("images/"):
+   q=ROOT/old["image_url"]
+   if q.exists():q.unlink()
+ p.write_text(json.dumps(a[:30],ensure_ascii=False,indent=2),encoding="utf8")
+client=TelegramClient("gangas_ofertas_bot",API_ID,API_HASH)
 @client.on(events.NewMessage(chats=MI_CANAL))
-async def detector_ofertas(event):
-    texto = event.message.text
-    if not texto:
-        return
-    categoria = clasificar_oferta(texto)
-    print(f'[+] ID {event.message.id} → {categoria}')
-    actualizar_json(categoria, event.message)
-
-if __name__ == '__main__':
-    print('BOT OFERTAS - SOLO JSON LOCAL')
-    print(f'Canal: {MI_CANAL}')
-    print(f'Diccionario: {DICCIONARIO_PATH}')
-    print('Git: DESACTIVADO')
-    client.start()
-    client.run_until_disconnected()
+async def h(e): await main_msg(e.message)
+client.start(); client.run_until_disconnected()

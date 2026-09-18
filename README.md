@@ -1,17 +1,1 @@
-# Gangas Ofertas y Chollos
-
-Web de ofertas Amazon España y bot Telethon.
-
-## JSON
-Las ofertas se guardan localmente en `data/*.json`.
-
-## Diccionario
-Las palabras de clasificación se editan en `categorias.json`.
-
-## Bot
-`bot.py` no hace commits ni push. Los cambios de Git se hacen manualmente.
-
-## Publicación
-git add data/
-git commit -m "Actualizar ofertas"
-git push
+Ejecuta `python bot.py`, después `python generar_web.py` y publica con Git. Las imágenes se guardan en `images/` y cada JSON incluye `image_url`.
