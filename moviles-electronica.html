@@ -13,14 +13,20 @@ body{font-family:Arial,sans-serif;margin:0;background:#f5f7fb;color:#172033}
 header{background:#111827;color:#fff;padding:25px}
 .wrap{max-width:1100px;margin:auto}
 nav{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
-nav a{color:#fff;text-decoration:none;background:#273449;padding:8px 11px;border-radius:20px;font-size:14px}
+nav a{color:#fff;text-decoration:none;background:#273449;padding:8px 13px;border-radius:20px;font-size:14px;transition:background 0.2s}
+nav a:hover,nav a.active{background:#ff9900;color:#111;font-weight:bold}
 main{padding:28px 20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px}
-.offer{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
-.offer-title{font-size:18px;font-weight:bold;line-height:1.35}
-.price{font-size:23px;font-weight:bold;margin:10px 0}
-.buy{display:inline-block;background:#ff9900;color:#111;padding:11px 16px;border-radius:9px;text-decoration:none;font-weight:bold}
-.meta{color:#667085;font-size:13px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.offer{display:flex;flex-direction:column;justify-content:space-between;background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);transition:transform 0.2s ease,box-shadow 0.2s ease}
+.offer:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+.offer-img-box{width:100%;height:180px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:#f9fafb;border-radius:10px;overflow:hidden}
+.offer-img-box img{max-width:100%;max-height:100%;object-fit:contain}
+.offer-body{flex-grow:1;display:flex;flex-direction:column}
+.offer-title{font-size:16px;font-weight:bold;line-height:1.35;margin-bottom:8px;color:#111827}
+.price{font-size:22px;font-weight:bold;color:#059669;margin:8px 0}
+.meta{color:#667085;font-size:13px;margin-bottom:14px}
+.buy{display:block;text-align:center;background:#ff9900;color:#111;padding:11px 16px;border-radius:9px;text-decoration:none;font-weight:bold;transition:background 0.2s}
+.buy:hover{background:#e68a00}
 .empty{background:#fff;border:1px solid #e5e7eb;border-radius:15px;padding:22px}
 footer{margin-top:35px;padding:22px 0;color:#667085}
 </style>
@@ -29,13 +35,16 @@ footer{margin-top:35px;padding:22px 0;color:#667085}
 <header><div class="wrap">
 <h1>Móviles y electrónica</h1>
 <p>Ofertas y chollos seleccionados de Amazon España.</p>
-<nav><a href="ropa-y-calzado.html">Ropa y calzado</a>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="ropa-y-calzado.html">Ropa y calzado</a>
 <a href="higiene-cuidado-personal.html">Higiene y cuidado personal</a>
 <a href="gaming-consolas.html">Gaming y consolas</a>
 <a href="juguetes-infantil.html">Juguetes e infantil</a>
 <a href="papeleria-oficina.html">Papelería y oficina</a>
-<a href="moviles-electronica.html">Móviles y electrónica</a>
-<a href="general.html">General</a></nav>
+<a href="moviles-electronica.html" class="active">Móviles y electrónica</a>
+<a href="general.html">General</a>
+</nav>
 </div></header>
 <main class="wrap">
 <div id="estado" class="empty">Cargando ofertas...</div>
@@ -54,6 +63,10 @@ function esc(value) {
   })[c]);
 }
 
+function limpiarTitulo(t) {
+  return esc(String(t || "Oferta Amazon").replace(/\*{2,}/g, "").trim());
+}
+
 function render(ofertas) {
   if (!Array.isArray(ofertas) || ofertas.length === 0) {
     estado.textContent = "No hay ofertas disponibles en esta categoría.";
@@ -61,12 +74,24 @@ function render(ofertas) {
   }
   estado.remove();
   container.innerHTML = ofertas.map(o => {
-    const fecha = o.date ? new Date(o.date).toLocaleDateString("es-ES") : "";
+    let fecha = "";
+    if (o.date) {
+      try {
+        const d = new Date(o.date);
+        if (!isNaN(d)) fecha = d.toLocaleDateString("es-ES");
+      } catch (e) {}
+    }
     const url = o.amazon_url || "#";
+    const imgHtml = o.image
+      ? `<div class="offer-img-box"><img src="${esc(o.image)}" alt="${limpiarTitulo(o.title)}" loading="lazy" onerror="this.parentElement.style.display='none'"></div>`
+      : "";
     return `<article class="offer">
-      <div class="offer-title">${esc(o.title || "Oferta Amazon")}</div>
-      <div class="price">${esc(o.price || "")}</div>
-      <div class="meta">${esc(fecha)}</div>
+      ${imgHtml}
+      <div class="offer-body">
+        <div class="offer-title">${limpiarTitulo(o.title)}</div>
+        <div class="price">${esc(o.price || "")}</div>
+        <div class="meta">${esc(fecha)}</div>
+      </div>
       <a class="buy" href="${esc(url)}" target="_blank" rel="nofollow sponsored noopener">Ver oferta en Amazon</a>
     </article>`;
   }).join("");
