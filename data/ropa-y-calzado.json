@@ -1,1 +1,56 @@
-[]
+[
+    {
+        "id": 3072,
+        "date": "2026-09-16T11:09:43+00:00",
+        "title": "🛍️ Tommy Hilfiger Polo de Manga Corta Hombre Liquid Cotton con Tapeta de Botones, Rosa (Pink Lily), XS",
+        "price": "2.67 €",
+        "amazon_url": "https://www.amazon.es/dp/B0FVX52LXB?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    },
+    {
+        "id": 3062,
+        "date": "2026-09-16T09:56:45+00:00",
+        "title": "🛍️ JACK & JONES Jjiglenn JJEVAN JJ 677 Noos Jeans De Corte Slim Azul 28/32",
+        "price": "4.43 €",
+        "amazon_url": "https://www.amazon.es/dp/B0D9C7YV5F?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    },
+    {
+        "id": 3058,
+        "date": "2026-09-16T09:31:40+00:00",
+        "title": "🛍️ CALVIN KLEIN JEANS Unisex Adult Sunglasses CKJ24601S - Khaki with Solid Khaki Lens",
+        "price": "9.03 €",
+        "amazon_url": "https://www.amazon.es/dp/B0CSZ6X2C5?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    },
+    {
+        "id": 3057,
+        "date": "2026-09-16T09:30:52+00:00",
+        "title": "🛍️ JACK & JONES Gorro para Hombre Jaccoll Regular Noos, Moonbeam, Talla única",
+        "price": "3.89 €",
+        "amazon_url": "https://www.amazon.es/dp/B0DKK2PHMS?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    },
+    {
+        "id": 3053,
+        "date": "2026-09-16T09:17:00+00:00",
+        "title": "🛍️ adidas Unisex Adulto Baseball Lightweights Metal Hat, Black, XS-S",
+        "price": "0.74 €",
+        "amazon_url": "https://www.amazon.es/dp/B0CZCNVCBT?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    },
+    {
+        "id": 3045,
+        "date": "2026-09-16T08:13:46+00:00",
+        "title": "🛍️ Fly London DERE725FLY, Fashion Boot Mujer, Taupe/Camel, 35 EU",
+        "price": "4.35 €",
+        "amazon_url": "https://www.amazon.es/dp/B0DTZ4W25C?tag=gangas054-21",
+        "image": "",
+        "categoria": "ropa-y-calzado"
+    }
+]

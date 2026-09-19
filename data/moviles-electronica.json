@@ -1,1 +1,29 @@
-[]
+[
+    {
+        "id": 3061,
+        "date": "2026-09-16T09:46:04+00:00",
+        "title": "🔌 Arca Organizador de Cables para Viaje – Tamaño M",
+        "price": "6.99 €",
+        "amazon_url": "https://www.amazon.es/dp/B09Y88QB9C?tag=gangas054-21",
+        "image": "",
+        "categoria": "moviles-electronica"
+    },
+    {
+        "id": 3048,
+        "date": "2026-09-16T08:34:01+00:00",
+        "title": "🛍️ Lefant M2 Robot Aspirador y Fregasuelos 2 en 1, 6000Pa, 160min Automático, Navegación Láser, Evitación PSD, Limpieza Personalizada, Ideal para Limpiar Pelo de Mascotas y Suelos Duros",
+        "price": "9.96 €",
+        "amazon_url": "https://www.amazon.es/dp/B0FQPBJN2Q?tag=gangas054-21",
+        "image": "",
+        "categoria": "moviles-electronica"
+    },
+    {
+        "id": 3042,
+        "date": "2026-09-16T07:52:43+00:00",
+        "title": "🛍️ 𝟳𝟵𝗼𝗳𝗳 𝟭𝟬𝟬𝟬𝟬𝗔 Arrancador de Baterias de Coche - Jump Starter",
+        "price": "0.99 €",
+        "amazon_url": "https://www.amazon.es/dp/B0H6Q952X5?tag=gangas054-21",
+        "image": "",
+        "categoria": "moviles-electronica"
+    }
+]
