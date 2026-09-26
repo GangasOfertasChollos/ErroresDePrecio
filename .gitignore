@@ -1,0 +1,14 @@
+*.session
+*.session-journal
+__pycache__/
+.env
+
+# Logs del bot (se generan en la raiz del proyecto)
+*.log
+
+# Temporales de escritura atomica
+*.json.tmp
+
+# Artefactos de pruebas
+repo_prueba/
+_prueba_*/

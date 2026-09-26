@@ -1,0 +1,102 @@
+/* ============================================================
+   Gangas Ofertas y Chollos - estilos compartidos
+   Usado por index.html y por las paginas de catalogo.
+   ============================================================ */
+
+*,*::before,*::after{box-sizing:border-box}
+
+:root{
+  --naranja:#ff9900;
+  --naranja-oscuro:#e68a00;
+  --azul-oscuro:#111827;
+  --azul-medio:#1e3a5f;
+  --gris-fondo:#f5f7fb;
+  --gris-borde:#e5e7eb;
+  --gris-texto:#172033;
+  --gris-tenue:#6b7280;
+  --verde:#059669;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  margin:0;
+  background:var(--gris-fondo);
+  color:var(--gris-texto);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+
+a{color:inherit}
+
+.wrap{max-width:1100px;margin:0 auto;padding:0 20px}
+
+/* ---------- Cabecera de catalogo ---------- */
+.cabecera{background:var(--azul-oscuro);color:#fff;padding:25px 0}
+.cabecera h1{margin:0 0 4px;font-size:26px}
+.cabecera p{margin:0 0 16px;color:#9ca3af;font-size:15px}
+
+.nav{display:flex;flex-wrap:wrap;gap:8px}
+.nav a{
+  color:#fff;text-decoration:none;background:#273449;
+  padding:8px 13px;border-radius:20px;font-size:14px;
+  transition:background .2s,color .2s;
+}
+.nav a:hover{background:var(--naranja);color:#111}
+.nav a[aria-current="page"]{background:var(--naranja);color:#111;font-weight:bold}
+
+/* ---------- Rejilla de ofertas ---------- */
+main.contenido{padding:28px 0}
+
+.estado{
+  background:#fff;border:1px solid var(--gris-borde);
+  border-radius:15px;padding:22px;color:var(--gris-tenue);
+}
+
+.rejilla{
+  display:grid;gap:18px;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+}
+
+.oferta{
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:#fff;border:1px solid var(--gris-borde);border-radius:15px;
+  padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.04);
+  transition:transform .2s,box-shadow .2s;
+}
+.oferta:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+
+.oferta-img{width:100%;height:180px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;background:#f9fafb;border-radius:10px;overflow:hidden}
+.oferta-img img{max-width:100%;max-height:100%;object-fit:contain}
+
+.oferta-cuerpo{flex-grow:1;display:flex;flex-direction:column}
+.oferta-titulo{font-size:16px;font-weight:bold;line-height:1.35;margin-bottom:8px;color:#111827}
+.oferta-precios{display:flex;align-items:baseline;flex-wrap:wrap;gap:8px;margin:8px 0}
+.oferta-precio{font-size:22px;font-weight:bold;color:var(--verde)}
+.oferta-precio-antes{font-size:15px;color:#9ca3af;text-decoration:line-through}
+.oferta-descuento{
+  font-size:12px;font-weight:bold;color:#fff;background:#dc2626;
+  padding:2px 7px;border-radius:5px;letter-spacing:.3px
+}
+.oferta-meta{color:#667085;font-size:13px;margin-bottom:14px}
+.oferta-comprar{
+  display:block;text-align:center;background:var(--naranja);color:#111;
+  padding:11px 16px;border-radius:9px;text-decoration:none;font-weight:bold;
+  transition:background .2s;
+}
+.oferta-comprar:hover{background:var(--naranja-oscuro)}
+
+/* ---------- Pie ---------- */
+.pie{margin-top:35px;padding:22px 0;color:#667085;font-size:13px;border-top:1px solid var(--gris-borde)}
+.enlace-telegram{margin-top:25px}
+
+/* ---------- Bloqueos de codigo / desarrollo ---------- */
+.codigo-fuente{background:#0f172a;color:#e2e8f0;padding:2px 6px;border-radius:4px;font-size:.9em}
+
+/* ---------- 404 ---------- */
+.error404{max-width:640px;margin:0 auto;padding:70px 20px;text-align:center}
+.error404 h1{font-size:clamp(48px,12vw,90px);margin:0;color:var(--naranja);line-height:1}
+.error404 p{color:var(--gris-tenue);font-size:17px}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important}
+}
