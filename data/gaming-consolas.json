@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "id": 5207,
+        "date": "2026-09-26T12:13:04+00:00",
+        "title": "Pendientes de botón Tommy Hilfiger por 29,55€. Antes 43,95€",
+        "price": "29.55 €",
+        "old_price": "43.95 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0091HXK7I?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/WXgC-gLmupd4phdJJ7mab2XI7Zk9uKRBWhUB6OcpuMHM3WACS2bEaYfXiYRbywOH7bbpIw8Kz-SxzRRJfDIzXXO9d8QGEKd0prpZ6J_H9ipxPpDl9EyyweG7C7tx7CZG7afQD0jJcCxyz0H1g502F3nZ8bkwq4ttv0l8azO6EZ-VGWLY1wNIEbq0Vvn9By0gZG9Y48sF-6ksC-zQGjBfv1oJxoPwct0tgMOS0Dt-rIQXDbBqH-UJL4hPZIaTib1ZUbQ8584LtQQTWkfRWOgVJZzk7eOpadNbj5caw18e8HXPUqGASRBQGGMSQW51JTV5-Sd-Vaf0a_ua0Ei1U8jmMw.jpg",
+        "categoria": "gaming-consolas"
+    },
+    {
+        "id": 5202,
+        "date": "2026-09-26T12:12:50+00:00",
+        "title": "Cámara HD con Micrófono Integrado y Conexión USB-C para Nintendo Switch 2 por 27,42€. Antes 45,63€",
+        "price": "27.42 €",
+        "old_price": "45.63 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0F3JNJXQ5?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/KOxbAHlWAHm7ELzvUD4k7TjtN2HOpPB0-MJsZ_wdTWPTSxJR4VozKltbt8bGQAF1RIKGB4-tb5x75SgaVnNrkP2ZrrnxD0agCQwn4aAt2eQh0H8cI5FcTpkRrwsGLAM5PHjuzygLv5OrYQhKVi7ZMUbZqQNt8g4gU6u-_zHncLTdcC5fiR7Bhwb8tEfbwuyVzOX_9ATqnNl5o_kI29_DLbIN2RMk0cv7Kxbme3ebkEXkvReeVBFjcfX5jFxn-AAJ7jGyQNb9syRdKUQWa4Dh_CRC4TdjU3V9DZzeXbHmdTzkYRZbwUsjWQmdlnIB4v7stfr9226_bDEMbFgrfhj0AA.jpg",
+        "categoria": "gaming-consolas"
+    }
+]
