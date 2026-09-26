@@ -755,20 +755,44 @@ async def detector_ofertas(event):
 # ─────────────────────────────────────────────
 # ARRANQUE
 # ─────────────────────────────────────────────
-def solicitar_codigo(phone, code_callback=None):
+# Telefono del intento de inicio de sesion en curso. Telethon invoca
+# code_callback() sin argumentos, asi que el telefono no se puede recibir ahi:
+# lo aporta pedir_telefono(), que sustituye al prompt por defecto de Telethon.
+_TELEFONO = None
+
+def pedir_telefono():
+    """Callback de telefono: sustituye al prompt de Telethon para dejar rastro
+    en el log y poder nombrar el numero en los avisos posteriores.
+    """
+    global _TELEFONO
+    log.warning("=" * 60)
+    log.warning("[AUTENTICACIÓN] Necesito tu teléfono con prefijo internacional (p. ej. +34 6XX XXX XXX).")
+    log.warning("=" * 60)
+    try:
+        _TELEFONO = input("Teléfono: ").strip()
+    except (EOFError, KeyboardInterrupt):
+        log.error("[AUTENTICACIÓN] Entrada cancelada, no se puede autorizar la sesión.")
+        return ""
+    return _TELEFONO
+
+def solicitar_codigo():
     """Callback de autenticacion: avisa por log antes de pedir el codigo por consola.
+
+    Telethon llama a este callback sin argumentos (telethon/client/auth.py lo
+    tipa como Callable[[], str]), por lo que no puede recibir el telefono: lo
+    deja pedir_telefono() en _TELEFONO.
 
     Antes el bot se quedaba esperando input() en silencio cuando la sesion
     expiraba, tanto en un servicio como en una consola.
     """
     log.warning("=" * 60)
-    log.warning(f"[AUTENTICACIÓN] Telegram pide confirmar el inicio de sesión en {phone}.")
+    log.warning(f"[AUTENTICACIÓN] Telegram pide confirmar el inicio de sesión en {_TELEFONO}.")
     log.warning("[AUTENTICACIÓN] El código llega por SMS o en la app Telegram > Dispositivos.")
     log.warning("[AUTENTICACIÓN] Si ejecutas esto como servicio, borra 'sesion_json_bot.session'")
     log.warning("[AUTENTICACIÓN] y reinicia de forma interactiva para autorizarlo.")
     log.warning("=" * 60)
     try:
-        codigo = input(f"Código de confirmación para {phone}: ").strip()
+        codigo = input(f"Código de confirmación para {_TELEFONO}: ").strip()
         return codigo or None
     except (EOFError, KeyboardInterrupt):
         log.error("[AUTENTICACIÓN] Entrada cancelada, no se puede autorizar la sesión.")
@@ -815,7 +839,7 @@ async def main():
     log.info("=" * 60)
 
     try:
-        conectado = await client.start(code_callback=solicitar_codigo)
+        conectado = await client.start(phone=pedir_telefono, code_callback=solicitar_codigo)
     except Exception as e:
         log.critical(f"[ERROR] No se pudo iniciar la sesion de Telegram: {e}")
         sys.exit(1)

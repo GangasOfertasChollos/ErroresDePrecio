@@ -3,6 +3,9 @@
 __pycache__/
 .env
 
+# Entorno virtual de Python
+.venv/
+
 # Logs del bot (se generan en la raiz del proyecto)
 *.log
 

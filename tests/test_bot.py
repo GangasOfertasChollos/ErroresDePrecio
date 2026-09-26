@@ -75,6 +75,44 @@ check("amazon.es", bot.extraer_enlace_amazon("Mira https://www.amazon.es/dp/B0AB
 check("amzn.to", bot.extraer_enlace_amazon("Chollazo https://amzn.to/abc") == "https://amzn.to/abc")
 check("sin enlace", bot.extraer_enlace_amazon("nada aqui") == "")
 
+print("\n== callbacks de autenticacion ==")
+# Telethon tipa code_callback como Callable[[], str] y lo invoca sin argumentos
+# (telethon/client/auth.py). Si se le anade un parametro obligatorio, el arranque
+# revienta con TypeError en cuanto la sesion necesita autorizacion.
+import inspect
+import builtins
+
+check("solicitar_codigo no exige argumentos",
+      not inspect.signature(bot.solicitar_codigo).parameters
+      or all(p.default is not inspect.Parameter.empty
+             for p in inspect.signature(bot.solicitar_codigo).parameters.values()),
+      f"firma {inspect.signature(bot.solicitar_codigo)}")
+check("pedir_telefono no exige argumentos",
+      not inspect.signature(bot.pedir_telefono).parameters
+      or all(p.default is not inspect.Parameter.empty
+             for p in inspect.signature(bot.pedir_telefono).parameters.values()),
+      f"firma {inspect.signature(bot.pedir_telefono)}")
+
+_entrada_real = builtins.input
+try:
+    builtins.input = lambda prompt="": "600111222"
+    check("pedir_telefono devuelve lo tecleado", bot.pedir_telefono() == "600111222")
+    check("pedir_telefono recuerda el telefono", bot._TELEFONO == "600111222", f"{bot._TELEFONO!r}")
+
+    builtins.input = lambda prompt="": "12345"
+    check("solicitar_codigo se puede llamar sin argumentos", bot.solicitar_codigo() == "12345")
+
+    builtins.input = lambda prompt="": "   "
+    check("codigo vacio -> None", bot.solicitar_codigo() is None)
+
+    def _EOF(prompt=""):
+        raise EOFError
+    builtins.input = _EOF
+    check("EOF no revienta", bot.solicitar_codigo() is None)
+    check("EOF en telefono no revienta", bot.pedir_telefono() == "")
+finally:
+    builtins.input = _entrada_real
+
 print("\n== escritura atomica / orden por ID / limite ==")
 import tempfile
 prueba = Path(tempfile.mkdtemp(prefix="_prueba_json_"))
