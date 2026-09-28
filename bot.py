@@ -461,10 +461,13 @@ async def _descargar_imagen(url, nombre_archivo):
             log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
             return f"images/{ruta_archivo.name}"
         
-        # Descargar la imagen
+        # Descargar la imagen con headers completos para evitar 403/404
         headers = {
             'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
                            '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'),
+            'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
+            'Accept-Language': 'es-ES,es;q=0.9',
+            'Referer': 'https://t.me/',
         }
         peticion = urllib.request.Request(url, headers=headers)
         respuesta = await asyncio.to_thread(
@@ -472,6 +475,11 @@ async def _descargar_imagen(url, nombre_archivo):
         )
         datos = await asyncio.to_thread(respuesta.read)
         respuesta.close()
+        
+        # Verificar que se descargaron datos válidos
+        if not datos or len(datos) < 100:
+            log.warning(f"  [IMG] Imagen descargada vacía o muy pequeña de {url[:60]}")
+            return ''
         
         # Guardar la imagen
         ruta_archivo.write_bytes(datos)
@@ -520,18 +528,61 @@ async def _pedir_og_image(url_publica):
     _CACHE_IMAGENES[url_publica] = ''
     return ''
 
+async def _descargar_imagen_de_telegram(mensaje):
+    """Descarga la imagen directamente de Telegram usando la API de Telethon.
+    
+    Este método es más fiable que el unfurling porque no depende de URLs
+    externas que expiran. Usa la API oficial de Telegram para obtener
+    la imagen del mensaje.
+    """
+    if not mensaje or not mensaje.media:
+        return ''
+    
+    try:
+        # Crear el directorio si no existe
+        IMAGES_PATH.mkdir(parents=True, exist_ok=True)
+        
+        nombre = f"oferta_{mensaje.id}"
+        ruta_archivo = IMAGES_PATH / f"{nombre}.jpg"
+        
+        # Si ya existe, no volver a descargar
+        if ruta_archivo.exists():
+            log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
+            return f"images/{ruta_archivo.name}"
+        
+        # Descargar la imagen usando Telethon
+        log.info(f"  [IMG] Descargando imagen de Telegram para mensaje {mensaje.id}...")
+        ruta = await client.download_media(mensaje.media, file=ruta_archivo)
+        
+        if ruta and Path(ruta).exists():
+            tamaño = Path(ruta).stat().st_size
+            log.info(f"  [IMG] Imagen descargada de Telegram: {Path(ruta).name} ({tamaño} bytes)")
+            return f"images/{Path(ruta).name}"
+        else:
+            log.warning(f"  [IMG] No se pudo descargar la imagen de Telegram para mensaje {mensaje.id}")
+            return ''
+    except Exception as e:
+        log.warning(f"  [IMG] Error descargando imagen de Telegram: {e}")
+        return ''
+
 async def extraer_imagen(texto, mensaje=None):
     """Descarga la miniatura de la oferta y devuelve la ruta local.
 
     Orden de busqueda:
-      1. URL de imagen que venga escrita en el propio mensaje.
-      2. Unfurling de la pagina publica del mensaje (https://t.me/canal/ID),
-         que es de donde sale la miniatura que ya usas en Telegram.
+      1. Imagen directamente de Telegram (más fiable)
+      2. URL de imagen que venga escrita en el propio mensaje
+      3. Unfurling de la pagina publica del mensaje (https://t.me/canal/ID)
 
     La imagen se descarga a data/images/ y se devuelve una ruta relativa
     (images/nombre.jpg) para que sea permanente y no dependa de URLs externas.
     """
-    # 1) URL de imagen en el texto
+    # 1) Intentar descargar directamente de Telegram (más fiable)
+    if mensaje and mensaje.media:
+        ruta = await _descargar_imagen_de_telegram(mensaje)
+        if ruta:
+            return ruta
+
+    # 2) URL de imagen en el texto
     m = RE_IMAGEN_CUALQUIERA.search(texto or '')
     if m:
         url = m.group(0).rstrip('.,')
@@ -539,7 +590,7 @@ async def extraer_imagen(texto, mensaje=None):
         nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
         return await _descargar_imagen(url, nombre)
 
-    # 1b) URL de imagen en las entidades del mensaje
+    # 2b) URL de imagen en las entidades del mensaje
     if mensaje and getattr(mensaje, 'entities', None):
         for ent in mensaje.entities:
             url = getattr(ent, 'url', None)
@@ -548,7 +599,7 @@ async def extraer_imagen(texto, mensaje=None):
                 nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
                 return await _descargar_imagen(url, nombre)
 
-    # 2) Unfurling: la pagina publica del mensaje trae la miniatura en og:image
+    # 3) Unfurling: la pagina publica del mensaje trae la miniatura en og:image
     if not USAR_UNFURL:
         log.debug("  [IMG] Unfurling desactivado (USAR_UNFURL=0)")
         return ''
