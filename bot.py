@@ -436,6 +436,52 @@ def extraer_titulo(texto):
     log.debug("  [TITULO] Ninguna linea parecia un titulo")
     return 'Oferta Amazon'
 
+async def _descargar_imagen(url, nombre_archivo):
+    """Descarga una imagen y la guarda localmente en data/images/."""
+    if not url:
+        return ''
+    
+    try:
+        # Crear el directorio si no existe
+        IMAGES_PATH.mkdir(parents=True, exist_ok=True)
+        
+        # Determinar la extensión del archivo
+        extension = '.jpg'  # por defecto
+        if '.png' in url.lower():
+            extension = '.png'
+        elif '.webp' in url.lower():
+            extension = '.webp'
+        elif '.gif' in url.lower():
+            extension = '.gif'
+        
+        ruta_archivo = IMAGES_PATH / f"{nombre_archivo}{extension}"
+        
+        # Si ya existe, no volver a descargar
+        if ruta_archivo.exists():
+            log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
+            return f"images/{ruta_archivo.name}"
+        
+        # Descargar la imagen
+        headers = {
+            'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
+                           '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'),
+        }
+        peticion = urllib.request.Request(url, headers=headers)
+        respuesta = await asyncio.to_thread(
+            urllib.request.urlopen, peticion, None, TIMEOUT_UNFURL
+        )
+        datos = await asyncio.to_thread(respuesta.read)
+        respuesta.close()
+        
+        # Guardar la imagen
+        ruta_archivo.write_bytes(datos)
+        log.info(f"  [IMG] Imagen descargada: {ruta_archivo.name} ({len(datos)} bytes)")
+        
+        return f"images/{ruta_archivo.name}"
+    except Exception as e:
+        log.warning(f"  [IMG] No se pudo descargar imagen de {url[:60]}: {e}")
+        return ''
+
 async def _pedir_og_image(url_publica):
     """Descarga la pagina publica del mensaje en t.me y devuelve su og:image.
 
@@ -475,19 +521,23 @@ async def _pedir_og_image(url_publica):
     return ''
 
 async def extraer_imagen(texto, mensaje=None):
-    """Devuelve la URL de la miniatura de la oferta, sin descargarla a disco.
+    """Descarga la miniatura de la oferta y devuelve la ruta local.
 
     Orden de busqueda:
       1. URL de imagen que venga escrita en el propio mensaje.
       2. Unfurling de la pagina publica del mensaje (https://t.me/canal/ID),
          que es de donde sale la miniatura que ya usas en Telegram.
+
+    La imagen se descarga a data/images/ y se devuelve una ruta relativa
+    (images/nombre.jpg) para que sea permanente y no dependa de URLs externas.
     """
     # 1) URL de imagen en el texto
     m = RE_IMAGEN_CUALQUIERA.search(texto or '')
     if m:
         url = m.group(0).rstrip('.,')
         log.debug(f"  [IMG] URL de imagen en el texto: {url[:80]}")
-        return url
+        nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
+        return await _descargar_imagen(url, nombre)
 
     # 1b) URL de imagen en las entidades del mensaje
     if mensaje and getattr(mensaje, 'entities', None):
@@ -495,7 +545,8 @@ async def extraer_imagen(texto, mensaje=None):
             url = getattr(ent, 'url', None)
             if url and RE_IMAGEN_CUALQUIERA.search(url):
                 log.debug(f"  [IMG] URL de imagen en una entidad: {url[:80]}")
-                return url
+                nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
+                return await _descargar_imagen(url, nombre)
 
     # 2) Unfurling: la pagina publica del mensaje trae la miniatura en og:image
     if not USAR_UNFURL:
@@ -504,7 +555,10 @@ async def extraer_imagen(texto, mensaje=None):
 
     url_publica = url_publica_mensaje(mensaje)
     if url_publica:
-        return await _pedir_og_image(url_publica)
+        url = await _pedir_og_image(url_publica)
+        if url:
+            nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
+            return await _descargar_imagen(url, nombre)
 
     log.debug("  [IMG] Sin imagen disponible; se publicara sin ella")
     return ''
