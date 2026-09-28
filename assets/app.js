@@ -66,7 +66,7 @@
     return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
   }
 
-  /* ---------- JSON-LD dinamico: ItemList + Offer ---------- */
+  /* ---------- JSON-LD dinamico: ItemList + Offer detallado ---------- */
   function inyectarSchema(ofertas) {
     var conPrecio = ofertas.filter(function (o) { return precioAMayor(o.price) !== null; });
     if (!conPrecio.length) return;
@@ -77,7 +77,8 @@
       "name": (document.querySelector("h1") || {}).textContent || "Ofertas",
       "numberOfItems": conPrecio.length,
       "itemListElement": conPrecio.slice(0, 20).map(function (o, i) {
-        return {
+        var precio = precioAMayor(o.price);
+        var oferta = {
           "@type": "ListItem",
           "position": i + 1,
           "item": {
@@ -85,12 +86,25 @@
             "name": String(o.title || "Oferta Amazon").replace(/\*/g, "").trim(),
             "url": urlSegura(o.amazon_url),
             "priceCurrency": "EUR",
-            "price": precioAMayor(o.price),
+            "price": precio,
             "availability": "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": { "@type": "Organization", "name": "Amazon España" }
           }
         };
+        // Añadir imagen si existe
+        if (o.image) {
+          oferta.item.image = o.image;
+        }
+        // Añadir precio anterior si existe
+        if (o.old_price) {
+          oferta.item.priceSpecification = {
+            "@type": "PriceSpecification",
+            "price": precio,
+            "priceCurrency": "EUR"
+          };
+        }
+        return oferta;
       })
     };
 
@@ -123,31 +137,37 @@
         if (!isNaN(d)) fecha = d.toLocaleDateString("es-ES");
       }
       var url = urlSegura(o.amazon_url);
+      var precio = precioAMayor(o.price);
       var img = o.image
         ? '<div class="oferta-img"><img src="' + esc(o.image) + '" alt="' +
-          limpiarTitulo(o.title) + '" loading="lazy" decoding="async"></div>'
+          limpiarTitulo(o.title) + '" loading="lazy" decoding="async" itemprop="image"></div>'
         : "";
       // Precio anterior tachado + descuento, cuando el mensaje los trae
-    var anterior = o.old_price
-      ? '<span class="oferta-precio-antes">' + esc(o.old_price) + "</span>"
-      : "";
-    var descuento = o.discount
-      ? '<span class="oferta-descuento">' + esc(o.discount) + "</span>"
-      : "";
+      var anterior = o.old_price
+        ? '<span class="oferta-precio-antes">' + esc(o.old_price) + "</span>"
+        : "";
+      var descuento = o.discount
+        ? '<span class="oferta-descuento">' + esc(o.discount) + "</span>"
+        : "";
 
-    return '<article class="oferta">' +
-        img +
-        '<div class="oferta-cuerpo">' +
-          '<div class="oferta-titulo">' + limpiarTitulo(o.title) + "</div>" +
-          '<div class="oferta-precios">' + anterior +
-            '<span class="oferta-precio">' + esc(o.price || "Ver precio") + "</span>" +
-            descuento +
+      // Microdata Schema.org para que Google indexe cada oferta como producto
+      return '<article class="oferta" itemscope itemtype="https://schema.org/Offer">' +
+          img +
+          '<div class="oferta-cuerpo">' +
+            '<div class="oferta-titulo" itemprop="name">' + limpiarTitulo(o.title) + "</div>" +
+            '<div class="oferta-precios">' + anterior +
+              '<span class="oferta-precio" itemprop="price" content="' + (precio || "") + '">' + esc(o.price || "Ver precio") + "</span>" +
+              descuento +
+            "</div>" +
+            '<div class="oferta-meta">' + esc(fecha) + "</div>" +
           "</div>" +
-          '<div class="oferta-meta">' + esc(fecha) + "</div>" +
-        "</div>" +
-        '<a class="oferta-comprar" href="' + esc(url) +
-          '" target="_blank" rel="nofollow sponsored noopener">Ver oferta en Amazon</a>' +
-      "</article>";
+          '<a class="oferta-comprar" href="' + esc(url) +
+            '" target="_blank" rel="nofollow sponsored noopener" itemprop="url">Ver oferta en Amazon</a>' +
+          '<meta itemprop="priceCurrency" content="EUR">' +
+          '<meta itemprop="availability" content="https://schema.org/InStock">' +
+          '<meta itemprop="itemCondition" content="https://schema.org/NewCondition">' +
+          '<meta itemprop="seller" content="Amazon España">' +
+        "</article>";
     }).join("");
 
     // Si la imagen no carga, se oculta la caja en lugar de dejar un hueco.
