@@ -23,6 +23,48 @@
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+/* ===== Menu de navegacion ===== */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.05);
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
+
+.nav a[aria-current="page"] {
+  background: #ff9900;
+  color: #000;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    justify-content: center;
+  }
+  .nav a {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -31,6 +73,19 @@
     <h1>🏷️ Categorías de chollos</h1>
     <p>Explora las ofertas de Amazon España organizadas por tema.</p>
   </div>
+
+<nav class="nav" aria-label="Navegacion principal">
+  <a href="index.html">Inicio</a>
+  <a href="general.html">Todas</a>
+  <a href="ropa-y-calzado.html">Ropa</a>
+  <a href="moviles-electronica.html">Moviles</a>
+  <a href="gaming-consolas.html">Gaming</a>
+  <a href="higiene-cuidado-personal.html">Higiene</a>
+  <a href="juguetes-infantil.html">Juguetes</a>
+  <a href="papeleria-oficina.html">Papeleria</a>
+  <a href="categorias.html">Categorias</a>
+</nav>
+
 </header>
 
 <main class="contenido wrap">

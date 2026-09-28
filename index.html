@@ -173,6 +173,49 @@ footer{padding:28px 20px;text-align:center;color:#9ca3af;font-size:13px;border-t
 footer a{color:#6b7280;text-decoration:none}
 footer a:hover{color:#ff9900}
 footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;margin-bottom:12px}
+
+/* ===== Menú de navegación ===== */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 0;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  background: rgba(255,255,255,0.05);
+}
+
+.nav a:hover {
+  background: rgba(255,255,255,0.15);
+  transform: translateY(-1px);
+}
+
+.nav a[aria-current="page"] {
+  background: #ff9900;
+  color: #000;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .nav {
+    justify-content: center;
+  }
+  .nav a {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -188,6 +231,32 @@ footer .footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px
       <a href="https://t.me/GangasOfertasChollos" class="btn-ghost" target="_blank" rel="noopener" id="btn-telegram-hero">📢 Canal de Telegram</a>
     </div>
   </div>
+
+<nav class="nav" aria-label="Navegación principal">
+  <a href="index.html">Inicio</a>
+  <a href="general.html">Todas</a>
+  <a href="ropa-y-calzado.html">Ropa</a>
+  <a href="moviles-electronica.html">Móviles</a>
+  <a href="gaming-consolas.html">Gaming</a>
+  <a href="higiene-cuidado-personal.html">Higiene</a>
+  <a href="juguetes-infantil.html">Juguetes</a>
+  <a href="papeleria-oficina.html">Papelería</a>
+  <a href="categorias.html">Categorías</a>
+</nav>
+
+
+<nav class="nav" aria-label="Navegacion principal">
+  <a href="index.html">Inicio</a>
+  <a href="general.html">Todas</a>
+  <a href="ropa-y-calzado.html">Ropa</a>
+  <a href="moviles-electronica.html">Moviles</a>
+  <a href="gaming-consolas.html">Gaming</a>
+  <a href="higiene-cuidado-personal.html">Higiene</a>
+  <a href="juguetes-infantil.html">Juguetes</a>
+  <a href="papeleria-oficina.html">Papeleria</a>
+  <a href="categorias.html">Categorias</a>
+</nav>
+
 </header>
 
 <!-- ===== STATS ===== -->
