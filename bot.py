@@ -775,24 +775,24 @@ def pedir_telefono():
         return ""
     return _TELEFONO
 
-def solicitar_codigo():
+def solicitar_codigo(phone=None):
     """Callback de autenticacion: avisa por log antes de pedir el codigo por consola.
 
-    Telethon llama a este callback sin argumentos (telethon/client/auth.py lo
-    tipa como Callable[[], str]), por lo que no puede recibir el telefono: lo
-    deja pedir_telefono() en _TELEFONO.
+    Telethon llama a este callback con el telefono como argumento (telethon/client/auth.py
+    lo tipa asiq), por lo que debe aceptar un parametro phone opcional.
 
     Antes el bot se quedaba esperando input() en silencio cuando la sesion
     expiraba, tanto en un servicio como en una consola.
     """
+    telefono = phone or _TELEFONO or "tu teléfono"
     log.warning("=" * 60)
-    log.warning(f"[AUTENTICACIÓN] Telegram pide confirmar el inicio de sesión en {_TELEFONO}.")
+    log.warning(f"[AUTENTICACIÓN] Telegram pide confirmar el inicio de sesión en {telefono}.")
     log.warning("[AUTENTICACIÓN] El código llega por SMS o en la app Telegram > Dispositivos.")
     log.warning("[AUTENTICACIÓN] Si ejecutas esto como servicio, borra 'sesion_json_bot.session'")
     log.warning("[AUTENTICACIÓN] y reinicia de forma interactiva para autorizarlo.")
     log.warning("=" * 60)
     try:
-        codigo = input(f"Código de confirmación para {_TELEFONO}: ").strip()
+        codigo = input(f"Código de confirmación para {telefono}: ").strip()
         return codigo or None
     except (EOFError, KeyboardInterrupt):
         log.error("[AUTENTICACIÓN] Entrada cancelada, no se puede autorizar la sesión.")
