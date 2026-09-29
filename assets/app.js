@@ -96,6 +96,18 @@
         if (o.image) {
           oferta.item.image = o.image;
         }
+        // Añadir descripcion si existe
+        if (o.description) {
+          oferta.item.description = o.description;
+        }
+        // Añadir marca si existe
+        if (o.brand) {
+          oferta.item.brand = { "@type": "Brand", "name": o.brand };
+        }
+        // Añadir GTIN/MPN si existe
+        if (o.gtin) {
+          oferta.item.gtin = o.gtin;
+        }
         // Añadir precio anterior si existe
         if (o.old_price) {
           oferta.item.priceSpecification = {
@@ -151,6 +163,15 @@
         : "";
 
       // Microdata Schema.org para que Google indexe cada oferta como producto
+      var descHtml = o.description
+        ? '<div class="oferta-descripcion" itemprop="description">' + esc(o.description) + "</div>"
+        : "";
+      var brandMeta = o.brand
+        ? '<meta itemprop="brand" content="' + esc(o.brand) + '">'
+        : "";
+      var gtinMeta = o.gtin
+        ? '<meta itemprop="gtin" content="' + esc(o.gtin) + '">'
+        : "";
       return '<article class="oferta" itemscope itemtype="https://schema.org/Offer">' +
           img +
           '<div class="oferta-cuerpo">' +
@@ -160,6 +181,7 @@
               descuento +
             "</div>" +
             '<div class="oferta-meta">' + esc(fecha) + "</div>" +
+            descHtml +
           "</div>" +
           '<a class="oferta-comprar" href="' + esc(url) +
             '" target="_blank" rel="nofollow sponsored noopener" itemprop="url">Ver oferta en Amazon</a>' +
@@ -167,6 +189,8 @@
           '<meta itemprop="availability" content="https://schema.org/InStock">' +
           '<meta itemprop="itemCondition" content="https://schema.org/NewCondition">' +
           '<meta itemprop="seller" content="Amazon España">' +
+          brandMeta +
+          gtinMeta +
         "</article>";
     }).join("");
 

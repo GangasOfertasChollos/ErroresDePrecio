@@ -436,6 +436,100 @@ def extraer_titulo(texto):
     log.debug("  [TITULO] Ninguna linea parecia un titulo")
     return 'Oferta Amazon'
 
+def extraer_descripcion(texto):
+    """Extrae una descripcion del producto del mensaje del canal.
+
+    Las lineas que no son el titulo, precios, enlaces ni hashtags pueden
+    contener informacion util del producto. Se devuelven como descripcion.
+    """
+    texto_limpio = re.sub(r'[*_~`]+', '', texto or '')
+    lineas = [x.strip() for x in texto_limpio.splitlines() if x.strip()]
+    if not lineas:
+        return ''
+
+    descripcion_lineas = []
+    for linea in lineas:
+        if RE_EMOJI_ENLACE.match(linea):
+            continue
+        limpio = RE_EMOJI_INICIAL.sub('', linea).strip()
+        if RE_LINEA_ETIQUETA.match(limpio):
+            continue
+        if RE_PRECIO_CUALQUIERA.fullmatch(limpio) or RE_ENLACE_PLANO.fullmatch(limpio):
+            continue
+        if limpio.startswith('#') or limpio.startswith('http'):
+            continue
+        if RE_SOLO_EMOJI.match(limpio):
+            continue
+        if len(limpio) < 3:
+            continue
+        # Si es el titulo, no lo incluir en la descripcion
+        if limpio == extraer_titulo(texto):
+            continue
+        descripcion_lineas.append(limpio)
+
+    descripcion = ' '.join(descripcion_lineas)[:500]
+    if descripcion:
+        log.debug(f"  [DESCRIPCION] '{descripcion[:80]}...'")
+    return descripcion
+
+def extraer_marca(titulo):
+    """Extrae la marca del producto del titulo.
+
+    La marca suele ser la primera o dos palabras del titulo, antes de un
+    guion, dos puntos o el nombre del producto.
+    """
+    if not titulo or titulo == 'Oferta Amazon':
+        return ''
+
+    # Buscar marca antes de un guion o dos puntos
+    m = re.match(r'^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s]{1,20}?)\s*[-:]\s*', titulo)
+    if m:
+        marca = m.group(1).strip()
+        if len(marca) >= 2:
+            log.debug(f"  [MARCA] '{marca}'")
+            return marca
+
+    # Si no hay guion, probar con las dos primeras palabras
+    palabras = titulo.split()
+    if len(palabras) >= 2:
+        marca = ' '.join(palabras[:2])
+        if len(marca) >= 3:
+            log.debug(f"  [MARCA] '{marca}'")
+            return marca
+
+    return ''
+
+def extraer_gtin(texto):
+    """Busca un GTIN (EAN-13, UPC-A) o MPN en el mensaje.
+
+    Los GTIN tienen 13 digitos (EAN) o 12 (UPC). Los MPN suelen ser
+    alfanumericos de 6-20 caracteres.
+    """
+    if not texto:
+        return ''
+
+    # Buscar EAN-13 (13 digitos seguidos, posiblemente con espacios)
+    m = re.search(r'\b(\d{13})\b', texto)
+    if m:
+        log.debug(f"  [GTIN] EAN-13: {m.group(1)}")
+        return m.group(1)
+
+    # Buscar UPC-A (12 digitos seguidos)
+    m = re.search(r'\b(\d{12})\b', texto)
+    if m:
+        log.debug(f"  [GTIN] UPC-A: {m.group(1)}")
+        return m.group(1)
+
+    # Buscar MPN (alfanumerico de 6-20 caracteres, a veces con guiones)
+    m = re.search(r'\b([A-Z0-9][A-Z0-9\-]{5,19})\b', texto, re.I)
+    if m:
+        mpn = m.group(1).strip('-')
+        if len(mpn) >= 6:
+            log.debug(f"  [GTIN] MPN: {mpn}")
+            return mpn
+
+    return ''
+
 async def _descargar_imagen(url, nombre_archivo):
     """Descarga una imagen y la guarda localmente en data/images/."""
     if not url:
@@ -715,6 +809,10 @@ async def actualizar_json(categoria, mensaje):
     precio_antes = extraer_precio_antes(texto)
     # URL de la miniatura, enlazada en vez de descargada
     url_imagen = await extraer_imagen(texto, mensaje)
+    # Campos adicionales para schema.org
+    descripcion = extraer_descripcion(texto)
+    marca = extraer_marca(titulo)
+    gtin = extraer_gtin(texto)
 
     log.info(f"  [OFERTA] Titulo   : {titulo}")
     log.info(f"  [OFERTA] Precio   : {precio if precio else '(no detectado)'}")
@@ -725,6 +823,12 @@ async def actualizar_json(categoria, mensaje):
     log.info(f"  [OFERTA] Enlace   : {enlace if enlace else '(no detectado)'}")
     log.info(f"  [OFERTA] Imagen   : {url_imagen if url_imagen else '(sin imagen)'}")
     log.info(f"  [OFERTA] Categoria: {categoria}")
+    if descripcion:
+        log.info(f"  [OFERTA] Desc     : {descripcion[:60]}...")
+    if marca:
+        log.info(f"  [OFERTA] Marca    : {marca}")
+    if gtin:
+        log.info(f"  [OFERTA] GTIN     : {gtin}")
 
     if not enlace:
         log.warning("  [OFERTA] Sin enlace Amazon -> la oferta se guarda sin URL")
@@ -738,7 +842,10 @@ async def actualizar_json(categoria, mensaje):
         'discount':   descuento,
         'amazon_url': enlace,
         'image':      url_imagen,
-        'categoria':  categoria
+        'categoria':  categoria,
+        'description': descripcion,
+        'brand':       marca,
+        'gtin':        gtin
     }
 
     # Guardar en la categoria correspondiente y en el feed global.
