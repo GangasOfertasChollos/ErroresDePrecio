@@ -459,7 +459,7 @@ async def _descargar_imagen(url, nombre_archivo):
         # Si ya existe, no volver a descargar
         if ruta_archivo.exists():
             log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
-            return f"images/{ruta_archivo.name}"
+            return f"data/images/{ruta_archivo.name}"
         
         # Descargar la imagen con headers completos para evitar 403/404
         headers = {
@@ -485,7 +485,7 @@ async def _descargar_imagen(url, nombre_archivo):
         ruta_archivo.write_bytes(datos)
         log.info(f"  [IMG] Imagen descargada: {ruta_archivo.name} ({len(datos)} bytes)")
         
-        return f"images/{ruta_archivo.name}"
+        return f"data/images/{ruta_archivo.name}"
     except Exception as e:
         log.warning(f"  [IMG] No se pudo descargar imagen de {url[:60]}: {e}")
         return ''
@@ -539,25 +539,24 @@ async def _descargar_imagen_de_telegram(mensaje):
         return ''
     
     try:
-        # Crear el directorio si no existe
-        IMAGES_PATH.mkdir(parents=True, exist_ok=True)
-        
         nombre = f"oferta_{mensaje.id}"
         ruta_archivo = IMAGES_PATH / f"{nombre}.jpg"
         
         # Si ya existe, no volver a descargar
         if ruta_archivo.exists():
             log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
-            return f"images/{ruta_archivo.name}"
+            return f"data/images/{ruta_archivo.name}"
         
         # Descargar la imagen usando Telethon
         log.info(f"  [IMG] Descargando imagen de Telegram para mensaje {mensaje.id}...")
         ruta = await client.download_media(mensaje.media, file=ruta_archivo)
         
         if ruta and Path(ruta).exists():
+            # Crear el directorio si no existe (solo cuando se va a guardar)
+            IMAGES_PATH.mkdir(parents=True, exist_ok=True)
             tamaño = Path(ruta).stat().st_size
             log.info(f"  [IMG] Imagen descargada de Telegram: {Path(ruta).name} ({tamaño} bytes)")
-            return f"images/{Path(ruta).name}"
+            return f"data/images/{Path(ruta).name}"
         else:
             log.warning(f"  [IMG] No se pudo descargar la imagen de Telegram para mensaje {mensaje.id}")
             return ''
@@ -574,7 +573,7 @@ async def extraer_imagen(texto, mensaje=None):
       3. Unfurling de la pagina publica del mensaje (https://t.me/canal/ID)
 
     La imagen se descarga a data/images/ y se devuelve una ruta relativa
-    (images/nombre.jpg) para que sea permanente y no dependa de URLs externas.
+    (data/images/nombre.jpg) para que sea permanente y no dependa de URLs externas.
     """
     # 1) Intentar descargar directamente de Telegram (más fiable)
     if mensaje and mensaje.media:
@@ -587,8 +586,7 @@ async def extraer_imagen(texto, mensaje=None):
     if m:
         url = m.group(0).rstrip('.,')
         log.debug(f"  [IMG] URL de imagen en el texto: {url[:80]}")
-        nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
-        return await _descargar_imagen(url, nombre)
+        return url
 
     # 2b) URL de imagen en las entidades del mensaje
     if mensaje and getattr(mensaje, 'entities', None):
@@ -596,8 +594,7 @@ async def extraer_imagen(texto, mensaje=None):
             url = getattr(ent, 'url', None)
             if url and RE_IMAGEN_CUALQUIERA.search(url):
                 log.debug(f"  [IMG] URL de imagen en una entidad: {url[:80]}")
-                nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
-                return await _descargar_imagen(url, nombre)
+                return url
 
     # 3) Unfurling: la pagina publica del mensaje trae la miniatura en og:image
     if not USAR_UNFURL:
@@ -608,8 +605,8 @@ async def extraer_imagen(texto, mensaje=None):
     if url_publica:
         url = await _pedir_og_image(url_publica)
         if url:
-            nombre = f"oferta_{mensaje.id}" if mensaje else f"oferta_{int(time.time())}"
-            return await _descargar_imagen(url, nombre)
+            log.debug(f"  [IMG] Unfurling OK: {url[:80]}")
+            return url
 
     log.debug("  [IMG] Sin imagen disponible; se publicara sin ella")
     return ''

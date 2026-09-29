@@ -107,14 +107,14 @@ async def recuperar_imagenes():
                     ruta_archivo = IMAGES_PATH / f"{nombre}.jpg"
                     
                     if ruta_archivo.exists():
-                        oferta['image'] = f"images/{ruta_archivo.name}"
+                        oferta['image'] = f"data/images/{ruta_archivo.name}"
                         recuperadas += 1
                         continue
                     
                     ruta = await client.download_media(mensaje.media, file=ruta_archivo)
                     
                     if ruta and Path(ruta).exists():
-                        oferta['image'] = f"images/{Path(ruta).name}"
+                        oferta['image'] = f"data/images/{Path(ruta).name}"
                         recuperadas += 1
                         log.info(f"  Recuperada imagen para oferta {mensaje_id}")
                     
