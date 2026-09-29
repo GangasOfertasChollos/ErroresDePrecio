@@ -47,7 +47,7 @@ a{color:inherit}
 /* ---------- Hero ---------- */
 .hero{
   background:linear-gradient(135deg,var(--azul-cielo-oscuro) 0%,var(--azul-cielo) 100%);
-  padding:50px 24px 40px;
+  padding:50px 24px 30px;
   text-align:center;
   position:relative;
   overflow:hidden;
@@ -149,6 +149,43 @@ a{color:inherit}
   color:var(--blanco);
   border-color:var(--azul-cielo-oscuro);
   transform:translateY(-2px);
+}
+
+/* ---------- Navegacion principal (index) ---------- */
+.hero .nav{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  justify-content:center;
+  margin-top:25px;
+  position:relative;
+}
+
+.hero .nav a{
+  color:var(--texto-oscuro);
+  text-decoration:none;
+  background:rgba(255,255,255,.7);
+  border:2px solid rgba(255,255,255,.9);
+  padding:7px 14px;
+  border-radius:25px;
+  font-size:13px;
+  font-weight:700;
+  transition:all .3s ease;
+}
+
+.hero .nav a:hover{
+  background:var(--naranja);
+  color:var(--texto-oscuro);
+  border-color:var(--naranja);
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px rgba(255,153,0,.3);
+}
+
+.hero .nav a[aria-current="page"]{
+  background:var(--naranja);
+  color:var(--texto-oscuro);
+  border-color:var(--naranja);
+  box-shadow:0 3px 10px rgba(255,153,0,.3);
 }
 
 /* ---------- Cabecera de catalogo ---------- */
