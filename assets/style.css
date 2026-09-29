@@ -152,7 +152,9 @@ a{color:inherit}
 }
 
 /* ---------- Navegacion principal (todas las paginas) ---------- */
-.nav{
+.nav,
+.hero .nav,
+header .nav{
   display:flex;
   flex-wrap:wrap;
   gap:6px;
