@@ -52,7 +52,7 @@ a{color:inherit}
 
 .hero-banner{
   width:100%;
-  max-height:400px;
+  max-height:220px;
   overflow:hidden;
   position:relative;
 }
@@ -63,7 +63,7 @@ a{color:inherit}
   bottom:0;
   left:0;
   right:0;
-  height:100px;
+  height:80px;
   background:linear-gradient(to top,var(--azul-oscuro),transparent);
   pointer-events:none;
 }
@@ -71,10 +71,11 @@ a{color:inherit}
 .hero-img{
   width:100%;
   height:auto;
-  max-height:400px;
+  max-height:220px;
   object-fit:cover;
-  object-position:center;
+  object-position:center 30%;
   display:block;
+  opacity:.85;
 }
 
 .hero > div:last-child{
