@@ -155,9 +155,9 @@ a{color:inherit}
 .nav{
   display:flex;
   flex-wrap:wrap;
-  gap:8px;
+  gap:6px;
   justify-content:center;
-  margin-top:25px;
+  margin-top:20px;
   position:relative;
   width:100%;
   text-align:center;
@@ -168,9 +168,9 @@ a{color:inherit}
   text-decoration:none;
   background:rgba(255,255,255,.7);
   border:2px solid rgba(255,255,255,.9);
-  padding:7px 14px;
-  border-radius:25px;
-  font-size:13px;
+  padding:5px 10px;
+  border-radius:20px;
+  font-size:11px;
   font-weight:700;
   transition:all .3s ease;
 }
@@ -188,6 +188,35 @@ a{color:inherit}
   color:var(--texto-oscuro);
   border-color:var(--naranja);
   box-shadow:0 3px 10px rgba(255,153,0,.3);
+}
+
+/* ---------- Boton Telegram en cabecera ---------- */
+.btn-telegram{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:linear-gradient(135deg,#0088cc 0%,#0066aa 100%);
+  color:var(--blanco);
+  padding:10px 20px;
+  border-radius:25px;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+  transition:all .3s ease;
+  box-shadow:0 4px 12px rgba(0,136,204,.3);
+  margin-top:15px;
+}
+
+.btn-telegram:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 16px rgba(0,136,204,.5);
+  background:linear-gradient(135deg,#0099dd 0%,#0077bb 100%);
+}
+
+.btn-telegram svg{
+  width:18px;
+  height:18px;
+  fill:currentColor;
 }
 
 /* ---------- Cabecera de catalogo ---------- */
