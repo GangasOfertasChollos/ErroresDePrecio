@@ -159,6 +159,8 @@ a{color:inherit}
   justify-content:center;
   margin-top:25px;
   position:relative;
+  width:100%;
+  text-align:center;
 }
 
 .nav a{
