@@ -374,7 +374,21 @@ main.contenido{padding:35px 0}
 .oferta-meta{
   color:#667085;
   font-size:14px;
-  margin-bottom:16px;
+  margin-bottom:8px;
+}
+
+.oferta-vistas{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  background:linear-gradient(135deg,var(--azul-cielo) 0%,var(--azul-cielo-claro) 100%);
+  color:var(--texto-oscuro);
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:12px;
+  border:1px solid var(--azul-cielo-oscuro);
 }
 
 .oferta-comprar{

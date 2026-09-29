@@ -126,6 +126,18 @@
     document.head.appendChild(script);
   }
 
+  /* ---------- contador de vistas ---------- */
+  var _vistas = {};
+  try { _vistas = JSON.parse(localStorage.getItem('vistas_ofertas') || '{}'); } catch (e) { _vistas = {}; }
+  function guardarVistas() {
+    try { localStorage.setItem('vistas_ofertas', JSON.stringify(_vistas)); } catch (e) {}
+  }
+  function formatearVistas(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1).replace('.0','') + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1).replace('.0','') + 'K';
+    return String(n);
+  }
+
   /* ---------- render ---------- */
   function render(ofertas) {
     if (!Array.isArray(ofertas)) {
@@ -162,6 +174,12 @@
         ? '<span class="oferta-descuento">' + esc(o.discount) + "</span>"
         : "";
 
+      // Contador de vistas (localStorage)
+      var id = o.id || Math.random().toString(36).slice(2);
+      _vistas[id] = (_vistas[id] || 0) + 1;
+      guardarVistas();
+      var vistasHtml = '<div class="oferta-vistas">👁 ' + formatearVistas(_vistas[id]) + ' vistas</div>';
+
       // Microdata Schema.org para que Google indexe cada oferta como producto
       var descHtml = o.description
         ? '<div class="oferta-descripcion" itemprop="description">' + esc(o.description) + "</div>"
@@ -181,6 +199,7 @@
               descuento +
             "</div>" +
             '<div class="oferta-meta">' + esc(fecha) + "</div>" +
+            vistasHtml +
             descHtml +
           "</div>" +
           '<a class="oferta-comprar" href="' + esc(url) +
