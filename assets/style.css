@@ -42,6 +42,129 @@ a{color:inherit}
 
 .wrap{max-width:1200px;margin:0 auto;padding:0 24px}
 
+/* ---------- Hero con imagen ---------- */
+.hero{
+  background:linear-gradient(135deg,var(--azul-oscuro) 0%,var(--azul-medio) 100%);
+  padding:0;
+  position:relative;
+  overflow:hidden;
+}
+
+.hero-banner{
+  width:100%;
+  max-height:400px;
+  overflow:hidden;
+  position:relative;
+}
+
+.hero-banner::after{
+  content:'';
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:100px;
+  background:linear-gradient(to top,var(--azul-oscuro),transparent);
+  pointer-events:none;
+}
+
+.hero-img{
+  width:100%;
+  height:auto;
+  max-height:400px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+.hero > div:last-child{
+  padding:30px 24px 40px;
+  text-align:center;
+}
+
+.hero-badge{
+  display:inline-block;
+  background:var(--naranja);
+  color:var(--texto-oscuro);
+  padding:8px 16px;
+  border-radius:var(--borde-boton);
+  font-weight:800;
+  font-size:14px;
+  margin-bottom:16px;
+  box-shadow:0 4px 12px rgba(255,153,0,.3);
+}
+
+.hero h1{
+  font-size:clamp(28px,5vw,42px);
+  font-weight:900;
+  margin:0 0 12px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  text-shadow:3px 3px 0 var(--naranja),6px 6px 0 rgba(0,0,0,.2);
+  line-height:1.2;
+}
+
+.hero h1 em{
+  color:var(--amarillo);
+  font-style:normal;
+}
+
+.hero p{
+  font-size:17px;
+  color:#b8d4f0;
+  max-width:700px;
+  margin:0 auto 24px;
+}
+
+.hero-btns{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+
+.btn-primary{
+  display:inline-block;
+  background:linear-gradient(135deg,var(--naranja) 0%,var(--naranja-oscuro) 100%);
+  color:var(--texto-oscuro);
+  padding:14px 28px;
+  border-radius:var(--borde-boton);
+  text-decoration:none;
+  font-weight:800;
+  font-size:16px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  transition:all .3s ease;
+  box-shadow:0 4px 12px rgba(255,153,0,.3);
+}
+
+.btn-primary:hover{
+  background:linear-gradient(135deg,var(--amarillo) 0%,var(--naranja) 100%);
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(255,153,0,.5);
+}
+
+.btn-ghost{
+  display:inline-block;
+  background:rgba(255,255,255,.15);
+  color:var(--blanco);
+  border:2px solid rgba(255,255,255,.3);
+  padding:14px 28px;
+  border-radius:var(--borde-boton);
+  text-decoration:none;
+  font-weight:700;
+  font-size:16px;
+  transition:all .3s ease;
+  backdrop-filter:blur(10px);
+}
+
+.btn-ghost:hover{
+  background:var(--blanco);
+  color:var(--texto-oscuro);
+  border-color:var(--blanco);
+  transform:translateY(-2px);
+}
+
 /* ---------- Cabecera de catalogo ---------- */
 .cabecera{
   background:linear-gradient(135deg,var(--azul-oscuro) 0%,var(--azul-medio) 100%);
