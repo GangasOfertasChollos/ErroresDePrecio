@@ -42,20 +42,20 @@ PLANTILLA = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>{h1} en Amazon España | Gangas Ofertas y Chollos</title>
+<title>{h1} en Amazon España | Chollos Ofertas Gangas</title>
 <meta name="description" content="{descripcion}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <link rel="canonical" href="https://gangasofertaschollos.github.io/ErroresDePrecio/{slug}.html">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Gangas Ofertas y Chollos">
+<meta property="og:site_name" content="Chollos Ofertas Gangas">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="{h1} | Gangas Ofertas y Chollos">
+<meta property="og:title" content="{h1} | Chollos Ofertas Gangas">
 <meta property="og:description" content="{descripcion}">
 <meta property="og:url" content="https://gangasofertaschollos.github.io/ErroresDePrecio/{slug}.html">
 <meta property="og:image" content="https://gangasofertaschollos.github.io/ErroresDePrecio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{h1} | Gangas Ofertas y Chollos">
+<meta name="twitter:title" content="{h1} | Chollos Ofertas Gangas">
 <meta name="twitter:description" content="{descripcion}">
 <meta name="twitter:image" content="https://gangasofertaschollos.github.io/ErroresDePrecio/assets/og-image.png">
 
@@ -85,7 +85,7 @@ PLANTILLA = """<!doctype html>
 
 <footer class="pie">
   <div class="wrap">
-    <p>Gangas Ofertas y Chollos · Amazon España · Ofertas publicadas desde Telegram</p>
+    <p>Chollos Ofertas Gangas · Amazon España · Ofertas publicadas desde Telegram</p>
     <p><a href="index.html">← Volver al inicio</a> · <a href="categorias.html">Todas las categorías</a></p>
     <p style="font-size:11px">Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti.</p>
   </div>

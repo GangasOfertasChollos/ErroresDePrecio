@@ -1,4 +1,4 @@
-# Gangas Ofertas y Chollos
+# Chollos Ofertas Gangas
 
 Web de ofertas Amazon España y bot de Telegram.
 
