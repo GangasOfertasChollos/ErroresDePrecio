@@ -1,5 +1,19 @@
 [
     {
+        "id": 6464,
+        "date": "2026-10-02T09:16:30+00:00",
+        "title": "Razer Viper V3 HyperSpeed - Ratón inalámbrico para esports (Sensor óptico Focus Pro 30K, Hasta 280 horas de duración batería, Interruptores mecánicos de ratón Gen-2, Verdadero sondeo de 4000 Hz) Negro",
+        "price": "41.31 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0CBCPB2T1?tag=gangas054-21",
+        "image": "data/images/oferta_6464.jpg",
+        "categoria": "moviles-electronica",
+        "description": "41,31 € (antes 79,99 €) |#Chollos|",
+        "brand": "Razer Viper",
+        "gtin": "HyperSpeed"
+    },
+    {
         "id": 6463,
         "date": "2026-10-02T09:06:33+00:00",
         "title": "Samsung – Lavadora carga frontal 9 kg Clase A-10%",
@@ -404,19 +418,5 @@
         "description": "24 snacks cremosos de sabores variados.",
         "brand": "INABA Ciao",
         "gtin": "Bisque"
-    },
-    {
-        "id": 6434,
-        "date": "2026-10-02T06:21:35+00:00",
-        "title": "Cetaphil – Fluido Ultra Hidratante 473 ml",
-        "price": "11.44 €",
-        "old_price": "20.80 €",
-        "discount": "-45%",
-        "amazon_url": "https://www.amazon.es/dp/B0B3JC1T2Y?tag=gangas054-21",
-        "image": "data/images/oferta_6434.jpg",
-        "categoria": "general",
-        "description": "Hidratación intensa para piel sensible y seca.",
-        "brand": "Cetaphil –",
-        "gtin": "Cetaphil"
     }
 ]
