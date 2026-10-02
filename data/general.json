@@ -1,5 +1,33 @@
 [
     {
+        "id": 6460,
+        "date": "2026-10-02T08:45:35+00:00",
+        "title": "Foxy Asso Ultra – Papel de cocina 18 rollos",
+        "price": "20.35 €",
+        "old_price": "31.95 €",
+        "discount": "-36%",
+        "amazon_url": "https://www.amazon.es/dp/B0CSZ5X82W?tag=gangas054-21",
+        "image": "data/images/oferta_6460.jpg",
+        "categoria": "papeleria-oficina",
+        "description": "3 capas, ultra absorbente.",
+        "brand": "Foxy Asso",
+        "gtin": "cocina"
+    },
+    {
+        "id": 6459,
+        "date": "2026-10-02T08:44:36+00:00",
+        "title": "GOREWEAR C5 Guantes Cortos Unisex,de Ciclismo con Acolchado de Gel, Tiempo Cálido",
+        "price": "15.71 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B07WCB66J6?tag=gangas054-21",
+        "image": "data/images/oferta_6459.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "15,71 € (antes 39,95 €)",
+        "brand": "GOREWEAR C5",
+        "gtin": "GOREWEAR"
+    },
+    {
         "id": 6458,
         "date": "2026-10-02T08:43:54+00:00",
         "title": "Colgate Max White Ultra Active Foam Pasta de Dientes 50ml",
@@ -390,33 +418,5 @@
         "description": "Vendas cómodas para boxeo y entrenamiento.",
         "brand": "Leone 1947",
         "gtin": "Vendas"
-    },
-    {
-        "id": 6430,
-        "date": "2026-10-02T05:44:54+00:00",
-        "title": "Chollo Quitapelusas Jata QP398N por sólo 7,49€ (24% de descuento)",
-        "price": "7.49 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0BN4K6ZVK?tag=gangas054-21",
-        "image": "data/images/oferta_6430.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Mantén tus prendas de abrigo como nuevas de una temporada a otra y quítales antes de guardarlas en el armario todas esas bolitas de algodón tan poco estéticas que se... 👉 Míralo en Ofertitas.es",
-        "brand": "Chollo Quitapelusas",
-        "gtin": "OFERTA"
-    },
-    {
-        "id": 6429,
-        "date": "2026-10-02T05:35:58+00:00",
-        "title": "Tommy Hilfiger – Pack 3 Bóxers para Hombre",
-        "price": "18.05 €",
-        "old_price": "39.90 €",
-        "discount": "-55%",
-        "amazon_url": "https://www.amazon.es/dp/B0FDGXTCSX?tag=gangas054-21",
-        "image": "data/images/oferta_6429.jpg",
-        "categoria": "general",
-        "description": "Pack de 3 bóxers cómodos y clásicos.",
-        "brand": "Tommy Hilfiger",
-        "gtin": "Hilfiger"
     }
 ]

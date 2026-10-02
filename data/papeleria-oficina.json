@@ -1,5 +1,19 @@
 [
     {
+        "id": 6460,
+        "date": "2026-10-02T08:45:35+00:00",
+        "title": "Foxy Asso Ultra – Papel de cocina 18 rollos",
+        "price": "20.35 €",
+        "old_price": "31.95 €",
+        "discount": "-36%",
+        "amazon_url": "https://www.amazon.es/dp/B0CSZ5X82W?tag=gangas054-21",
+        "image": "data/images/oferta_6460.jpg",
+        "categoria": "papeleria-oficina",
+        "description": "3 capas, ultra absorbente.",
+        "brand": "Foxy Asso",
+        "gtin": "cocina"
+    },
+    {
         "id": 5824,
         "date": "2026-09-29T07:28:37+00:00",
         "title": "Silla de Oficina Ergonómica T-LOVENDO.ES",
