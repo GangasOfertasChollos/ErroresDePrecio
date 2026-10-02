@@ -1,5 +1,19 @@
 [
     {
+        "id": 6458,
+        "date": "2026-10-02T08:43:54+00:00",
+        "title": "Colgate Max White Ultra Active Foam Pasta de Dientes 50ml",
+        "price": "2.99 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09XPZMNJW?tag=gangas054-21",
+        "image": "data/images/oferta_6458.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "2,99 € (antes 5,99 €)",
+        "brand": "Colgate Max",
+        "gtin": "Colgate"
+    },
+    {
         "id": 6453,
         "date": "2026-10-02T07:45:32+00:00",
         "title": "Philips OneBlade 360 – Afeitadora y Recortadora",
