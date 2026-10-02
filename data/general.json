@@ -1,5 +1,19 @@
 [
     {
+        "id": 6462,
+        "date": "2026-10-02T09:01:40+00:00",
+        "title": "Cuisinart FreezeWand – Máquina de Helados - Heladera de Mano 5 en 1: Helado, sorbete, batido, granizado, mezclas, Vegana, sin lácteos, Lista en 5 min, Compacta y portátil, 3 Tarrinas 240ml",
+        "price": "59.90 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0F5BPT48G?tag=gangas054-21",
+        "image": "data/images/oferta_6462.jpg",
+        "categoria": "moviles-electronica",
+        "description": "59,90 € (antes 129,90 €)",
+        "brand": "Cuisinart FreezeWand",
+        "gtin": "Cuisinart"
+    },
+    {
         "id": 6461,
         "date": "2026-10-02T08:48:49+00:00",
         "title": "Philips 3000 Vaporizador de Mano Vertical, 1000 W, 20g/min, Azul",
@@ -404,19 +418,5 @@
         "description": "Smartwatch con GPS y hasta 6 días de batería.",
         "brand": "⌚ Google",
         "gtin": "Google"
-    },
-    {
-        "id": 6432,
-        "date": "2026-10-02T05:53:32+00:00",
-        "title": "Philips 4000 Airfryer Doble Cesta 10L",
-        "price": "148.19 €",
-        "old_price": "239.99 €",
-        "discount": "-38%",
-        "amazon_url": "https://www.amazon.es/dp/B0FNYCH1VL?tag=gangas054-21",
-        "image": "data/images/oferta_6432.jpg",
-        "categoria": "general",
-        "description": "Doble cesta vertical de 5L + 5L.",
-        "brand": "Philips 4000",
-        "gtin": "Philips"
     }
 ]
