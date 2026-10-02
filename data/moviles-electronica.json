@@ -1,5 +1,19 @@
 [
     {
+        "id": 6463,
+        "date": "2026-10-02T09:06:33+00:00",
+        "title": "Samsung – Lavadora carga frontal 9 kg Clase A-10%",
+        "price": "338.99 €",
+        "old_price": "585.00 €",
+        "discount": "-42%",
+        "amazon_url": "https://www.amazon.es/dp/B0CSDXCL71?tag=gangas054-21",
+        "image": "data/images/oferta_6463.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Con IA, motor Digital Inverter, tecnología EcoBubble, programas de vapor y SmartThings.",
+        "brand": "Samsung –",
+        "gtin": "Samsung"
+    },
+    {
         "id": 6462,
         "date": "2026-10-02T09:01:40+00:00",
         "title": "Cuisinart FreezeWand – Máquina de Helados - Heladera de Mano 5 en 1: Helado, sorbete, batido, granizado, mezclas, Vegana, sin lácteos, Lista en 5 min, Compacta y portátil, 3 Tarrinas 240ml",
