@@ -1,5 +1,19 @@
 [
     {
+        "id": 6467,
+        "date": "2026-10-02T09:29:40+00:00",
+        "title": "Candy Bake 600 CA6 N3T1HTW Horno Multifunción, 78L, Recetas a través de app hOn, 1 Bandeja y 1 Rejilla, Limpieza Hidrolítica, Convección + Ventilador, 9 Funciones, Ready UX, Blanco",
+        "price": "172.99 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DJVY1JBN?tag=gangas054-21",
+        "image": "data/images/oferta_6467.jpg",
+        "categoria": "general",
+        "description": "172,99 € (antes 296,06 €)",
+        "brand": "Candy Bake",
+        "gtin": "N3T1HTW"
+    },
+    {
         "id": 6466,
         "date": "2026-10-02T09:20:33+00:00",
         "title": "Nothing Headphone (1) Auriculares de Diadema iInalámbricos con Cancelación Activa de Ruido, hasta 80h de Batería, Hi-Res, Audio Espacial, Resistentes al Agua – Blanco",
@@ -404,19 +418,5 @@
         "description": "¿El ambiente de tu casa es pesado y huele a húmedo que tira para atrás? ¿Hay manchas de moho en las paredes y la ropa nunca termina de secarse en... 👉 Míralo en Ofertitas.es",
         "brand": "Chollo Deshumidificador",
         "gtin": "OFERTA"
-    },
-    {
-        "id": 6437,
-        "date": "2026-10-02T06:36:03+00:00",
-        "title": "La Roche-Posay Effaclar Gel Micro-Exfoliante",
-        "price": "16.51 €",
-        "old_price": "28.80 €",
-        "discount": "-43%",
-        "amazon_url": "https://www.amazon.es/dp/B0866V21WT?tag=gangas054-21",
-        "image": "data/images/oferta_6437.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Limpia, exfolia y combate imperfecciones.",
-        "brand": "La Roche",
-        "gtin": "Roche-Posay"
     }
 ]
