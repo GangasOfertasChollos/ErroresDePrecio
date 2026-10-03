@@ -15,8 +15,10 @@ AVISO_AFILIADOS = (
     "nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti."
 )
 
-# Icono de Telegram en la esquina superior derecha. `prefijo` permite usarlo desde
-#BlackFriday/ ("../assets/...").
+# Icono de Telegram. Va dentro del div que contiene el <h1> de la pagina, no
+# despues de <body>: en assets/icono-tg.css ese contenedor es la referencia de
+# posicionamiento, asi que fuera de el el icono se situa sobre el viewport.
+# `prefijo` permite usarlo desde BlackFriday/ ("../assets/...").
 ICONO_TG = (
     '<a class="icono-tg" href="{canal}" target="_blank" rel="noopener" '
     'aria-label="Únete al canal de Telegram @GangasOfertasChollos" '

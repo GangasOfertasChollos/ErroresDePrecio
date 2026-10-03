@@ -52,6 +52,22 @@ Lo que **no** depende de la paleta vive en `assets/icono-tg.css`, que las dos
 hojas cargan: así el icono del canal y la regla de `prefers-reduced-motion`
 tienen una sola definición en lugar de una por hoja.
 
+El icono del canal (`assets/icono-tg.jpg`) se inserta **dentro del div que
+contiene el `<h1>`** de cada página, no flotando sobre el viewport. Hay cuatro
+estructuras de cabecera distintas y todas están contempladas en el CSS:
+
+| Página | Contenedor |
+|---|---|
+| Portada | `<header class="hero"><div>` |
+| Catálogos, SEO, ofertas en vivo | `<header class="cabecera"><div class="wrap">` |
+| Sección Black Friday | `<header class="site-header"><div class="wrap nav">` |
+| 404 | `<main class="error404">` |
+
+Esos contenedores son `position: relative`, así que el icono se coloca con
+`position: absolute` en su esquina superior derecha. Si añades una cabecera
+nueva, añade su selector a esa lista en `assets/icono-tg.css` o el icono
+saldrá flotando sobre el contenido.
+
 `plantilla_comun.py` es la única fuente del menú, del icono y del pie. Los
 tres generadores la importan, de modo que regenerar las páginas no deshace los
 cambios de maquetación y los menús no divergen entre sí.

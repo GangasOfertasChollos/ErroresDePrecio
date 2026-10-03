@@ -60,9 +60,10 @@ PLANTILLA = """<!doctype html>
 <meta name="google-site-verification" content="uzqlh-QjEzCDqWUTkJpgkqlJsHSt0Xjbh82vV-orJQ8">
 </head>
 <body data-feed="{slug}">
-{icono}
+
 <header class="cabecera">
   <div class="wrap">
+    {icono}
     <h1>{icono_cat} {h1}</h1>
     <p>{subtitulo}</p>
     <nav class="nav" aria-label="Navegación principal">

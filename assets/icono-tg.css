@@ -8,17 +8,38 @@
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   Icono del canal de Telegram, esquina superior derecha.
-   Aparece en las 32 paginas del proyecto y lleva al canal.
+   Contenedores del titulo.
+
+   Cada pagina coloca el icono dentro del div que contiene su <h1>, asi que
+   hace falta que ese div sea la referencia del posicionamiento. Hay cinco
+   estructuras distintas en el proyecto:
+
+     <header class="hero"><div>            portada
+     <header class="cabecera"><div.wrap>   catalogos, SEO, ofertas en vivo
+     <header class="site-header"><div>     seccion Black Friday
+     <main class="error404">               404
+   -------------------------------------------------------------------------- */
+.cabecera > .wrap,
+.hero > div,
+.site-header > .wrap,
+.error404 {
+  position: relative;
+}
+
+/* --------------------------------------------------------------------------
+   Icono del canal de Telegram.
+
+   Va dentro del contenedor del titulo, no flotando sobre el viewport: asi
+   ocupa su sitio en la maquetacion y no tapa contenido al hacer scroll.
    -------------------------------------------------------------------------- */
 .icono-tg {
-  position: fixed;
-  top: 14px;
-  right: 14px;
-  z-index: 90;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 5;
   display: block;
-  width: 60px;
-  height: 52px;
+  width: 56px;
+  height: 48px;
   border-radius: 12px;
   overflow: hidden;
   background: #fff;
@@ -38,13 +59,26 @@
   transform: translateY(-2px) scale(1.04);
   box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.55);
 }
-@media (max-width: 640px) {
+
+/* --------------------------------------------------------------------------
+   Pantallas estrechas: el icono se encoge y se reserva su hueco para que el
+   titulo, que va en mayusculas, nunca pase por debajo. El padding simetrico
+   en la marca de Black Friday mantiene el centrado optico.
+   -------------------------------------------------------------------------- */
+@media (max-width: 700px) {
   .icono-tg {
     width: 46px;
     height: 40px;
-    top: 10px;
-    right: 10px;
     border-radius: 10px;
+  }
+  .cabecera h1,
+  .hero h1,
+  .error404 h1,
+  .error404 h2 {
+    padding-right: 56px;
+  }
+  .site-header .brand {
+    padding-inline: 56px;
   }
 }
 

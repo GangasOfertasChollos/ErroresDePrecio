@@ -114,10 +114,10 @@ PLANTILLA = """<!doctype html>
 {schema}
 </head>
 <body>
-{icono}
 
 <header class="cabecera">
   <div class="wrap">
+    {icono}
     <h1>{h1}</h1>
     <p>Amazon España · Actualizado desde el canal de Telegram</p>
     <nav class="nav" aria-label="Navegación principal">
