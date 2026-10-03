@@ -66,18 +66,117 @@
     return isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
   }
 
+  /* ---------- las tres cifras de precio ----------
+     En la tarjeta tienen que verse SIEMPRE el precio actual, el precio
+     anterior y el porcentaje de descuento. El bot no los deja siempre en sus
+     campos: cuando el precio anterior no viene en el formato del canal
+     ("🏷️ Antes: ...") lo guarda vacio, aunque el dato sigue ahi dentro del
+     texto, del tipo "172,99 € (antes 296,06 €)". Asi que se buscan en cascada
+     (campo -> descripcion -> titulo) y, si aun falta el porcentaje, se calcula
+     a partir de los dos precios. Lo que no se puede averiguar se pinta como
+     hueco explicito, nunca desaparece. */
+
+  var RE_ANTES = /\b(?:antes|pvp|precio\s+anterior|val(?:or|ia)\s+anterior)\b\s*(?:de\s*)?[:\-]?\s*([0-9][0-9.,\u00a0 ]*)\s*(?:\u20ac|eur)?/i;
+  // Un "%" suelto no es un descuento ("80% de bateria nueva"), asi que se
+  // recoge el primero y se mira el texto que lo rodea: solo vale si el contexto
+  // lo marca como rebaja (signo negativo, parentesis, o la palabra al lado).
+  var RE_PORCENTAJE = /(\d{1,3}(?:[.,]\d+)?)\s*%/g;
+  var RE_PORCENTAJE_EN = /descuento|ahorro|rebaja|\boff\b/i;
+
+  function euros(n) {
+    return n.toFixed(2) + " \u20ac";
+  }
+
+  function aNumero(valor) {
+    var s = precioAMayor(valor);
+    return s === null ? null : parseFloat(s);
+  }
+
+  // Descripcion y titulo: es donde suele quedarse el precio anterior.
+  function textoOferta(o) {
+    return String(o.description || "") + " \n " + String(o.title || "");
+  }
+
+  function descuentoEnTexto(texto) {
+    RE_PORCENTAJE.lastIndex = 0;
+    var m;
+    while ((m = RE_PORCENTAJE.exec(texto)) !== null) {
+      var pct = parseFloat(m[1].replace(",", "."));
+      if (!(pct > 0) || pct >= 100) continue;
+      var antes = texto.slice(Math.max(0, m.index - 26), m.index);
+      var despues = texto.slice(m.index + m[0].length, m.index + m[0].length + 24);
+      // "-46%", "(-40%)" o "24% de descuento" entran; "80% de bateria" no.
+      if (/[-\u2212\u2013(]\s*$/.test(antes) || RE_PORCENTAJE_EN.test(despues)) {
+        return Math.round(pct);
+      }
+    }
+    return null;
+  }
+
+  function precioAnteriorDe(o, actual) {
+    var candidatos = [o.old_price];
+    var m = RE_ANTES.exec(textoOferta(o));
+    if (m) candidatos.push(m[1]);
+    for (var i = 0; i < candidatos.length; i++) {
+      var n = aNumero(candidatos[i]);
+      // Solo vale como "antes" si es MAYOR que el precio actual: si no, es
+      // ruido del parser y se descarta, porque no hay ninguna rebaja que pintar.
+      if (n !== null && n > 0 && (actual === null || n > actual)) return n;
+    }
+    return null;
+  }
+
+  function descuentoDe(o, actual, anterior) {
+    var candidatos, i, n;
+    // 1. Con los dos precios disponibles, el porcentaje sale de ellos: asi la
+    //    cifra resaltada nunca contradice a los precios que se ven al lado.
+    if (actual !== null && actual > 0 && anterior !== null && anterior > actual) {
+      var pct = Math.round(((anterior - actual) / anterior) * 100);
+      return pct > 0 ? pct : null;
+    }
+    // 2. Si no hay precio anterior, se usa el descuento del bot o el que
+    //    aparece escrito en la descripcion o el titulo.
+    candidatos = [o.discount];
+    var delTexto = descuentoEnTexto(textoOferta(o));
+    if (delTexto !== null) candidatos.push(delTexto);
+    for (i = 0; i < candidatos.length; i++) {
+      n = aNumero(candidatos[i]);
+      if (n !== null && n > 0 && n < 100) return Math.round(n);
+    }
+    return null;
+  }
+
+  // Las tres cifras juntas y ya resueltas, para pintar la tarjeta.
+  // Los null significan "no se ha podido averiguar": se muestran igual, como
+  // hueco, para que la composicion de todas las ofertas sea la misma.
+  function preciosDe(o) {
+    var actualNum = aNumero(o.price);
+    var anteriorNum = precioAnteriorDe(o, actualNum);
+    var pct = descuentoDe(o, actualNum, anteriorNum);
+    return {
+      actualNum: actualNum,
+      anteriorNum: anteriorNum,
+      actual: o.price ? String(o.price) : (actualNum !== null ? euros(actualNum) : null),
+      anterior: anteriorNum === null ? null : euros(anteriorNum),
+      descuento: pct === null ? null : "-" + pct + "%"
+    };
+  }
+
   /* ---------- JSON-LD dinamico: ItemList + Offer detallado ---------- */
   function inyectarSchema(ofertas) {
-    var conPrecio = ofertas.filter(function (o) { return precioAMayor(o.price) !== null; });
-    if (!conPrecio.length) return;
+    var items = ofertas.map(function (o) {
+      return { oferta: o, precios: preciosDe(o) };
+    }).filter(function (x) { return x.precios.actualNum !== null; });
+    if (!items.length) return;
 
     var lista = {
       "@context": "https://schema.org",
       "@type": "ItemList",
       "name": (document.querySelector("h1") || {}).textContent || "Ofertas",
-      "numberOfItems": conPrecio.length,
-      "itemListElement": conPrecio.slice(0, 20).map(function (o, i) {
-        var precio = precioAMayor(o.price);
+      "numberOfItems": items.length,
+      "itemListElement": items.slice(0, 20).map(function (x, i) {
+        var o = x.oferta;
+        var p = x.precios;
         var oferta = {
           "@type": "ListItem",
           "position": i + 1,
@@ -86,7 +185,7 @@
             "name": String(o.title || "Oferta Amazon").replace(/\*/g, "").trim(),
             "url": urlSegura(o.amazon_url),
             "priceCurrency": "EUR",
-            "price": precio,
+            "price": p.actualNum.toFixed(2),
             "availability": "https://schema.org/InStock",
             "itemCondition": "https://schema.org/NewCondition",
             "seller": { "@type": "Organization", "name": "Amazon España" }
@@ -108,12 +207,13 @@
         if (o.gtin) {
           oferta.item.gtin = o.gtin;
         }
-        // Añadir precio anterior si existe
-        if (o.old_price) {
+        // Precio anterior (y por tanto el descuento) si se ha podido averiguar
+        if (p.anteriorNum !== null) {
           oferta.item.priceSpecification = {
             "@type": "PriceSpecification",
-            "price": precio,
-            "priceCurrency": "EUR"
+            "price": p.actualNum.toFixed(2),
+            "priceCurrency": "EUR",
+            "highPrice": p.anteriorNum.toFixed(2)
           };
         }
         return oferta;
@@ -161,18 +261,36 @@
         if (!isNaN(d)) fecha = d.toLocaleDateString("es-ES");
       }
       var url = urlSegura(o.amazon_url);
-      var precio = precioAMayor(o.price);
       var img = o.image
         ? '<div class="oferta-img"><img src="' + esc(o.image) + '" alt="' +
           limpiarTitulo(o.title) + '" loading="lazy" decoding="async" itemprop="image"></div>'
         : "";
-      // Precio anterior tachado + descuento, cuando el mensaje los trae
-      var anterior = o.old_price
-        ? '<span class="oferta-precio-antes">' + esc(o.old_price) + "</span>"
-        : "";
-      var descuento = o.discount
-        ? '<span class="oferta-descuento">' + esc(o.discount) + "</span>"
-        : "";
+
+      // Precio actual, precio anterior y descuento: los tres campos se pintan
+      // siempre. Cuando un dato no se ha podido averiguar, se muestra como
+      // "hueco" (sin tachar / sin chollo) en vez de desaparecer, para que la
+      // tarjeta sea igual de legible en todas las ofertas.
+      var p = preciosDe(o);
+      var preciosHtml =
+        '<div class="oferta-precios">' +
+          '<div class="oferta-precio-caja">' +
+            '<span class="oferta-precio-etiqueta">Precio actual</span>' +
+            '<span class="oferta-precio" itemprop="price" content="' +
+              (p.actualNum === null ? "" : p.actualNum.toFixed(2)) + '">' +
+              esc(p.actual || "Ver precio") + "</span>" +
+          "</div>" +
+          '<div class="oferta-precio-caja">' +
+            '<span class="oferta-precio-etiqueta">Precio anterior</span>' +
+            '<span class="oferta-precio-antes' + (p.anterior ? "" : " es-hueco") + '">' +
+              esc(p.anterior || "No disponible") + "</span>" +
+          "</div>" +
+          '<div class="oferta-precio-caja oferta-precio-caja--descuento' +
+              (p.descuento ? "" : " es-hueco") + '">' +
+            '<span class="oferta-precio-etiqueta">Descuento</span>' +
+            '<span class="oferta-descuento' + (p.descuento ? "" : " es-hueco") + '">' +
+              esc(p.descuento || "Sin descuento") + "</span>" +
+          "</div>" +
+        "</div>";
 
       // Contador de vistas (localStorage)
       var id = o.id || Math.random().toString(36).slice(2);
@@ -194,10 +312,7 @@
           img +
           '<div class="oferta-cuerpo">' +
             '<div class="oferta-titulo" itemprop="name">' + limpiarTitulo(o.title) + "</div>" +
-            '<div class="oferta-precios">' + anterior +
-              '<span class="oferta-precio" itemprop="price" content="' + (precio || "") + '">' + esc(o.price || "Ver precio") + "</span>" +
-              descuento +
-            "</div>" +
+            preciosHtml +
             '<div class="oferta-meta">' + esc(fecha) + "</div>" +
             vistasHtml +
             descHtml +

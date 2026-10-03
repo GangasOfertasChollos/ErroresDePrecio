@@ -375,36 +375,99 @@ main.contenido{padding:35px 0}
   color:var(--texto-oscuro);
 }
 
+/* Las tres cifras (precio actual, precio anterior y descuento) se pintan
+   siempre, asi que la tarjeta lleva una fila etiquetada por cada una. Al no
+   depender de los datos, la composicion es la misma en todas las ofertas. */
 .oferta-precios{
   display:flex;
-  align-items:baseline;
-  flex-wrap:wrap;
+  flex-direction:column;
+  gap:6px;
+  margin:12px 0;
+}
+
+.oferta-precio-caja{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   gap:10px;
-  margin:10px 0;
+  min-width:0;
+  padding:6px 10px;
+  border-radius:10px;
+  background:var(--gris-claro);
+  border:1px solid var(--gris-borde);
+}
+
+.oferta-precio-etiqueta{
+  flex:0 0 auto;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.6px;
+  text-transform:uppercase;
+  color:#64748b;
 }
 
 .oferta-precio{
-  font-size:26px;
+  min-width:0;
+  font-size:24px;
   font-weight:900;
   color:var(--verde);
-  text-shadow:1px 1px 0 rgba(0,0,0,.1);
+  text-align:right;
+  overflow-wrap:anywhere;
 }
 
+/* El precio anterior solo se tacha cuando hay un precio real que tachar */
 .oferta-precio-antes{
+  min-width:0;
   font-size:16px;
-  color:#9ca3af;
+  font-weight:600;
+  color:#8a94a3;
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+
+.oferta-precio-antes:not(.es-hueco){
   text-decoration:line-through;
 }
 
-.oferta-descuento{
+.oferta-precio-antes.es-hueco{
   font-size:13px;
-  font-weight:800;
-  color:var(--blanco);
+  font-weight:700;
+  color:#9aa4b2;
+}
+
+/* Descuento: la cifra resaltada, el dato que mas llama la atencion */
+.oferta-precio-caja--descuento{
   background:linear-gradient(135deg,var(--rojo) 0%,#c0392b 100%);
-  padding:4px 10px;
-  border-radius:8px;
+  border-color:#c0392b;
+  box-shadow:0 3px 10px rgba(230,57,70,.35);
+}
+
+.oferta-precio-caja--descuento .oferta-precio-etiqueta{
+  color:rgba(255,255,255,.9);
+}
+
+.oferta-descuento{
+  min-width:0;
+  font-size:20px;
+  font-weight:900;
+  color:var(--blanco);
   letter-spacing:.5px;
-  box-shadow:0 2px 6px rgba(230,57,70,.3);
+  line-height:1.25;
+  text-align:right;
+  overflow-wrap:anywhere;
+}
+
+.oferta-descuento.es-hueco{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:0;
+  color:rgba(255,255,255,.9);
+}
+
+.oferta-precio-caja--descuento.es-hueco{
+  background:linear-gradient(135deg,#a3adba 0%,#8b96a3 100%);
+  border-color:#8b96a3;
+  box-shadow:0 3px 10px rgba(139,150,163,.3);
 }
 
 .oferta-meta{
@@ -539,6 +602,8 @@ main.contenido{padding:35px 0}
   .cabecera h1{font-size:24px}
   .rejilla{grid-template-columns:1fr}
   .oferta-img{height:180px}
+  .oferta-precio{font-size:22px}
+  .oferta-descuento{font-size:18px}
 }
 
 @media (prefers-reduced-motion:reduce){
