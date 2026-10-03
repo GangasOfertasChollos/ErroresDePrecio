@@ -20,8 +20,8 @@ for html in sorted(RAIZ.glob("*.html")):
         if not limpio:
             continue
         # 404.html vive en la raiz de Pages, por eso usa rutas absolutas
-        if limpio.startswith("/ErroresDePrecio/"):
-            destino = RAIZ / limpio[len("/ErroresDePrecio/"):]
+        if limpio.startswith("/"):
+            destino = RAIZ / limpio[len("/"):]
         else:
             destino = html.parent / limpio
         if not destino.exists():

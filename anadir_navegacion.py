@@ -23,6 +23,7 @@ MENU_HTML = '''
   <a href="juguetes-infantil.html">Juguetes</a>
   <a href="papeleria-oficina.html">Papeleria</a>
   <a href="categorias.html">Categorias</a>
+  <a href="BlackFriday/index.html">Black Friday</a>
 </nav>
 '''
 

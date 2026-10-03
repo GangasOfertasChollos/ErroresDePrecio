@@ -16,6 +16,7 @@ NAV = [
     ("juguetes-infantil.html", "Juguetes e infantil"),
     ("papeleria-oficina.html", "Papelería y oficina"),
     ("general.html", "Todas"),
+    ("BlackFriday/index.html", "Black Friday"),
 ]
 
 # slug, h1, subtitulo, descripcion SEO, icono
@@ -42,26 +43,27 @@ PLANTILLA = """<!doctype html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>{h1} en Amazon España | Chollos Ofertas Gangas</title>
+<title>{h1} en Amazon España | GangasOfertas.com</title>
 <meta name="description" content="{descripcion}">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<link rel="canonical" href="https://gangasofertaschollos.github.io/ErroresDePrecio/{slug}.html">
+<link rel="canonical" href="https://gangasofertas.com/{slug}.html">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Chollos Ofertas Gangas">
+<meta property="og:site_name" content="GangasOfertas.com">
 <meta property="og:locale" content="es_ES">
-<meta property="og:title" content="{h1} | Chollos Ofertas Gangas">
+<meta property="og:title" content="{h1} | GangasOfertas.com">
 <meta property="og:description" content="{descripcion}">
-<meta property="og:url" content="https://gangasofertaschollos.github.io/ErroresDePrecio/{slug}.html">
-<meta property="og:image" content="https://gangasofertaschollos.github.io/ErroresDePrecio/assets/og-image.png">
+<meta property="og:url" content="https://gangasofertas.com/{slug}.html">
+<meta property="og:image" content="https://gangasofertas.com/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="{h1} | Chollos Ofertas Gangas">
+<meta name="twitter:title" content="{h1} | GangasOfertas.com">
 <meta name="twitter:description" content="{descripcion}">
-<meta name="twitter:image" content="https://gangasofertaschollos.github.io/ErroresDePrecio/assets/og-image.png">
+<meta name="twitter:image" content="https://gangasofertas.com/assets/og-image.png">
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
 <meta name="google-site-verification" content="E4_nuunpXWLlV4jpR5qmBPKLhB2kFV_MTM6N_J9xRSc">
+<meta name="google-site-verification" content="uzqlh-QjEzCDqWUTkJpgkqlJsHSt0Xjbh82vV-orJQ8">
 </head>
 <body data-feed="{slug}">
 
@@ -85,7 +87,7 @@ PLANTILLA = """<!doctype html>
 
 <footer class="pie">
   <div class="wrap">
-    <p>Chollos Ofertas Gangas · Amazon España · Ofertas publicadas desde Telegram</p>
+    <p>GangasOfertas.com · Amazon España · Ofertas publicadas desde Telegram</p>
     <p><a href="index.html">← Volver al inicio</a> · <a href="categorias.html">Todas las categorías</a></p>
     <p style="font-size:11px">Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti.</p>
   </div>

@@ -1,3 +1,6 @@
 User-agent: *
 Allow: /
-Sitemap: https://gangasofertaschollos.github.io/ErroresDePrecio/sitemap.xml
+Disallow: /docs/
+Disallow: /BlackFriday/docs/
+
+Sitemap: https://gangasofertas.com/sitemap.xml

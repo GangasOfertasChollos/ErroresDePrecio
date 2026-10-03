@@ -22,42 +22,42 @@ REPO_PATH = Path(__file__).resolve().parent
 # Datos SEO específicos para cada categoría
 SEO_DATA = {
     'ropa-y-calzado.html': {
-        'title': 'Ropa y calzado en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Ropa y calzado en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de ropa y calzado en Amazon España: zapatillas, camisetas, chaquetas, vaqueros y complementos al mejor precio. Actualizado desde Telegram.',
         'keywords': 'ropa amazon, calzado amazon, zapatillas amazon, camisetas amazon, chaquetas amazon, vaqueros amazon, moda amazon, ofertas ropa, chollos ropa, gangas ropa, descuentos ropa, amazon españa',
         'schema_type': 'ClothingStore',
         'schema_name': 'Ropa y calzado en Amazon España',
     },
     'moviles-electronica.html': {
-        'title': 'Móviles y electrónica en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Móviles y electrónica en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de móviles y electrónica en Amazon España: smartphones, portátiles, auriculares, tablets y accesorios al mejor precio. Actualizado desde Telegram.',
         'keywords': 'moviles amazon, electronica amazon, smartphones amazon, portatiles amazon, auriculares amazon, tablets amazon, gadgets amazon, ofertas moviles, chollos moviles, gangas electronica, descuentos electronica, amazon españa',
         'schema_type': 'ElectronicsStore',
         'schema_name': 'Móviles y electrónica en Amazon España',
     },
     'gaming-consolas.html': {
-        'title': 'Gaming y consolas en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Gaming y consolas en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de gaming y consolas en Amazon España: PS5, Nintendo Switch, Xbox, mandos, videojuegos y accesorios al mejor precio. Actualizado desde Telegram.',
         'keywords': 'gaming amazon, consolas amazon, ps5 amazon, nintendo switch amazon, xbox amazon, mandos amazon, videojuegos amazon, ofertas gaming, chollos gaming, gangas consolas, descuentos videojuegos, amazon españa',
         'schema_type': 'VideoGameStore',
         'schema_name': 'Gaming y consolas en Amazon España',
     },
     'higiene-cuidado-personal.html': {
-        'title': 'Higiene y cuidado personal en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Higiene y cuidado personal en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de higiene y cuidado personal en Amazon España: cosmética, cuidado facial, champús, belleza y productos de higiene al mejor precio. Actualizado desde Telegram.',
         'keywords': 'higiene amazon, cuidado personal amazon, cosmetica amazon, cuidado facial amazon, champus amazon, belleza amazon, ofertas higiene, chollos higiene, gangas cosmetica, descuentos belleza, amazon españa',
         'schema_type': 'BeautyStore',
         'schema_name': 'Higiene y cuidado personal en Amazon España',
     },
     'juguetes-infantil.html': {
-        'title': 'Juguetes e infantil en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Juguetes e infantil en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de juguetes e infantil en Amazon España: LEGO, muñecas, juegos de mesa, puericultura y juguetes educativos al mejor precio. Actualizado desde Telegram.',
         'keywords': 'juguetes amazon, infantil amazon, lego amazon, muñecas amazon, juegos de mesa amazon, puericultura amazon, juguetes educativos amazon, ofertas juguetes, chollos juguetes, gangas infantil, descuentos juguetes, amazon españa',
         'schema_type': 'ToyStore',
         'schema_name': 'Juguetes e infantil en Amazon España',
     },
     'papeleria-oficina.html': {
-        'title': 'Papelería y oficina en Amazon España | Chollos Ofertas Gangas',
+        'title': 'Papelería y oficina en Amazon España | GangasOfertas.com',
         'description': 'Chollos y ofertas de papelería y oficina en Amazon España: material escolar, sillas de oficina, escritura, cuadernos y organizadores al mejor precio. Actualizado desde Telegram.',
         'keywords': 'papeleria amazon, oficina amazon, material escolar amazon, sillas oficina amazon, escritura amazon, cuadernos amazon, organizadores amazon, ofertas papeleria, chollos papeleria, gangas oficina, descuentos material escolar, amazon españa',
         'schema_type': 'OfficeEquipmentStore',
@@ -68,7 +68,7 @@ SEO_DATA = {
 # Meta tags comunes adicionales
 EXTRA_META = '''
 <!-- Meta tags adicionales para SEO -->
-<meta name="author" content="Chollos Ofertas Gangas">
+<meta name="author" content="GangasOfertas.com">
 <meta name="language" content="Spanish">
 <meta name="theme-color" content="#ff9900">
 <meta name="format-detection" content="telephone=no">
@@ -77,7 +77,7 @@ EXTRA_META = '''
 <meta name="expires" content="2027-12-31">
 <meta name="pragma" content="cache">
 <meta name="content-language" content="es-ES">
-<meta name="designer" content="Chollos Ofertas Gangas">
+<meta name="designer" content="GangasOfertas.com">
 <meta name="distribution" content="global">
 <meta name="rating" content="general">
 <meta name="target" content="all">
@@ -100,8 +100,8 @@ def generar_schema_ld(seo_data, url_canonica):
   "inLanguage": "es-ES",
   "isPartOf": {{
     "@type": "WebSite",
-    "name": "Chollos Ofertas Gangas",
-    "url": "https://gangasofertaschollos.github.io/ErroresDePrecio/"
+    "name": "GangasOfertas.com",
+    "url": "https://gangasofertas.com/"
   }},
   "about": {{
     "@type": "{seo_data['schema_type']}",
@@ -110,8 +110,8 @@ def generar_schema_ld(seo_data, url_canonica):
     "url": "{url_canonica}",
     "parentOrganization": {{
       "@type": "Organization",
-      "name": "Chollos Ofertas Gangas",
-      "url": "https://gangasofertaschollos.github.io/ErroresDePrecio/"
+      "name": "GangasOfertas.com",
+      "url": "https://gangasofertas.com/"
     }}
   }},
   "mainEntity": {{
@@ -136,7 +136,7 @@ def mejorar_seo_pagina(pagina, seo_data):
     with open(ruta, 'r', encoding='utf-8') as f:
         contenido = f.read()
     
-    url_canonica = f"https://gangasofertaschollos.github.io/ErroresDePrecio/{pagina}"
+    url_canonica = f"https://gangasofertas.com/{pagina}"
     
     # 1. Actualizar title
     contenido = re.sub(

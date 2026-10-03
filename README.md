@@ -1,6 +1,7 @@
-# Chollos Ofertas Gangas
+# GangasOfertas.com
 
-Web de ofertas Amazon España y bot de Telegram.
+Web de ofertas Amazon España y bot de Telegram. Se publica en
+**https://gangasofertas.com** (GitHub Pages detrás de Cloudflare).
 
 Un bot escucha el canal de Telegram, extrae el título, el precio y el enlace de
 cada oferta, la clasifica por categoría y la guarda en `data/*.json`. La web lee
@@ -20,9 +21,23 @@ assets/style.css       Estilos compartidos por todas las páginas
 assets/app.js          Carga y render del catálogo (+ JSON-LD dinámico)
 index.html             Portada
 <slug>.html            Páginas de catálogo, una por categoría
+BlackFriday/           Sección Black Friday 2026 (17 páginas, CSS y assets propios)
 generar_*.py           Generadores de HTML y sitemap
 tests/                 Pruebas del bot, del front y del sitio
+CNAME                  Dominio personalizado de GitHub Pages: gangasofertas.com
 ```
+
+## Dominio
+
+`CNAME` fija `gangasofertas.com` como dominio de GitHub Pages, así que **todos
+los canonical, `og:url` y el `sitemap.xml` deben apuntar a
+`https://gangasofertas.com/`**. La URL de GitHub (`*.github.io`) queda
+despublicada: si alguna vez se vuelve a subir, Google verá dos versiones del
+mismo contenido.
+
+El host canónico es el **apex sin `www`**. `www.gangasofertas.com` se redirige al
+apex con una regla de Cloudflare, porque GitHub Pages solo tiene verificado el
+apex y proxiar `www` devolvía un error 522.
 
 ## Puesta en marcha
 

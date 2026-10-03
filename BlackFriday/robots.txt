@@ -1,0 +1,10 @@
+# robots.txt
+# GangasOfertas.com — Black Friday 2026
+# https://gangasofertas.com/BlackFriday/
+
+User-agent: *
+Allow: /
+Disallow: /docs/
+
+# Sitemap
+Sitemap: https://gangasofertas.com/BlackFriday/sitemap.xml

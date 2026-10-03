@@ -6,7 +6,7 @@ sin Open Graph y sin JSON-LD.
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent
-BASE = "https://gangasofertaschollos.github.io/ErroresDePrecio"
+BASE = "https://gangasofertas.com"
 IMG = f"{BASE}/assets/og-image.png"
 CANAL = "https://t.me/GangasOfertasChollos"
 
@@ -23,7 +23,7 @@ SECCIONES = [
 # slug, h1, meta description, parrafos de apoyo
 PAGINAS = [
     ("chollos-de-amazon", "Chollos de Amazon", {
-        "title": "Chollos de Amazon | Chollos Ofertas Gangas",
+        "title": "Chollos de Amazon | GangasOfertas.com",
         "desc": "Chollos de Amazon España y ofertas seleccionadas. Descubre precios bajos y oportunidades rebajadas en todas las categorías.",
         "h1": "Chollos de Amazon",
         "intro": "Selección de chollos de Amazon España organizados por categoría, con el precio y el enlace directo al producto.",
@@ -39,7 +39,7 @@ PAGINAS = [
         ],
     }),
     ("errores-de-precio-amazon", "Errores de precio Amazon", {
-        "title": "Errores de precio Amazon | Chollos Ofertas Gangas",
+        "title": "Errores de precio Amazon | GangasOfertas.com",
         "desc": "Ofertas y posibles errores de precio en Amazon España. Chollos y oportunidades antes de que se agoten.",
         "h1": "Errores de precio Amazon",
         "intro": "Un error de precio en Amazon es un producto que aparece durante un tiempo a un precio muy por debajo de lo habitual. Estas son las oportunidades que publicamos en el canal.",
@@ -53,7 +53,7 @@ PAGINAS = [
         ],
     }),
     ("articulos-rebajados-amazon", "Artículos rebajados de Amazon", {
-        "title": "Artículos rebajados de Amazon | Chollos Ofertas Gangas",
+        "title": "Artículos rebajados de Amazon | GangasOfertas.com",
         "desc": "Selección de artículos rebajados y ofertas de Amazon España. Precios mínimos y descuentos especiales.",
         "h1": "Artículos rebajados de Amazon",
         "intro": "Artículos con descuento publicados en nuestro canal de Telegram, reunidos por categoría para que los encuentres rápido.",
@@ -67,7 +67,7 @@ PAGINAS = [
         ],
     }),
     ("chollos-amazon-telegram", "Chollos en Telegram", {
-        "title": "Chollos de Amazon en Telegram | Chollos Ofertas Gangas",
+        "title": "Chollos de Amazon en Telegram | GangasOfertas.com",
         "desc": "Recibe los chollos y ofertas de Amazon España directamente en Telegram. Canal gratuito, sin registro y con avisos al instante.",
         "h1": "Chollos en Telegram",
         "intro": "El canal de Telegram es la fuente de todo lo que publicamos: si una oferta aparece aquí, antes se ha anunciado allí.",
@@ -96,7 +96,7 @@ PLANTILLA = """<!doctype html>
 <link rel="canonical" href="{base}/{slug}.html">
 
 <meta property="og:type" content="article">
-<meta property="og:site_name" content="Chollos Ofertas Gangas">
+<meta property="og:site_name" content="GangasOfertas.com">
 <meta property="og:locale" content="es_ES">
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
@@ -144,7 +144,7 @@ PLANTILLA = """<!doctype html>
 
 <footer class="pie">
   <div class="wrap">
-    <p>Chollos Ofertas Gangas · Amazon España</p>
+    <p>GangasOfertas.com · Amazon España</p>
     <p><a href="index.html">← Volver al inicio</a> · <a href="categorias.html">Todas las categorías</a></p>
     <p style="font-size:11px">Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti.</p>
   </div>

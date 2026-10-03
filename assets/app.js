@@ -1,5 +1,5 @@
 /* ============================================================
-   Chollos Ofertas Gangas - carga del catalogo
+   GangasOfertas.com - carga del catalogo
    Las paginas de catalogo unicamente declaran:
      <body data-feed="moviles-electronica">
      <h1 data-titulo-feed="...">
