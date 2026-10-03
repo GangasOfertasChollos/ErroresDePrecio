@@ -19,13 +19,52 @@ categorias.json        Diccionario de palabras clave por categoría
 data/*.json            Ofertas (generados por el bot)
 assets/style.css       Estilos compartidos por todas las páginas
 assets/app.js          Carga y render del catálogo (+ JSON-LD dinámico)
+assets/icono-tg.css    Componentes comunes a las dos paletas (icono, reduced-motion)
+assets/icono-tg.jpg    Icono del canal (esquina superior derecha)
 index.html             Portada
 <slug>.html            Páginas de catálogo, una por categoría
 BlackFriday/           Sección Black Friday 2026 (17 páginas, CSS y assets propios)
+plantilla_comun.py     Marcado compartido: menú, icono y pie
 generar_*.py           Generadores de HTML y sitemap
 tests/                 Pruebas del bot, del front y del sitio
 CNAME                  Dominio personalizado de GitHub Pages: gangasofertas.com
+.gitattributes         CRLF en la raíz, LF en BlackFriday/
 ```
+
+## Diseño
+
+Dos hojas de estilo, las dos **de fondo claro**:
+
+| | Fichero | Acento |
+|---|---|---|
+| Sitio principal | `assets/style.css` | naranja Amazon (`--naranja-texto` para texto) |
+| Sección Black Friday | `BlackFriday/assets/css/style.css` | negro (`--accent`) |
+
+El negro se usa como elemento de marca —barra superior, botones, barra de
+marca— sobre fondo blanco. Los colores de marca que no llegan a 4.5:1 sobre
+blanco (como el naranja `#ff9900`, que da 2.1:1) están **restringidos a bordes
+y rellenos**; para texto se usa el tono oscuro equivalente (`--naranja-texto`).
+
+Todo el color pasa por variables CSS. Si quieres cambiar la paleta, edita el
+bloque `:root` de cada hoja y no toques las reglas.
+
+Lo que **no** depende de la paleta vive en `assets/icono-tg.css`, que las dos
+hojas cargan: así el icono del canal y la regla de `prefers-reduced-motion`
+tienen una sola definición en lugar de una por hoja.
+
+`plantilla_comun.py` es la única fuente del menú, del icono y del pie. Los
+tres generadores la importan, de modo que regenerar las páginas no deshace los
+cambios de maquetación y los menús no divergen entre sí.
+
+> `404.html` usa **rutas absolutas** a propósito: GitHub Pages lo sirve a
+> cualquier profundidad (por ejemplo `/BlackFriday/no-existe.html`), donde una
+> ruta relativa como `general.html` apuntaría a `/BlackFriday/general.html` y
+> no existiría. Los validadores no lo detectan porque resuelven siempre contra
+> la raíz del repositorio.
+
+La sección Black Friday tiene su propia hoja porque su diseño original era
+oscuro; se migró a claro cambiando `--bg` a `#ffffff` y `--accent` a negro, y
+ajustando los ~29 colores que estaban fijados en las reglas.
 
 ## Dominio
 

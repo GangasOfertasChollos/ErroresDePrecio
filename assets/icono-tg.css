@@ -1,0 +1,61 @@
+/* ==========================================================================
+   Componentes compartidos por las dos paletas del proyecto
+   (assets/style.css y BlackFriday/assets/css/style.css)
+
+   Este bloque estaba duplicado en las dos hojas y ademas en el <style> inline
+   de index.html, que no carga la hoja principal. Tres copias del mismo CSS
+   que se desincronizaban. Ahora hay una sola, y todas las paginas la cargan.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Icono del canal de Telegram, esquina superior derecha.
+   Aparece en las 32 paginas del proyecto y lleva al canal.
+   -------------------------------------------------------------------------- */
+.icono-tg {
+  position: fixed;
+  top: 14px;
+  right: 14px;
+  z-index: 90;
+  display: block;
+  width: 60px;
+  height: 52px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid #14181f;
+  box-shadow: 0 6px 18px -6px rgba(0, 0, 0, 0.45);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  line-height: 0;
+}
+.icono-tg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.icono-tg:hover,
+.icono-tg:focus-visible {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.55);
+}
+@media (max-width: 640px) {
+  .icono-tg {
+    width: 46px;
+    height: 40px;
+    top: 10px;
+    right: 10px;
+    border-radius: 10px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accesibilidad: respeta la preferencia de reducir movimiento
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -14,6 +14,10 @@
   --azul-medio:#4a8ab0;
   --naranja:#ff9900;
   --naranja-oscuro:#e68a00;
+  /* El naranja de marca (#ff9900) da 2.6:1 sobre blanco: no sirve como color de
+     texto. Este tono mas oscuro llega a 5.1:1 y se usa para texto y enlaces.
+     El naranja claro se reserva para bordes, rellenos y texto sobre fondo oscuro. */
+  --naranja-texto:#a35c00;
   --amarillo:#ffd700;
   --rojo:#e63946;
   --blanco:#ffffff;
@@ -606,6 +610,46 @@ main.contenido{padding:35px 0}
   .oferta-descuento{font-size:18px}
 }
 
-@media (prefers-reduced-motion:reduce){
-  *{transition:none !important;animation:none !important}
+/* El bloque prefers-reduced-motion vive en assets/icono-tg.css, compartido por las dos paletas. Este duplicado era mas debil: solo cubria transition y animation, y no incluia scroll-behavior. */
+
+/* Objetivo tactil minimo en moviles */
+@media (max-width: 640px) {
+  .nav a { padding: 9px 13px; font-size: 13px; }
+  .oferta-comprar { padding: 14px 26px !important; }
 }
+
+/* ==========================================================================
+   Pie unificado: rejilla de grupos de enlaces
+   ========================================================================== */
+.pie .footer-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 24px 22px;
+  text-align: left;
+  margin: 0 0 26px;
+}
+.footer-links__grupo { display: flex; flex-direction: column; gap: 7px; }
+.footer-links__grupo strong {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--azul-oscuro);
+  margin-bottom: 2px;
+}
+.footer-links__grupo a { color: var(--texto-claro); text-decoration: none; font-size: 14px; }
+.footer-links__grupo a:hover,
+.footer-links__grupo a:focus-visible { color: var(--naranja-texto); text-decoration: underline; }
+.pie__aviso { font-size: 11px; opacity: 0.72; max-width: 74ch; margin: 10px auto 0; }
+@media (max-width: 520px) {
+  .pie .footer-links { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px 14px; }
+  .footer-links__grupo a { font-size: 13px; }
+}
+
+/* ==========================================================================
+   Subnavegacion (listado de categorias dentro de una pagina)
+   Se distingue del menu principal para que no se lea como un duplicado.
+   ========================================================================== */
+.subnav { margin-top: 0; margin-bottom: 30px; }
+.subnav a { font-size: 13px; padding: 6px 12px; background: #fff; border-color: var(--gris-borde); }
+.subnav a:hover,
+.subnav a:focus-visible { border-color: var(--naranja); color: var(--naranja-texto); }

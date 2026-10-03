@@ -12,20 +12,18 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 REPO_PATH = Path(__file__).resolve().parent
 
-MENU_HTML = '''
-<nav class="nav" aria-label="Navegacion principal">
-  <a href="index.html">Inicio</a>
-  <a href="general.html">Todas</a>
-  <a href="ropa-y-calzado.html">Ropa</a>
-  <a href="moviles-electronica.html">Moviles</a>
-  <a href="gaming-consolas.html">Gaming</a>
-  <a href="higiene-cuidado-personal.html">Higiene</a>
-  <a href="juguetes-infantil.html">Juguetes</a>
-  <a href="papeleria-oficina.html">Papeleria</a>
-  <a href="categorias.html">Categorias</a>
-  <a href="BlackFriday/index.html">Black Friday</a>
-</nav>
-'''
+# El menu no se escribe aqui: se toma de plantilla_comun, que es la unica
+# definicion. Antes esta lista era una tercera copia del menu y divergia de
+# la de generar_categorias.py en cuanto se anadia una entrada.
+from plantilla_comun import nav_html
+
+
+def menu_html(actual: str = "") -> str:
+    return (
+        '\n<nav class="nav" aria-label="Navegacion principal">\n'
+        + nav_html(actual, sangria="  ")
+        + "\n</nav>\n"
+    )
 
 NAV_CSS = '''
 /* ===== Menu de navegacion ===== */
@@ -92,7 +90,10 @@ def annadir_navegacion():
         with open(ruta, 'r', encoding='utf-8') as f:
             contenido = f.read()
 
-        if 'aria-label="Navegacion principal"' in contenido:
+        # Los generadores (generar_categorias.py / generar_seo.py) ya escriben el
+        # menu con la tilde en "Navegación". Se buscan las dos variantes para no
+        # insertar un segundo menu en esas paginas.
+        if 'aria-label="Navegacion principal"' in contenido or 'aria-label="Navegación principal"' in contenido:
             print(f"  [OK] {pagina} ya tiene menu")
             continue
 
@@ -106,10 +107,10 @@ def annadir_navegacion():
             match = re.search(r'(<header[^>]*>.*?</header>)', contenido, re.DOTALL)
             if match:
                 header = match.group(1)
-                nuevo_header = header.replace('</header>', MENU_HTML + '\n</header>')
+                nuevo_header = header.replace('</header>', menu_html(pagina) + '\n</header>')
                 contenido = contenido.replace(header, nuevo_header)
         else:
-            contenido = re.sub(r'(<body[^>]*>)', r'\1\n' + MENU_HTML, contenido)
+            contenido = re.sub(r'(<body[^>]*>)', lambda m: m.group(1) + menu_html(pagina), contenido)
 
         with open(ruta, 'w', encoding='utf-8') as f:
             f.write(contenido)

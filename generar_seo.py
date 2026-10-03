@@ -5,6 +5,8 @@ sin Open Graph y sin JSON-LD.
 """
 from pathlib import Path
 
+from plantilla_comun import ICONO_TG, PIE, nav_html
+
 RAIZ = Path(__file__).resolve().parent
 BASE = "https://gangasofertas.com"
 IMG = f"{BASE}/assets/og-image.png"
@@ -109,17 +111,18 @@ PLANTILLA = """<!doctype html>
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
-
-<script type="application/ld+json">
 {schema}
-</script>
 </head>
 <body>
+{icono}
 
 <header class="cabecera">
   <div class="wrap">
     <h1>{h1}</h1>
     <p>Amazon España · Actualizado desde el canal de Telegram</p>
+    <nav class="nav" aria-label="Navegación principal">
+{nav_menu}
+    </nav>
   </div>
 </header>
 
@@ -129,7 +132,7 @@ PLANTILLA = """<!doctype html>
   <p>{parrafos}</p>
 
   <h2>Ofertas por categoría</h2>
-  <nav class="nav" aria-label="Categorías de ofertas">
+  <nav class="nav subnav" aria-label="Categorías de ofertas">
     <a href="index.html">← Inicio</a>
 {enlaces}
   </nav>
@@ -142,13 +145,7 @@ PLANTILLA = """<!doctype html>
   </p>
 </main>
 
-<footer class="pie">
-  <div class="wrap">
-    <p>GangasOfertas.com · Amazon España</p>
-    <p><a href="index.html">← Volver al inicio</a> · <a href="categorias.html">Todas las categorías</a></p>
-    <p style="font-size:11px">Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti.</p>
-  </div>
-</footer>
+{pie}
 
 </body>
 </html>
@@ -160,9 +157,13 @@ import re as _re
 
 
 def construir_schema(faq):
-    """JSON-LD de la FAQ. Se limpia el HTML de las respuestas: schema.org
-    espera texto plano, no etiquetas."""
-    # Ya no se genera JSON-LD de FAQ
+    """Devuelve el bloque JSON-LD completo, o cadena vacia si no aplica.
+
+    Google retired las FAQ rich results en 2023 para casi todos los sitios, asi
+    que no se emite FAQPage. La plantilla Inserta {schema} tal cual: devolver
+    solo el JSON dejaba un <script type="application/ld+json"></script> vacio,
+    que es HTML valido pero rompe la validacion estatica del sitio.
+    """
     return ""
 
 
@@ -181,7 +182,12 @@ for slug, _unused, datos in PAGINAS:
         slug=slug, title=datos["title"], desc=datos["desc"], h1=datos["h1"],
         intro=datos["intro"], parrafos=parrafos, enlaces=enlaces, faq_html=faq_html,
         schema=schema, base=BASE, img=IMG, canal=CANAL,
+        icono=ICONO_TG.format(prefijo="", canal=CANAL),
+        nav_menu=nav_html(f"{slug}.html"),
+        pie=PIE,
     )
     destino = RAIZ / f"{slug}.html"
-    destino.write_text(pagina, encoding="utf-8", newline="")
+    # La raiz del repositorio usa CRLF de forma consistente (ver .gitattributes
+    # y el resto de HTML); con newline="" se emitiria LF y quedaria mezclado.
+    destino.write_text(pagina, encoding="utf-8", newline="\r\n")
     print(f"  generado {destino.name} ({len(pagina)} bytes)")

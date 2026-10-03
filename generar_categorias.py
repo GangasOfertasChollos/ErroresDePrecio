@@ -3,21 +3,15 @@
 Antes cada HTML repetia ~20 lineas de CSS y ~55 de JS identicas; cualquier
 correccion habia que replicarla 7 veces. Ahora comparten assets/style.css y
 assets/app.js, y este script es la unica fuente que hay que editar.
+
+El menu, el icono de Telegram y el pie se toman de plantilla_comun.py para que
+regenerar las paginas no deshaga el trabajo de maquetacion.
 """
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent
+from plantilla_comun import ICONO_TG, NAV, PIE, nav_html
 
-NAV = [
-    ("ropa-y-calzado.html", "Ropa y calzado"),
-    ("moviles-electronica.html", "Móviles y electrónica"),
-    ("gaming-consolas.html", "Gaming y consolas"),
-    ("higiene-cuidado-personal.html", "Higiene y cuidado personal"),
-    ("juguetes-infantil.html", "Juguetes e infantil"),
-    ("papeleria-oficina.html", "Papelería y oficina"),
-    ("general.html", "Todas"),
-    ("BlackFriday/index.html", "Black Friday"),
-]
+RAIZ = Path(__file__).resolve().parent
 
 # slug, h1, subtitulo, descripcion SEO, icono
 CATEGORIAS = [
@@ -66,12 +60,12 @@ PLANTILLA = """<!doctype html>
 <meta name="google-site-verification" content="uzqlh-QjEzCDqWUTkJpgkqlJsHSt0Xjbh82vV-orJQ8">
 </head>
 <body data-feed="{slug}">
-
+{icono}
 <header class="cabecera">
   <div class="wrap">
-    <h1>{icono} {h1}</h1>
+    <h1>{icono_cat} {h1}</h1>
     <p>{subtitulo}</p>
-    <nav class="nav" aria-label="Categorías de ofertas">
+    <nav class="nav" aria-label="Navegación principal">
 {nav}
     </nav>
   </div>
@@ -85,26 +79,22 @@ PLANTILLA = """<!doctype html>
   </p>
 </main>
 
-<footer class="pie">
-  <div class="wrap">
-    <p>GangasOfertas.com · Amazon España · Ofertas publicadas desde Telegram</p>
-    <p><a href="index.html">← Volver al inicio</a> · <a href="categorias.html">Todas las categorías</a></p>
-    <p style="font-size:11px">Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti.</p>
-  </div>
-</footer>
+{pie}
 
 <script src="assets/app.js" defer></script>
 </body>
 </html>
 """
 
-for slug, h1, subtitulo, descripcion, icono in CATEGORIAS:
-    items = "\n".join(
-        f'      <a href="{href}"{" aria-current=\"page\"" if href == slug + ".html" else ""}>{label}</a>'
-        for href, label in NAV
+for slug, h1, subtitulo, descripcion, icono_cat in CATEGORIAS:
+    html = PLANTILLA.format(
+        slug=slug, h1=h1, subtitulo=subtitulo, descripcion=descripcion,
+        icono_cat=icono_cat, nav=nav_html(f"{slug}.html"),
+        icono=ICONO_TG.format(prefijo="", canal="https://t.me/GangasOfertasChollos"),
+        pie=PIE,
     )
-    html = PLANTILLA.format(slug=slug, h1=h1, subtitulo=subtitulo,
-                            descripcion=descripcion, icono=icono, nav=items)
     destino = RAIZ / f"{slug}.html"
-    destino.write_text(html, encoding="utf-8", newline="")
+    # La raiz del repositorio usa CRLF de forma consistente (ver .gitattributes
+    # y el resto de HTML); con newline="" se emitiria LF y quedaria mezclado.
+    destino.write_text(html, encoding="utf-8", newline="\r\n")
     print(f"  generado {destino.name} ({len(html)} bytes)")
