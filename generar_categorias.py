@@ -56,6 +56,7 @@ PLANTILLA = """<!doctype html>
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/icono-tg.css">
 <meta name="google-site-verification" content="E4_nuunpXWLlV4jpR5qmBPKLhB2kFV_MTM6N_J9xRSc">
 <meta name="google-site-verification" content="uzqlh-QjEzCDqWUTkJpgkqlJsHSt0Xjbh82vV-orJQ8">
 </head>

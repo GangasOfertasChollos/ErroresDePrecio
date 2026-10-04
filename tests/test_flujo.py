@@ -275,15 +275,14 @@ async def main():
           "el catalogo se vacio pese a no haber mensajes")
     bot.client = ClienteFalso()
 
-    print("\n== 10. MAX_OFERTAS no puede ser menor que BACKFILL_LIMIT ==")
-    # Con el limite por debajo de los mensajes leidos, el recorte de
-    # _guardar_en_archivo tiraba ofertas que si se habian leido del canal y el
-    # catalogo recien reiniciado salia incompleto solo por el limite.
+    print("\n== 10. Cuantos mensajes hay que leer para llenar los huecos ==")
+    # Solo se publica el mensaje que tiene enlace, titulo y precio. De los
+    # ultimos 100 mensajes del canal 84 eran ofertas, asi que leer 100 no llena
+    # 100 huecos: BACKFILL_LIMIT tiene que ser MAYOR que MAX_OFERTAS. Al
+    # reves (leer menos de lo que se guarda) no hay forma de llenar el
+    # catalogo, y el bot lo avisa y corrige al arrancar.
     check("MAX_OFERTAS por defecto = 100", bot.MAX_OFERTAS == 100, bot.MAX_OFERTAS)
-    check("MAX_OFERTAS cubre BACKFILL_LIMIT", bot.MAX_OFERTAS >= bot.BACKFILL_LIMIT,
-          f"{bot.MAX_OFERTAS} < {bot.BACKFILL_LIMIT}")
-    check("BACKFILL_LIMIT por defecto = 100", bot.BACKFILL_LIMIT == 100, bot.BACKFILL_LIMIT)
-
+    check("BACKFILL_LIMIT por defecto = 130", bot.BACKFILL_LIMIT == 130, bot.BACKFILL_LIMIT)
     print("\n== 11. La verificacion avisa si el catalogo queda corto ==")
     # _verificar_backfill no lanza: avisa por log y el bot sigue escuchando.
     general3 = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))
@@ -310,6 +309,7 @@ async def main():
     await bot._verificar_backfill(list(range(1001, 1006)), 5)
     texto = "\n".join(manos.lineas)
     check("catalogo corto: avisa cuantas faltan", "FALTAN 5 ofertas de las 5" in texto, texto[-300:])
+    check("catalogo corto: sugiere subir BACKFILL_LIMIT", "sube BACKFILL_LIMIT" in texto, texto[-300:])
     check("catalogo corto: no aborta", True)
 
     manos.lineas.clear()
@@ -322,6 +322,31 @@ async def main():
           "AUTO_PUBLICAR=0" in texto, texto[-300:])
     bot.AUTO_PUBLICAR = True
     bot.log.removeHandler(manos)
+
+    check("se leen mas mensajes de los que se guardan", bot.BACKFILL_LIMIT > bot.MAX_OFERTAS,
+          f"BACKFILL_LIMIT={bot.BACKFILL_LIMIT} MAX_OFERTAS={bot.MAX_OFERTAS}")
+    # El recorte debe dejar exactamente MAX_OFERTAS cuando sobran.
+    print("\n== 12. El recorte guarda las MAX_OFERTAS mas recientes ==")
+    # Va al final porque vacia data/: la seccion 11 necesita el catalogo.
+    for f in (TMP / "data").glob("*.json"):
+        f.unlink()
+    tope_previo = bot.MAX_OFERTAS
+    bot.MAX_OFERTAS = 8
+    for i in range(30):
+        mid = 3000 + i
+        # URL distinta por mensaje: _guardar_en_archivo deduplica por
+        # amazon_url, asi que con el mismo texto solo se guardaria el primero.
+        await bot.actualizar_json("general", MsgReal(mid,
+            f"Zapatillas Nike Air Zoom Running {mid}\nAhora 89,95\u20ac\n"
+            f"https://www.amazon.es/dp/B{mid:07d}"))
+    ids = [o["id"] for o in json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))]
+    check("el recorte deja las MAX_OFERTAS mas recientes", len(ids) == 8, f"n={len(ids)}")
+    check("y son las 8 mas nuevas", ids == list(range(3029, 3021, -1)), f"ids={ids}")
+    bot.MAX_OFERTAS = tope_previo
+    for f in (TMP / "data").glob("*.json"):
+        f.unlink()
+
+    await bot.recuperar_mensajes_perdidos()   # se repuebla el temporal
 
 try:
     asyncio.run(main())

@@ -191,13 +191,18 @@ git push
 
 Las páginas de catálogo y las páginas SEO se generan con scripts para que
 todas compartan estructura y estilos. Si cambias una sección, edita el
-generador y vuelve a lanzarlo:
+generador y vuelve a lanzarlo, **en este orden**:
 
 ```bash
 python generar_categorias.py    # 7 páginas de catálogo
 python generar_seo.py           # 4 páginas SEO
 python generar_sitemap.py       # sitemap.xml (verifica que las URLs existen)
 ```
+
+> Los tres generadores se ejecutan siempre en ese orden y en una sola pasada.
+> `generar_categorias.py` es la fuente de las 7 páginas de catálogo: si algo
+> las modifica a mano, se pierde al regenerarlas. Por eso las páginas se
+> regeneran, no se parchean.
 
 ## Imágenes y formato de los mensajes
 
@@ -246,24 +251,39 @@ enlace directo como los acortadores `amzn.to`, `amzn.eu` y `amzlink.to`.
 
 ### Los campos que van a schema.org
 
-`description`, `brand` y `gtin` se publican tal cual como
+`description`, `brand`, `gtin` y `mpn` se publican tal cual como
 `itemprop`/JSON-LD, así que un valor inventado es información falsa en los
 resultados de Google. De ahí las reglas:
 
 - **`gtin`** solo se rellena con un GTIN de verdad (EAN-8, UPC-A o EAN-13)
-  **validado por su dígito de control**, o con un MPN que lleve letras *y*
-  dígitos. Se buscan fuera de los enlaces, porque el tag de afiliado del
-  propio bot (`?tag=gangas054-21`) también tiene guion y dígitos. Antes se
-  aceptaba cualquier palabra de 6 a 20 caracteres, así que casi todas las
-  ofertas publishaban como `gtin` la marca o un sustantivo del título
-  (`"Scottex"`, `"OFERTA"`, `"Zapatillas"`).
+  **validado por su dígito de control**. Los hashtags se quitan antes de
+  buscar, para que un `#12345678` no se cuele.
+- **`mpn`** (código de pieza) va en su **propia** propiedad, no dentro de
+  `gtin`: un MPN como `RLC-810A` no es un código de barras. Antes el fallback
+  a MPN estaba dentro de `gtin` y **ninguno de los 28 valores que había en
+  `data/` era un GTIN**: todos eran hashtags (`Blackfriday26`) o códigos de
+  pieza (`HC5880`, `6-Cores`), y se publicaban como `itemprop="gtin"`.
+  Se busca fuera de los enlaces, porque el tag de afiliado del propio bot
+  (`?tag=gangas054-21`) también tiene guion y dígitos, y también fuera de los
+  hashtags.
 - **`description`** descarta las líneas que solo son precios
-  (`"16,91 € (antes 29,99 €)"`), las etiquetas del canal (`|#Chollos|`) y las
-  llamadas a la acción de otros canales (`👉 Míralo en Ofertitas.es`). El
-  precio ya vive en sus propios campos.
+  (`"16,91 € (antes 29,99 €)"`), las etiquetas del canal (`|#Chollos|`, las
+  internas como `PRECIO OFERTA`), los enlaces en markdown con la CTA de otro
+  bot (`[📉 Miss Avisos...](https://t.me/MissAvisosbot?start=...)`, que se borran
+  enteros, con su texto y su URL) y las llamadas a la acción de otros canales
+  (`👉 Míralo en Ofertitas.es`). El precio ya vive en sus propios campos.
 - **`brand`** descarta los emojis que se cuelan (`⌨️ GXTrust`) y los
   fragmentos que no son una marca (`"Alfombrilla de"`, `"Neceser"`); si no hay
-  marca, el campo queda vacío y el frontend lo omite.
+  marca, el campo queda vacío y el frontend lo omite. Tampoco se publica
+  `OFERTA AMAZON`, que es el marcador de posición del bot, no una marca.
+
+### El título nunca es el marcador de posición
+
+Cuando un mensaje del canal no trae un título real, `extraer_titulo` devuelve
+`Oferta Amazon` y la oferta se **descarta**. La comparación es
+*case-insensitive* porque el canal lo escribe en mayúsculas: con la comparación
+exacta, 22 ofertas se publicaban con `title` y `brand` = `"OFERTA AMAZON"`
+(14 de 98 en `general.json`, y 6 de 12 —la mitad— en `moviles-electronica.json`).
 
 Cuando un dato no está, el campo va vacío. Es preferible a inventarlo.
 

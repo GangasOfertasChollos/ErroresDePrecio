@@ -22,16 +22,34 @@
   }
 
   // Solo se permiten enlaces de Amazon o de acortadores de Amazon.
-  // El TLD varia (amazon.es, amazon.com, amazon.de...), asi que se comprueba
-  // el dominio padre en lugar de una lista fija: asi "amazon.es.evil.com"
-  // queda fuera, que un /(^|\.)amazon\.[a-z.]+$/ dejaba pasar.
+  // Se valida el hostname ENTERO contra dos patrones, no el dominio padre:
+  //
+  //   Amazon         -> "amazon." seguido de "com" o de un ccTLD de 2 letras,
+  //                     y como mucho un label mas ("amazon.com.mx",
+  //                     "amazon.co.uk"). Todos los tiendas de Amazon reales
+  //                     acaban asi.
+  //   Acortadores    -> amzn.to / amzn.eu / amzn.link y amzlink.to / .eu /
+  //                     .link. El ultimo es el que usa el canal (bot.py
+  //                     DOMINIOS_LINK lo acepta) y antes se bloqueaba aqui:
+  //                     la tarjeta salia con href="#" y el boton no llevaba a
+  //                     ninguna parte.
+  //
+  // Mirar solo el penultimo label (el caso de "amazon.es.evil.com") dejaba
+  // pasar "amazon.evil" y "amazon.zip": su padre es "amazon" y .evil/.zip son
+  // TLDs reales, aunque dearketing, no de Amazon. Exigir que el TLD sea "com" o
+  // un ccTLD de 2 letras los deja fuera sin tener que mantener una lista de
+  // dominios de Amazon, que cambia cada vez que Amazon abre un pais.
+  var RE_HOST_AMAZON = /^(?:[a-z0-9-]+\.)*amazon\.(?:com|[a-z]{2})(?:\.[a-z]{2})?$/;
+  var RE_HOST_ACORTADOR = /^(?:[a-z0-9-]+\.)*(?:amzn|amzlink)\.(?:to|eu|link)$/;
+
   function urlSegura(url) {
     try {
       var u = new URL(String(url || ""), window.location.href);
-      var partes = u.hostname.toLowerCase().split(".");
-      var padre = partes[partes.length - 2] || "";
-      if (!/^(amazon|amzn)$/.test(padre)) return "#";
       if (u.protocol !== "https:" && u.protocol !== "http:") return "#";
+      // "amazon.es." con punto final es la misma tienda en forma FQDN y el DNS lo
+// resuelve igual, asi que se quita antes de comparar.
+      var host = u.hostname.toLowerCase().replace(/\.$/, "");
+      if (!RE_HOST_AMAZON.test(host) && !RE_HOST_ACORTADOR.test(host)) return "#";
       return u.href;
     } catch (e) {
       return "#";
@@ -203,9 +221,13 @@
         if (o.brand) {
           oferta.item.brand = { "@type": "Brand", "name": o.brand };
         }
-        // Añadir GTIN/MPN si existe
+        // Añadir GTIN si existe. Un GTIN solo son digitos con el control validado
+        // (ver extraer_gtin en bot.py); los codigos de pieza van en "mpn".
         if (o.gtin) {
           oferta.item.gtin = o.gtin;
+        }
+        if (o.mpn) {
+          oferta.item.mpn = o.mpn;
         }
         // Precio anterior (y por tanto el descuento) si se ha podido averiguar
         if (p.anteriorNum !== null) {
@@ -308,6 +330,11 @@
       var gtinMeta = o.gtin
         ? '<meta itemprop="gtin" content="' + esc(o.gtin) + '">'
         : "";
+      // El MPN (codigo de pieza) va en su propia propiedad: publicar un MPN
+      // como "gtin" es informacion falsa, y el bot ya los separa.
+      var mpnMeta = o.mpn
+        ? '<meta itemprop="mpn" content="' + esc(o.mpn) + '">'
+        : "";
       return '<article class="oferta" itemscope itemtype="https://schema.org/Offer">' +
           img +
           '<div class="oferta-cuerpo">' +
@@ -325,6 +352,7 @@
           '<meta itemprop="seller" content="Amazon España">' +
           brandMeta +
           gtinMeta +
+          mpnMeta +
         "</article>";
     }).join("");
 
@@ -339,6 +367,18 @@
   }
 
   function mostrarEstado(texto) {
+    // Hay dos formas de colocar el mensaje de estado en las páginas:
+    //   - Páginas de catálogo: el #estado ES el placeholder, dentro de #ofertas.
+    //     Basta con reescribirlo.
+    //   - black-friday-2026.html: el #estado es un <p> aparte y "Cargando
+    //     ofertas..." vive dentro de #ofertas. Si no se vacía el contenedor,
+    //     el texto de carga se queda pegado al lado del error.
+    var estadoDentro = estado && estado.parentElement === contenedor;
+    if (estadoDentro) {
+      estado.textContent = texto;
+      return;
+    }
+    contenedor.innerHTML = "";
     if (estado) {
       estado.textContent = texto;
     } else {

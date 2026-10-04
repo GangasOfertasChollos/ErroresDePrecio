@@ -111,6 +111,7 @@ PLANTILLA = """<!doctype html>
 
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="assets/style.css">
+<link rel="stylesheet" href="assets/icono-tg.css">
 {schema}
 </head>
 <body>
@@ -129,7 +130,7 @@ PLANTILLA = """<!doctype html>
 <main class="contenido wrap">
   <p>{intro}</p>
 
-  <p>{parrafos}</p>
+{parrafos}
 
   <h2>Ofertas por categoría</h2>
   <nav class="nav subnav" aria-label="Categorías de ofertas">

@@ -26,10 +26,9 @@ ICONO_TG = (
     '<img src="{prefijo}assets/icono-tg.jpg" alt="" width="180" height="160"></a>'
 )
 
-# Menu unico del sitio. Es la UNica definicion: generar_categorias.py,
-# generar_seo.py y anadir_navegacion.py la importan de aqui. Antes cada uno
-# tenia su propia copia y basta cambiar una entrada para que los menus
-# divergieran entre paginas.
+# Menu unico del sitio. Es la UNica definicion: generar_categorias.py y
+# generar_seo.py la importan de aqui. Antes cada uno tenia su propia copia y
+# basta cambiar una entrada para que los menus divergieran entre paginas.
 NAV = [
     ("index.html", "Inicio"),
     ("general.html", "Todas"),

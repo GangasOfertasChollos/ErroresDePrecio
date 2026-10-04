@@ -71,13 +71,13 @@ check("un telefono no es un GTIN", bot.extraer_gtin("Llama al 600123456789") == 
 check("el ASIN del enlace no es un GTIN",
       bot.extraer_gtin("https://www.amazon.es/dp/B07CCWCNFR?tag=x") == "",
       bot.extraer_gtin("https://www.amazon.es/dp/B07CCWCNFR?tag=x"))
-check("MPN con digitos si se acepta", bot.extraer_gtin("modelo i7-1355U") == "i7-1355U",
+check("MPN con digitos NO es un GTIN", bot.extraer_gtin("modelo i7-1355U") == "",
       bot.extraer_gtin("modelo i7-1355U"))
 check("MPN solo con letras no", bot.extraer_gtin("modelo GXTrust") == "",
       bot.extraer_gtin("modelo GXTrust"))
 # El tag de afiliado del propio bot tiene guion y digitos: si se buscara en el
 # texto entero, 'gangas054-21' salia como codigo de pieza en casi todas las ofertas.
-check("el tag de afiliado no es un MPN",
+check("el tag de afiliado no es un GTIN",
       bot.extraer_gtin("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21") == "",
       bot.extraer_gtin("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21"))
 check("precio con miles no es un GTIN", bot.extraer_gtin("Ahora: 1.299,00 € antes 2.999,00 €") == "",
@@ -85,7 +85,68 @@ check("precio con miles no es un GTIN", bot.extraer_gtin("Ahora: 1.299,00 € an
 check("sin texto -> ''", bot.extraer_gtin("") == "")
 check("None -> ''", bot.extraer_gtin(None) == "")
 
+print("\n== extraer_gtin nunca devuelve un hashtag ni un MPN ==")
+# Los 28 gtin que havia en data/ eran hashtags ('Blackfriday26') o codigos de
+# pieza ('HC5880', '6-Cores', 'RLC-810A'): ninguno era un GTIN y todos se
+# publicaban como itemprop="gtin". Un hashtag solo de digitos podria(validandose
+# el control) colarse, asi que se quitan antes de buscar.
+for texto in ("#BlackFriday26 Auriculares", "#12345678 Auriculares",
+              "#BlackFriday26\nEAN 8412345678905"):
+    check(f"el hashtag no es un GTIN ({texto.splitlines()[0]!r})",
+          "12345678" not in bot.extraer_gtin(texto) or "8412345678905" in bot.extraer_gtin(texto),
+          bot.extraer_gtin(texto))
+check("hashtag + EAN real -> gana el EAN", bot.extraer_gtin("#12345678 EAN 8412345678905") == "8412345678905",
+      bot.extraer_gtin("#12345678 EAN 8412345678905"))
+
+print("\n== extraer_mpn: el codigo de pieza va en su propio campo ==")
+check("MPN con digitos", bot.extraer_mpn("modelo i7-1355U") == "i7-1355U", bot.extraer_mpn("modelo i7-1355U"))
+check("codigo de pieza del canal", bot.extraer_mpn("MDR-ZX110 Headset") == "MDR-ZX110",
+      bot.extraer_mpn("MDR-ZX110 Headset"))
+check("MPN solo con letras no", bot.extraer_mpn("modelo GXTrust") == "", bot.extraer_mpn("modelo GXTrust"))
+check("el hashtag no es un MPN", bot.extraer_mpn("#BlackFriday26 Auriculares") == "",
+      bot.extraer_mpn("#BlackFriday26 Auriculares"))
+check("el ASIN no es un MPN", bot.extraer_mpn("https://www.amazon.es/dp/B07CCWCNFR?tag=x") == "",
+      bot.extraer_mpn("https://www.amazon.es/dp/B07CCWCNFR?tag=x"))
+check("el tag de afiliado no es un MPN",
+      bot.extraer_mpn("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21") == "",
+      bot.extraer_mpn("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21"))
+check("sin texto -> ''", bot.extraer_mpn("") == "")
+check("None -> ''", bot.extraer_mpn(None) == "")
+
+print("\n== el marcador 'Oferta Amazon' se detecta en cualquier caja ==")
+# El canal lo escribe en MAYUSCULAS. La comparacion era exacta, asi que 22
+# ofertas se publicaban con title y brand 'OFERTA AMAZON' en vez de descartarse:
+# 14 de 98 en general.json y 6 de 12 en moviles-electronica.json.
+for variante in ("Oferta Amazon", "OFERTA AMAZON", "oferta amazon", "  OFERTA AMAZON  "):
+    check(f"marcador detectado: {variante!r}", bot._es_titulo_marcador(variante), variante)
+    check(f"se descarta: {variante!r}",
+          bot._motivo_descarte({"amazon_url": "https://amazon.es/dp/B1",
+                                "title": variante, "price": "9.00 €"}) == "sin titulo", variante)
+    check(f"no se publica como marca: {variante!r}", bot.extraer_marca(variante) == "", variante)
+check("un titulo real con 'Amazon' no es el marcador", not bot._es_titulo_marcador("Amazon Echo Dot 4"))
+check("y su marca si se extrae (dos primeras palabras)", bot.extraer_marca("Amazon Echo Dot 4") == "Amazon Echo",
+      bot.extraer_marca("Amazon Echo Dot 4"))
+
 print("\n== extraer_descripcion (el precio no es una descripcion) ==")
+# La CTA de otro bot en markdown, con su deep-link de afiliado, se publicaba
+# tal cual: '[📉 Miss Avisos te dice cuando baja de
+# precio](https://t.me/MissAvisosbot?start=vigilaramazon...)'. Se borra entera,
+# con su texto y su URL, porque quedarse con el texto deja el anuncio igual.
+_cta = bot.extraer_descripcion(
+    "Collar con gps para perros\n"
+    "Baja a 49.50 € [📉 Miss Avisos te dice cuando baja de precio]"
+    "(https://t.me/MissAvisosbot?start=vigilaramazonB0GT9R4QMQ) Iguala a MM!!")
+check("la CTA de otro bot no sale en la descripcion", "MissAvisos" not in _cta, _cta)
+check("ni su deep-link de afiliado", "t.me" not in _cta, _cta)
+check("ni el markdown que lo envuelve", "](http" not in _cta, _cta)
+check("pero el texto del producto se queda", "Collar" in _cta or "49.50" in _cta, _cta)
+# 'PRECIO OFERTA' es la etiqueta interna del canal: es maquetacion del mensaje,
+# no descripcion del producto, y salia en 22 ofertas.
+_int = bot.extraer_descripcion(
+    "Auriculares de conduccion osea AfterShokz\n"
+    "IP55 por 60,90€. Antes 89,95€ PRECIO OFERTA Los auriculares in-ear")
+check("la etiqueta interna del canal no sale", "PRECIO OFERTA" not in _int.upper(), _int)
+check("pero la descripcion del producto si", "in-ear" in _int, _int)
 # El canal publica a veces '16,91 € (antes 29,99 €)' en una sola linea: como
 # descripcion duplicaba el precio y ademas se publicaba como description.
 check("linea de precio combinada se descarta",

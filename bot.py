@@ -80,17 +80,25 @@ DATA_PATH        = REPO_PATH / 'data'
 IMAGES_PATH      = DATA_PATH / 'images'
 DICCIONARIO_PATH = REPO_PATH / 'categorias.json'
 MAX_OFERTAS      = _leer_int('MAX_OFERTAS', 100)
-BACKFILL_LIMIT   = _leer_int('BACKFILL_LIMIT', 100)
+BACKFILL_LIMIT   = _leer_int('BACKFILL_LIMIT', 130)
 # Al arrancar, el catalogo se vacia y se vuelve a construir con los ultimos
 # BACKFILL_LIMIT mensajes del canal. Asi los JSON nunca acumulan ofertas
 # viejas ni edits a mano: lo publicado es siempre el estado actual del canal.
-# MAX_OFERTAS no puede quedar por debajo de BACKFILL_LIMIT: si lo hiciera, el
-# recorte de _guardar_en_archivo tiraria ofertas que si se han leido del canal,
-# y el catalogo recien reiniciado saldria incompleto solo por el limite.
-if MAX_OFERTAS < BACKFILL_LIMIT > 0:
-    log.warning(f"MAX_OFERTAS={MAX_OFERTAS} es menor que BACKFILL_LIMIT={BACKFILL_LIMIT}: "
-                f"el recorte descartara ofertas leidas del canal. Se sube MAX_OFERTAS a {BACKFILL_LIMIT}.")
-    MAX_OFERTAS = BACKFILL_LIMIT
+#
+# BACKFILL_LIMIT tiene que ser MAYOR que MAX_OFERTAS a proposito, no por error:
+# de cada BACKFILL_LIMIT mensajes solo se publica los que son publicables
+# (con enlace, titulo y precio). De los 100 mensajes del canal 84 eran ofertas,
+# asi que para llenar 100 huecos hay que leer mas de 100. El recorte de
+# _guardar_en_archivo se queda con las MAX_OFERTAS mas recientes, que es
+# exactamente lo que se quiere.
+#
+# El error seria el contrario: leer menos de lo que se guarda, porque entonces
+# nunca se llenan los huecos. Eso si se avisa y se corrige.
+if BACKFILL_LIMIT < MAX_OFERTAS:
+    log.warning(f"BACKFILL_LIMIT={BACKFILL_LIMIT} es menor que MAX_OFERTAS={MAX_OFERTAS}: "
+                f"no hay mensajes suficientes para llenar el catalogo. "
+                f"Se sube BACKFILL_LIMIT a {MAX_OFERTAS}.")
+    BACKFILL_LIMIT = MAX_OFERTAS
 REINICIAR_CATALOGO = str(os.getenv('REINICIAR_CATALOGO', '1')).strip().lower() not in ('0', 'false', 'no')
 TIMEOUT_UNFURL   = _leer_int('TIMEOUT_UNFURL', 15)
 USAR_UNFURL      = str(os.getenv('USAR_UNFURL', '1')).strip().lower() not in ('0', 'false', 'no')
@@ -344,6 +352,17 @@ RE_CTA_ENLACE = re.compile(
     re.I | re.UNICODE
 )
 
+# Enlaces en markdown: '[📉 Miss Avisos te dice cuando baja de
+# precio](https://t.me/MissAvisosbot?start=vigilaramazon...)'. Es la forma que
+# tiene el canal de meter la CTA de otro bot con su deep-link de afiliado, y se
+# publicaba tal cual en description de schema.org.
+RE_MARKDOWN_ENLACE = re.compile(r'\[[^\]]*\]\([^)]*\)', re.UNICODE)
+# Etiquetas internas que el canal usa para marcarse a si mismo. No describen el
+# producto: son la maquetacion del mensaje, que se colaba en la descripcion.
+RE_ETIQUETA_INTERNA = re.compile(
+    r'\b(?:PRECIO\s+OFERTA|PRECIO\s+ACTUAL|PRECIO\s+ANTERIOR)\b', re.I
+)
+
 # --- Imagenes (unfurling) ---
 # La miniatura se obtiene de la pagina publica del mensaje en t.me, que expone
 # la imagen en og:image. Es la unica via que funciona: pedir la imagen a la
@@ -557,14 +576,34 @@ def extraer_descripcion(texto):
 def _limpiar_resto_descripcion(texto):
     """Quita de una linea lo que no describe el producto.
 
-    Van fuera las etiquetas del canal ('|#Chollos|', '#Amazon'), el emoji de
-    llamada a la accion y el dominio al que enlaza ('👉 Míralo en Ofertitas.es'):
-    son ripeo de otros canales, se publican como description de schema.org y no
-    dicen nada del producto.
+    Van fuera las etiquetas del canal ('|#Chollos|', '#Amazon'), las etiquetas
+    internas que el canal usa para marcarse a si mismo ('PRECIO OFERTA'), los
+    enlaces en markdown y el emoji de llamada a la accion con el dominio al que
+    enlaza ('👉 Míralo en Ofertitas.es'): son ripeo de otros canales o ruido del
+    propio canal, se publican como description de schema.org y no dicen nada
+    del producto.
+
+    El enlace en markdown se borra entero, con su texto y su URL: en una
+    descripcion de producto casi siempre es la CTA de otro canal con su
+    deep-link de afiliado ('[📉 Miss Avisos te dice cuando baja de
+    precio](https://t.me/MissAvisosbot?start=vigilaramazon...)'), y quedarse
+    con el texto sin el enlace dejaria el anuncio igual en la web.
     """
     texto = RE_HASHTAG.sub(' ', texto)
+    texto = RE_MARKDOWN_ENLACE.sub(' ', texto)
+    texto = RE_ETIQUETA_INTERNA.sub(' ', texto)
     texto = RE_CTA_ENLACE.sub('', texto)
     return re.sub(r'\s+', ' ', texto).strip(' |·-–—,;:')
+
+def _es_titulo_marcador(titulo):
+    """True si el titulo es el marcador de posicion 'Oferta Amazon'.
+
+    El canal lo escribe en mayusculas ('OFERTA AMAZON') y en minusculas
+    ('Oferta Amazon'), asi que la comparacion no puede ser exacta: con ella, las
+    22 ofertas cuyo unico texto era ese marcador se publicaban con el titulo y
+    la marca 'OFERTA AMAZON' en lugar de descartarse.
+    """
+    return (titulo or '').strip().upper() == 'OFERTA AMAZON'
 
 def extraer_marca(titulo):
     """Extrae la marca del producto del titulo.
@@ -572,7 +611,7 @@ def extraer_marca(titulo):
     La marca suele ser la primera o dos palabras del titulo, antes de un
     guion, dos puntos o el nombre del producto.
     """
-    if not titulo or titulo == 'Oferta Amazon':
+    if not titulo or _es_titulo_marcador(titulo):
         return ''
 
     # Buscar marca antes de un guion o dos puntos
@@ -639,39 +678,56 @@ def _gtin_valido(codigo):
     return (10 - total % 10) % 10 == int(codigo[-1])
 
 def extraer_gtin(texto):
-    """Busca un GTIN (EAN-13, UPC-A) o MPN en el mensaje.
+    """Busca un GTIN (EAN-13, UPC-A, EAN-8) en el mensaje.
 
-    Los GTIN tienen 13 digitos (EAN) o 12 (UPC), y se validan por digito de
-    control. Los MPN son codigos de pieza: llevan letras y digitos ('M210',
-    'i7-1355U').
+    Los GTIN son solo digitos y se validan por digito de control, asi que un
+    numero suelto (un telefono, un ISBN mal puesto) no se cuela.
+
+    Aqui NO se buscan MPN: un codigo de pieza ('HC5880', 'RLC-810A') o un
+    hashtag ('#BlackFriday26') no es un GTIN, y publicarlos como
+    itemprop="gtin" es informacion falsa en los resultados de Google. Los MPN
+    van en su propio campo, ver extraer_mpn.
     """
     if not texto:
         return ''
 
-    # Buscar EAN-13 / UPC-A / EAN-8 con el digito de control correcto. La
-    # comilla Lookbehind y la Lookahead evitan arrancar el codigo en mitad de
+    # Los hashtags se quitan antes de buscar: '#BlackFriday26' no es un GTIN,
+    # pero un hashtag solo de digitos ('#12345678') podria(validandose) colarse.
+    texto = RE_HASHTAG.sub(' ', texto)
+
+    # La comilla Lookbehind y la Lookahead evitan arrancar el codigo en mitad de
     # otro numero o de un precio con separador de millares.
     for m in re.finditer(r'(?<![\d.,])(\d{8}|\d{12,13})(?![\d.,])', texto):
         if _gtin_valido(m.group(1)):
             log.debug(f"  [GTIN] GTIN: {m.group(1)}")
             return m.group(1)
 
-    # Buscar MPN. Se exige al menos un digito: un codigo de pieza los trae
-    # siempre, mientras que una palabra suelta no. Sin esa exigencia el regex
-    # devolvia la marca o un sustantivo del titulo ('Scottex', 'OFERTA',
-    # 'Zapatillas') y se publicaba como itemprop="gtin", que es informacion
-    # falsa. El ASIN de los enlaces tampoco sirve: no es un GTIN.
-    # El MPN se busca fuera de los enlaces: el tag de afiliado del propio bot
-    # ('?tag=gangas054-21') tiene guion y digitos, asi que si se buscara en el
-    # texto entero apareceria como codigo de pieza en casi todas las ofertas.
-    texto_plano = RE_ENLACE_PLANO.sub(' ', texto)
+    return ''
+
+def extraer_mpn(texto):
+    """Busca un MPN (codigo de pieza del fabricante) en el mensaje.
+
+    Un MPN lleva letras y digitos ('M210', 'i7-1355U', 'RLC-810A'). Se exige al
+    menos un digito: un codigo de pieza los trae siempre, mientras que una
+    palabra suelta no. Sin esa exigencia el regex devolvia la marca o un
+    sustantivo del titulo ('Scottex', 'OFERTA', 'Zapatillas').
+
+    El ASIN de los enlaces tampoco sirve, y el MPN se busca fuera de los
+    enlaces: el tag de afiliado del propio bot ('?tag=gangas054-21') tiene guion
+    y digitos, asi que si se buscara en el texto entero apareceria como codigo de
+    pieza en casi todas las ofertas. Los hashtags tampoco sirven ('Blackfriday26').
+    """
+    if not texto:
+        return ''
+
+    texto_plano = RE_HASHTAG.sub(' ', RE_ENLACE_PLANO.sub(' ', texto))
     asins = {a.upper() for a in RE_ASIN.findall(texto or '')}
     for token in re.findall(r'[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*', texto_plano):
         if not 6 <= len(token) <= 20 or token.isdigit():
             continue
         if not any(c.isdigit() for c in token) or token.upper() in asins:
             continue
-        log.debug(f"  [GTIN] MPN: {token}")
+        log.debug(f"  [MPN] {token}")
         return token
 
     return ''
@@ -865,12 +921,14 @@ def _motivo_descarte(oferta):
     vacias es peor que no publicarlas, asi que se descartan antes de escribir.
 
     Se exige ademas que el titulo no sea el marcador de posicion 'Oferta Amazon',
-    que es lo que devuelve extraer_titulo cuando el mensaje no trae ninguno.
+    que es lo que devuelve extraer_titulo cuando el mensaje no trae ninguno. La
+    comparacion es case-insensitive (ver _es_titulo_marcador) porque el canal lo
+    escribe en mayusculas y las ofertas asi se colaban en la web.
     """
     if not oferta.get('amazon_url'):
         return 'sin enlace de Amazon'
     titulo = (oferta.get('title') or '').strip()
-    if not titulo or titulo == 'Oferta Amazon':
+    if not titulo or _es_titulo_marcador(titulo):
         return 'sin titulo'
     if not oferta.get('price'):
         return 'sin precio'
@@ -895,6 +953,7 @@ async def actualizar_json(categoria, mensaje):
     descripcion = extraer_descripcion(texto)
     marca = extraer_marca(titulo)
     gtin = extraer_gtin(texto)
+    mpn = extraer_mpn(texto)
 
     log.info(f"  [OFERTA] Titulo   : {titulo}")
     log.info(f"  [OFERTA] Precio   : {precio if precio else '(no detectado)'}")
@@ -911,6 +970,8 @@ async def actualizar_json(categoria, mensaje):
         log.info(f"  [OFERTA] Marca    : {marca}")
     if gtin:
         log.info(f"  [OFERTA] GTIN     : {gtin}")
+    if mpn:
+        log.info(f"  [OFERTA] MPN      : {mpn}")
 
     oferta = {
         'id':         mensaje.id,
@@ -924,7 +985,8 @@ async def actualizar_json(categoria, mensaje):
         'categoria':  categoria,
         'description': descripcion,
         'brand':       marca,
-        'gtin':        gtin
+        'gtin':        gtin,
+        'mpn':         mpn
     }
 
     # Descartar lo que no se puede publicar antes de escribir en los JSON.
@@ -1214,7 +1276,12 @@ async def _verificar_backfill(mensajes, procesados):
     recogiendo las ofertas nuevas aunque el backfill haya quedado corto.
     """
     general = _leer_json(DATA_PATH / 'general.json')
-    esperados = min(BACKFILL_LIMIT, len(mensajes))
+    # El objetivo no es llenar los mensajes leidos, sino los huecos del
+    # catalogo: MAX_OFERTAS. Con BACKFILL_LIMIT > MAX_OFERTAS (hay que leer de
+    # mas porque no todos los mensajes son ofertas) comparar contra los
+    # mensajes leidos daria un "FALTAN 30" que en realidad es el recorte
+    # previsto y no una perdida.
+    objetivo = min(MAX_OFERTAS, BACKFILL_LIMIT, len(mensajes))
     topes = [f'{p.name}={len(_leer_json(p))}'
              for p in sorted(DATA_PATH.glob('*.json')) if p.name != 'general.json']
 
@@ -1222,12 +1289,18 @@ async def _verificar_backfill(mensajes, procesados):
              f"(procesadas: {procesados}, leidas del canal: {len(mensajes)}); "
              f"por categoria -> {', '.join(topes) or 'sin categorias'}")
 
-    if len(general) < esperados:
-        faltan = esperados - len(general)
-        log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {esperados} leidas del canal. "
-                    f"Revisa los descartes de arriba y MAX_OFERTAS={MAX_OFERTAS}.")
+    if len(general) < objetivo:
+        faltan = objetivo - len(general)
+        log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {objetivo} que caben "
+                    f"(de {len(mensajes)} mensajes leidos). Revisa los descartes de arriba; "
+                    f"si son muchos los no publicables, sube BACKFILL_LIMIT "
+                    f"(ahora {BACKFILL_LIMIT}).")
     else:
-        log.info(f"[VERIFICACION] general.json completo: {len(general)}/{esperados} ofertas del canal")
+        log.info(f"[VERIFICACION] general.json completo: {len(general)}/{objetivo} ofertas")
+        if len(mensajes) > objetivo:
+            log.info(f"[VERIFICACION] Se dejan fuera los {len(mensajes) - objetivo} mensajes "
+                     f"mas antiguos: es el recorte normal para quedarse con las "
+                     f"{objetivo} ofertas mas recientes.")
 
     if not AUTO_PUBLICAR:
         log.warning("[VERIFICACION] AUTO_PUBLICAR=0: los JSON son correctos pero la web "
