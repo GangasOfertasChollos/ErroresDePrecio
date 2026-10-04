@@ -1224,7 +1224,7 @@ async def _verificar_backfill(mensajes, procesados):
 
     if len(general) < esperados:
         faltan = esperados - len(general)
-        log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {esperadas} leidas del canal. "
+        log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {esperados} leidas del canal. "
                     f"Revisa los descartes de arriba y MAX_OFERTAS={MAX_OFERTAS}.")
     else:
         log.info(f"[VERIFICACION] general.json completo: {len(general)}/{esperados} ofertas del canal")

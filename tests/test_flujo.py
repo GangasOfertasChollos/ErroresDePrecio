@@ -4,16 +4,18 @@ Simula un mensaje real con foto, comprueba que el bot lo clasifica y guarda bien
 y despues renderiza el HTML con assets/app.js y verifica que la oferta aparece
 con su precio, su enlace y su JSON-LD.
 """
-import os, sys, json, asyncio, subprocess, importlib.util, shutil
+import os, sys, json, asyncio, subprocess, importlib.util, shutil, logging, tempfile
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(RAIZ / "tests"))
 
-TMP = Path(os.environ.get("TEMP", ".")) / "gangas_e2e"
-if TMP.exists():
-    shutil.rmtree(TMP)
-TMP.mkdir(parents=True)
+# Directorio propio de esta ejecucion, con un nombre unico: con un nombre fijo
+# dos ejecuciones simultaneas (o una anterior que dejo el directorio a medias)
+# se pisan y el import de bot.py falla con FileNotFoundError de forma
+# intermitente, muy dificil de reproducir.
+TMP = Path(tempfile.mkdtemp(prefix="gangas_e2e_"))
+print(f"  (directorio de trabajo: {TMP})")
 
 # Copia del proyecto con data/ vacio, para no tocar los datos reales
 for f in ["bot.py", "categorias.json"]:
@@ -28,6 +30,23 @@ for h in RAIZ.glob("*.html"):
 os.environ.update(dict(API_ID="1", API_HASH="h", TELEGRAM_CHANNEL="@x"))
 spec = importlib.util.spec_from_file_location("bot", TMP / "bot.py")
 bot = importlib.util.module_from_spec(spec); spec.loader.exec_module(bot)
+
+def cerrar_log_del_bot():
+    """Cierra el bot.log que el modulo abre al importarse.
+
+    logging.basicConfig installs un FileHandler sobre TMP/bot.log y el log
+    raiz no expone la lista: los handlers se buscamos en todos los loggers.
+    Sin cerrarlos, Windows mantiene el fichero bloqueado, rmtree no puede
+    borrarlo y cada ejecucion deja una copia del proyecto en TEMP.
+    """
+    for lg in [logging.getLogger()] + [logging.getLogger(n)
+                                      for n in logging.root.manager.loggerDict]:
+        for h in list(getattr(lg, "handlers", [])):
+            if isinstance(h, logging.FileHandler):
+                h.close()
+                lg.removeHandler(h)
+
+cerrar_log_del_bot()
 
 fallos = 0
 def check(n, cond, det=""):
@@ -267,28 +286,49 @@ async def main():
 
     print("\n== 11. La verificacion avisa si el catalogo queda corto ==")
     # _verificar_backfill no lanza: avisa por log y el bot sigue escuchando.
-    # Se comprueba que general.json esta completo tras el backfill del paso 8.
     general3 = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))
-    esperados = min(bot.BACKFILL_LIMIT, 5)
     check("general.json tiene todas las ofertas del canal",
-          len(general3) == esperados, f"{len(general3)} de {esperados}")
+          len(general3) == 5, f"{len(general3)} de 5")
+
+    # Se captura el log para comprobar el aviso, no solo que no reviente.
+    class Manos(logging.Handler):
+        def __init__(self): super().__init__(); self.lineas = []
+        def emit(self, registro): self.lineas.append(registro.getMessage())
+
+    manos = Manos()
+    bot.log.addHandler(manos)
 
     await bot._verificar_backfill(list(range(1001, 1006)), len(general3))
-    check("la verificacion con el catalogo completo no revienta", True)
+    texto = "\n".join(manos.lineas)
+    check("catalogo completo: lo dice", "general.json completo: 5/5" in texto, texto[-300:])
+    check("recuento por categoria en el log", "por categoria ->" in texto, texto[-300:])
 
     # Con MAX_OFERTAS recortando por debajo de lo leido, general.json se queda
-    # corto: la verificacion debe seguir adelante (avisar, no abortar).
-    topes = {p.name: len(json.loads(p.read_text(encoding="utf-8")))
-             for p in (TMP / "data").glob("*.json")}
+    # corto: debe avisar del numero exacto que falta, y seguir sin abortar.
+    manos.lineas.clear()
     (TMP / "data" / "general.json").write_text("[]\n", encoding="utf-8")
     await bot._verificar_backfill(list(range(1001, 1006)), 5)
-    check("la verificacion con el catalogo vacio no revienta", True)
+    texto = "\n".join(manos.lineas)
+    check("catalogo corto: avisa cuantas faltan", "FALTAN 5 ofertas de las 5" in texto, texto[-300:])
+    check("catalogo corto: no aborta", True)
+
+    manos.lineas.clear()
     (TMP / "data" / "general.json").write_text(
         json.dumps(general3, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
-    check("general.json restaurado tras la comprobacion", topes is not None)
+    bot.AUTO_PUBLICAR = False
+    await bot._verificar_backfill(list(range(1001, 1006)), len(general3))
+    texto = "\n".join(manos.lineas)
+    check("sin AUTO_PUBLICAR avisa de que la web no se actualiza",
+          "AUTO_PUBLICAR=0" in texto, texto[-300:])
+    bot.AUTO_PUBLICAR = True
+    bot.log.removeHandler(manos)
 
-asyncio.run(main())
-shutil.rmtree(TMP, ignore_errors=True)
+try:
+    asyncio.run(main())
+finally:
+    # La limpieza va en finally: si main() revienta, el directorio se borra
+    # igual y no se acumulan copias del proyecto en TEMP.
+    shutil.rmtree(TMP, ignore_errors=True)
 print("\n" + "=" * 56)
 print("TODO CORRECTO" if fallos == 0 else f"{fallos} FALLOS")
 raise SystemExit(1 if fallos else 0)

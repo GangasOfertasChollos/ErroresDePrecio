@@ -129,12 +129,36 @@ Detalles que conviene tener presentes:
   falla, el canal está vacío o no se puede acceder, se conserva el catálogo
   anterior en lugar de dejar la web vacía y sin repuesto. Hay pruebas de esto
   en `tests/test_flujo.py`.
-- **Mirar 100 mensajes no es publicar 100 ofertas.** `MAX_OFERTAS` (30) sigue
-  mandando: cada JSON guarda como máximo 30 ofertas, las más recientes. Para
-  publicar más, sube `MAX_OFERTAS`.
+- **`MAX_OFERTAS` no puede quedar por debajo de `BACKFILL_LIMIT`.** Ambos valen
+  100 por defecto, así que de los 100 mensajes leídos se publican hasta 100
+  ofertas. Si alguien deja `MAX_OFERTAS` por debajo, el recorte de
+  `_guardar_en_archivo` tiraría ofertas que sí se han leído del canal y el
+  catálogo recién reiniciado saldría incompleto solo por el límite: el bot lo
+  detecta al arrancar, avisa por log y sube `MAX_OFERTAS` a `BACKFILL_LIMIT`.
 - **Se descarta lo que no se puede publicar.** Una oferta sin enlace de Amazon,
   sin título o sin precio no llega a los JSON: serían tarjetas rotas o sin
   información. Cada descarte queda anotado en el log con el motivo.
+
+### Al terminar, el bot se verifica
+
+Al cerrar el backfill, `bot.py` comprueba por log lo que de verdad importa al
+arrancar, y avisa si algo no cuadra:
+
+```
+[VERIFICACION] general.json=100 ofertas (procesadas: 100, leidas del canal: 100); por categoria -> general=100, higiene-cuidado-personal=8, ...
+[VERIFICACION] general.json completo: 100/100 ofertas del canal
+[VERIFICACION] Cambios publicados en origin/main. GitHub Pages tardara unos minutos en servirlos.
+```
+
+- Si `general.json` se queda corto, dice **cuántas** ofertas faltan de las leídas
+  y recuerda mirar `MAX_OFERTAS`.
+- Si el `git push` falla, avisa de que **la web sigue mostrando el catálogo
+  anterior**, en lugar de dejar un JSON correcto en local que nadie ve.
+- Si `AUTO_PUBLICAR=0`, avisa de que los JSON son correctos pero la web no se
+  actualizará hasta que alguien haga `git push` a mano.
+
+No aborta nunca: el bot sigue escuchando y recogiendo ofertas nuevas aunque el
+backfill haya quedado corto.
 
 Con `REINICIAR_CATALOGO=0` se conserva el comportamiento anterior: los JSON se
 van llenando de forma incremental y el backfill solo rellena huecos.
@@ -267,7 +291,7 @@ Todo en `.env` (ver `.env.example`):
 |---|---|---|
 | `API_ID` / `API_HASH` | — | Credenciales de Telegram (obligatorias) |
 | `TELEGRAM_CHANNEL` | `@GangasOfertasChollos` | Canal que se escucha |
-| `MAX_OFERTAS` | `30` | Ofertas guardadas por JSON |
+| `MAX_OFERTAS` | `100` | Ofertas guardadas por JSON. Si queda por debajo de `BACKFILL_LIMIT`, el bot lo sube al arrancar |
 | `BACKFILL_LIMIT` | `100` | Mensajes del histórico a recuperar al arrancar (`0` desactiva) |
 | `REINICIAR_CATALOGO` | `1` | Borrar ofertas e imágenes al arrancar y reconstruirlas desde el canal (`0` conserva lo que haya) |
 | `USAR_UNFURL` | `1` | Obtener la miniatura desde la página pública del mensaje (`0` desactiva) |
