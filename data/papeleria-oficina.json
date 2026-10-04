@@ -11,7 +11,8 @@
         "categoria": "papeleria-oficina",
         "description": "Colhogar Aloe – Papel Higiénico Húmedo, 640 uds. 2ª unidad -70% Ahorro total comprando 2: 16,74 € Con aloe vera, sin alcohol y desechable por el WC.",
         "brand": "2ª UNIDAD",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6902,
@@ -25,7 +26,8 @@
         "categoria": "papeleria-oficina",
         "description": "",
         "brand": "HP LaserJet",
-        "gtin": "7MD72F"
+        "gtin": "",
+        "mpn": "7MD72F"
     },
     {
         "id": 6868,
@@ -35,24 +37,11 @@
         "old_price": "13.99 €",
         "discount": "-35%",
         "amazon_url": "https://www.amazon.es/dp/B086ZGKYH8?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/nYdeyAdpfN4cMMDJ_ZwavFHiIIKNp5MSKtySja0gkJRVJw_2eX6Xf4SvROPNubtQirhkgPHwu8ynlXlL40x7meGW66_IDSanh7kqKYgvdlL30NIhtrEoMsiFvYV2ijR1mjN3NQULlv3QXQoC62Q0dZXkc6JPBNK8bEvzFT9qhXFYn6Nx9IBlUhO92tpf1ewSPtZi5Bs0q56CHZimnflz5gDRc0M6yccTZxUhmQMD-2xmoInB-sqa_dDNlWfmWWAtmKz2s0rkW-WEQI1uGu0SNfRV3XDL0NmxGg6V0oCRHl2uz1MtMJyF-1i-OqInZbRZxDPDZF1YGFcSgrdE9nz2hA.jpg",
+        "image": "https://cdn4.telesco.pe/file/GhxikZKnqPBWV4VX0IHSAMug2agcbRlyam3DqCu1O72P8yyo1jFwv3VoJkYNcffTZ75spYVMnBCpuhTRJro7rNgQV-mdbV-ixy4gmMzHY6vQD0WOHdqZ2NtSsOv25zzmyEfBEvS49fOQOcD8amjtH6qnBYHZmgpnna-Dz7m_7c7V7-ABHcJNC916lRFZ09UPLeHjzgj_qRRSPMKlzmdLZ7MPo-o_KyhZJGiuOlucKFF60qQMQTsw4w8zhbKI7DVx1pmZLMAwV00r8ul1msyIpdUXJQScEal8tw0faZBes1cVo6VZxfr37gCs-lxBcqaB25da1OMJjsx6oHdtLlSU3g.jpg",
         "categoria": "papeleria-oficina",
         "description": "Cable de 2 metros para conectar dispositivos USB-C a impresoras y otros equipos con puerto USB-B.",
         "brand": "UGREEN",
-        "gtin": ""
-    },
-    {
-        "id": 6848,
-        "date": "2026-10-04T10:10:26+00:00",
-        "title": "Scottex Papel Higiénico Húmedo Fresh con Agua Micelar y Vitamina E, Biodegradable y Sin Plástico, Caja 12 packs de 38 servicios, Total 456 Toallitas Húmedas Desechables por WC",
-        "price": "16.91 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B07CCWCNFR?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/YjNz8Q8rCXfXYGiJrkF6fUrHxGkxJcaIylq1kklEUCQaTBHBgIs0Qk5VZSZK06j1VW-L627C6dThBhLo_xqTC3kny1VYef5bdx0vNer2vpGFUbXboP14Y7rGW4IXAW2FzbSYEu4N4lk2QYECa28iU-gb26rgZjE-sKi7XnIBd-BMMgnyY0epM184KyxJEwW6CtNJU9BO68EK_zrLtofjnJV2HoGVSm3JZzBbECnT7hppaCAj-3huR4hhsd3x9bHahqWhfQunNCC1u9WwH55SStsenQEhPc98b7LG767VWe2Kemit-P_FWuuKW1IEYleEltavEL_koXKQoLXQOQ77BA.jpg",
-        "categoria": "papeleria-oficina",
-        "description": "",
-        "brand": "Scottex Papel",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     }
 ]

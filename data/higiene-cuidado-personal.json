@@ -1,5 +1,20 @@
 [
     {
+        "id": 6946,
+        "date": "2026-10-04T19:46:18+00:00",
+        "title": "Panasonic Series 900+ ES-LS9A Afeitadora Eléctrica De 6 Hojas En Seco Y Húmedo Para Hombres, Afeitadora Eléctrica Con Sensor De Barba Sensible, Limpieza Automática Y Sistema De Carga",
+        "price": "353.49 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09ZFBVG59?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/LwcKB2BooEPXWQNONsahVHrzIeNzcW3HvJ7tc3jnV_xc_veCHrQI0FHk0Ygvgxg-I9FBULif2I58t-F90X7DAxhVEq5zzzRGbi1dwQf-giENf-7H7siDFzNhwJyPYPVqF3wj2wt-hdusWpMGhq7FA1enHbCRbprbgkU-GxkOwBKaMLwZab0xk9beaMqC2BpIHtxh09kJ1kBQvTzwMPYhXJCW0EVNELawHd2vMEvz6CHu6vROQclCRs9B6ttcTeqacGuah_-auaEsMQSA61ALywCbRPznbcQeyUDsZBcyQazWVXKQ3M32EECfLqKCpgV5nY_iOtF0MJNhawVgTm3FhQ.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "",
+        "brand": "Panasonic Series",
+        "gtin": "",
+        "mpn": "ES-LS9A"
+    },
+    {
         "id": 6937,
         "date": "2026-10-04T19:10:32+00:00",
         "title": "Urtekram Champú de Romero para Cabello Fino - 250 ml",
@@ -11,7 +26,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "Urtekram Champú",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6931,
@@ -25,7 +41,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Secador iónico con 8 ajustes y 5 accesorios.",
         "brand": "Remington ONE",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6923,
@@ -39,7 +56,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "Signal Pasta",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6905,
@@ -53,7 +71,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Mini galletas rellenas de crema de pistacho, perfectas para picar.",
         "brand": "Nocilla Mini",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6897,
@@ -67,7 +86,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "medicube PDRN",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6881,
@@ -81,7 +101,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Pack de 4 con acción blanqueadora.",
         "brand": "Colgate Total",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6870,
@@ -95,7 +116,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "VALQUER Acondicionador",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6866,
@@ -109,7 +131,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "Vichy Crema",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6863,
@@ -123,7 +146,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "PERFECTIONIST PRO",
-        "gtin": "Blackfriday26"
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6860,
@@ -137,7 +161,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "BaByliss Secador",
-        "gtin": "D572DE"
+        "gtin": "",
+        "mpn": "D572DE"
     },
     {
         "id": 6855,
@@ -151,7 +176,8 @@
         "categoria": "higiene-cuidado-personal",
         "description": "",
         "brand": "Scholl Crema",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6852,
@@ -165,34 +191,7 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Sérum efecto glow con Thiamidol®, niacinamida y aloe vera para una piel más luminosa.",
         "brand": "NIVEA Luminous",
-        "gtin": ""
-    },
-    {
-        "id": 6849,
-        "date": "2026-10-04T10:15:13+00:00",
-        "title": "Cepillos Interdentales by Amazon 0,45 mm – Pack 24",
-        "price": "4.73 €",
-        "old_price": "7.50 €",
-        "discount": "-37%",
-        "amazon_url": "https://www.amazon.es/dp/B0CZ77NCMB?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/u_2F_VqvmxSz60lQ_PzauMENgDyCziDd3ftU7SeEVsZccY43sj1HDVWR1YtMLVAu__cvN4g5WsaU4d2GXB5L16vPcY0Z2TqD932-c5MjlfhpTvx5ael1V1xI5cv7WyNKclt1SOu6Z4FQQ373spKYZLlkHQ2Y1LLKR4wYvfrFqwmncqtRlmdrYQkVin57DB_2bfyCBN_V3rHCOnwVYvZcwFGzHLdwoQCWR5xCjBgRmu2yy4oN5wiBmZf7n0BfdpPk7cVpMbpGkEfLF0wgFRX6-MVrZKWZiAYW6e8len5nlRzNZ5UJEKkaExARzvHtm3XRkZ_2yPIxmK9sInKaYY5AaA.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Pack de 24 cepillos interdentales de 0,45 mm para una limpieza precisa entre los dientes.",
-        "brand": "Cepillos Interdentales",
-        "gtin": ""
-    },
-    {
-        "id": 6845,
-        "date": "2026-10-04T09:32:06+00:00",
-        "title": "Gillette Fusion One – Recortadora y Afeitadora Todo en Uno",
-        "price": "24.99 €",
-        "old_price": "39.99 €",
-        "discount": "-38%",
-        "amazon_url": "https://www.amazon.es/dp/B0GKW4SCHD?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/Q5Zzq0sc2MAbcLIfCX-R3aahLY31btqNqUNocaOEKGGWY1YPLsQopATZwKhPGo18Rh925AW1KBINCpefvzlF_OwslMBQyGweAMOxLpwlzlx8NF0dtkxDNbzpkLTflwidVZt2LD0yMv7SBsPc2tDJQAOj2GBtzJWS98MSyQuK-Cv_43QUfd2Sv6zsiewyLQGyXudZwOqYtcUVL0FJ_eyuIebbLwLNt_CF_nebmrwUSMI7j_7uHWyi0lOmt2tZvc_-Jj6e_cSN4Ckip9q2HAeaI8kSO-O5FmXXeT-wAbX-cmoxQ-AGcWD2wbNzEGrrLosqoirg95sO12bJUI9cO5udGQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Para cara y cuerpo, resistente al agua, con 4 peines y hasta 45 min de autonomía.",
-        "brand": "Gillette Fusion",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     }
 ]

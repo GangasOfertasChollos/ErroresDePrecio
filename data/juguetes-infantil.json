@@ -11,7 +11,8 @@
         "categoria": "juguetes-infantil",
         "description": "Set de 6 piezas con 2 biberones Natural Response de 260 ml y 4 chupetes Ultra Air.",
         "brand": "Philips Avent",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     },
     {
         "id": 6865,
@@ -25,6 +26,7 @@
         "categoria": "juguetes-infantil",
         "description": "",
         "brand": "Jané Termo",
-        "gtin": ""
+        "gtin": "",
+        "mpn": ""
     }
 ]
