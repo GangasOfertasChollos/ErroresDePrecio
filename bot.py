@@ -99,12 +99,22 @@ USAR_UNFURL      = str(os.getenv('USAR_UNFURL', '1')).strip().lower() not in ('0
 # del backfill y si el mismo mensaje se procesa mas de una vez.
 _CACHE_IMAGENES = {}
 
+# Motivo -> numero de ofertas descartadas. Lo rellena actualizar_json y lo
+# vacia el backfill en cada arranque, para poder cerrar con un resumen de por
+# que se quedaron fuera los mensajes que no son publicables.
+_DESCARTES = {}
+
 # Publicacion automatica en el repositorio. Sin esto el bot escribe los JSON
 # pero la web no se actualiza hasta que alguien haga git push a mano.
 AUTO_PUBLICAR   = str(os.getenv('AUTO_PUBLICAR', '0')).strip().lower() in ('1', 'true', 'yes', 'si')
 GIT_RAMA        = os.getenv('GIT_RAMA', 'main').strip()
 GIT_REMOTO      = os.getenv('GIT_REMOTO', 'origin').strip()
 PUBLICAR_CADA_S = _leer_int('PUBLICAR_CADA_SEGUNDOS', 60)
+
+# Motivos de descarte acumulados en este arranque, para que el resumen del
+# backfill diga por que se quedaron fuera mensajes y no solo cuantos. La
+# reinicia _vaciar_catalogo, que es quien empieza cada reconstruccion.
+_DESCARTES = {}
 
 # Serializa las escrituras de los JSON. Los handlers de Telethon se ejecutan de
 # forma concurrente y la lectura+escritura de un archivo debe ser indivisible.
@@ -1123,6 +1133,8 @@ def _reiniciar_catalogo():
     """
     json_vaciados = _vaciar_catalogo()
     imagenes = limpiar_imagenes_huerfanas()
+    # El recuento de descartes es por reconstruccion: al vaciar empieza una.
+    _DESCARTES.clear()
     log.info(f"[CATALOGO] Reiniciado: {json_vaciados} JSON vacios, "
              f"{imagenes} imagenes borradas")
     return json_vaciados, imagenes
@@ -1170,6 +1182,7 @@ async def recuperar_mensajes_perdidos():
         log.info(f"[CATALOGO] Se reconstruyen con {len(mensajes)} mensajes del canal "
                  f"({json_vaciados} JSON vacios, {imagenes} imagenes borradas)")
 
+    _DESCARTES.clear()
     procesados = 0
     for msg in reversed(mensajes):   # del mas antiguo al mas reciente
         try:
@@ -1180,8 +1193,55 @@ async def recuperar_mensajes_perdidos():
 
     log.info(f"[BACKFILL] {procesados}/{len(mensajes)} mensajes publicados "
              f"({len(mensajes) - procesados} descartados por no publicables o ya guardados)")
+    if _DESCARTES:
+        detalle = ", ".join(f"{motivo}: {n}" for motivo, n in
+                            sorted(_DESCARTES.items(), key=lambda kv: -kv[1]))
+        log.info(f"[BACKFILL] Motivos de descarte -> {detalle}")
+
+    await _verificar_backfill(mensajes, procesados)
+
+
+async def _verificar_backfill(mensajes, procesados):
+    """Comprueba, al cerrar el backfill, que el catalogo esta completo y publicado.
+
+    El log de arriba dice cuantos mensajes se procesaron, pero no responde a las
+    dos preguntas que de verdad importan al arrancar: si lo que hay en disco son
+    las ofertas que se han leido del canal, y si eso ha llegado a GitHub Pages.
+    Sin esta comprobacion, un recorte por MAX_OFERTAS o un push rechazado solo
+    se detectan tarde, con la web ya sirviendo un catalogo vacio.
+
+    Se avisa por log en vez de abortar: el bot esta escuchando y debe seguir
+    recogiendo las ofertas nuevas aunque el backfill haya quedado corto.
+    """
+    general = _leer_json(DATA_PATH / 'general.json')
+    esperados = min(BACKFILL_LIMIT, len(mensajes))
+    topes = [f'{p.name}={len(_leer_json(p))}'
+             for p in sorted(DATA_PATH.glob('*.json')) if p.name != 'general.json']
+
+    log.info(f"[VERIFICACION] general.json={len(general)} ofertas "
+             f"(procesadas: {procesados}, leidas del canal: {len(mensajes)}); "
+             f"por categoria -> {', '.join(topes) or 'sin categorias'}")
+
+    if len(general) < esperados:
+        faltan = esperados - len(general)
+        log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {esperadas} leidas del canal. "
+                    f"Revisa los descartes de arriba y MAX_OFERTAS={MAX_OFERTAS}.")
+    else:
+        log.info(f"[VERIFICACION] general.json completo: {len(general)}/{esperados} ofertas del canal")
+
+    if not AUTO_PUBLICAR:
+        log.warning("[VERIFICACION] AUTO_PUBLICAR=0: los JSON son correctos pero la web "
+                    "no se actualizara hasta que alguien haga git add/commit/push a mano.")
+        return
+
     if procesados:
-        await publicar_en_git(forzar=True)
+        if await publicar_en_git(forzar=True):
+            log.info(f"[VERIFICACION] Cambios publicados en {GIT_REMOTO}/{GIT_RAMA}. "
+                     "GitHub Pages tardara unos minutos en servirlos.")
+        else:
+            log.error("[VERIFICACION] Los JSON se han escrito pero el push ha fallado: "
+                      "la web sigue mostrando el catalogo anterior. "
+                      f"Revisa el bloque [GIT] del log y sube data/ a mano.")
 
 async def main():
     log.info("=" * 60)
