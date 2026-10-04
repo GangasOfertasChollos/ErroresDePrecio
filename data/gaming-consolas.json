@@ -1,1 +1,30 @@
-[]
+[
+    {
+        "id": 6862,
+        "date": "2026-10-04T11:35:27+00:00",
+        "title": "Amazon Fire TV Stick HD – Última generación",
+        "price": "25.99 €",
+        "old_price": "64.99 €",
+        "discount": "-60%",
+        "amazon_url": "https://www.amazon.es/dp/B0DJGCX6Q2?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/DgOjvUeDQxm921AyShKScOI6lt_mNAiZIWaqBVTOFbEmXUKOU_oyieoal_v9O0L1IPxra7qUjlVeToKGdzdSN1SINvbmk7DMB-9Wt2NcRTksYJmyTVWSg8J2ILE4JFoT0nKUZ_Uy-prlZxfW0JL88Ud_L5pd6GJJ1vN5t1UbI72_6c42xGqPRh5Lr684cJd-EVJHfJKicQAVr2paHg-n-8G6AakdyOdq5Uf34gHqYkX--3osptlocCp60rVx5GYmZxbN-xWExvyOyYrfVqtc25xa7bhsimdJXBHvSyhvxDG8owUrpX93fTnEZo-400jgFwOEVsQ9yfX_bxdscASVYg.jpg",
+        "categoria": "gaming-consolas",
+        "description": "Streaming en HD con mando por voz Alexa, Wi-Fi 6, TV en directo y configuración sencilla.",
+        "brand": "Amazon Fire",
+        "gtin": ""
+    },
+    {
+        "id": 6850,
+        "date": "2026-10-04T10:39:20+00:00",
+        "title": "⌨️ GXTrust Dothix – Teclado Gaming Inalámbrico RGB TKL",
+        "price": "19.99 €",
+        "old_price": "39.99 €",
+        "discount": "-50%",
+        "amazon_url": "https://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/Iu45rv_KNMghAQMcfpDJGuQ-Pq_hmL-euULclJzoPRZ2E2YkhlGkWRj5GYridZuU47Ezdo60GzXTypXB5NMSau8IP2Y8AtrT1_9zWBG5AYD81RAl3cWeAa3DBwgj0POEIbwY56TT6psm5kp34kG1pYMmqqD85op1dB550XoBETB2mbiwPc_cEnxWejCWjVxtNpPlqiSaDQ_R8-UwfEc_lTKsTaPEFmHiQmSZwyaedmPmV3pSyFTKNJXU-6VYVtAcJ-XbwCCCeFi2mxN1ETLN3-EnAerU7VOUlocYzjC9VscxwEQHNg-dKOH3uZZI1VcGztpZQVjlbAOQexLNpv2Mig.jpg",
+        "categoria": "gaming-consolas",
+        "description": "Teclado inalámbrico TKL 80% con RGB, conexión 2,4 GHz y hasta 420 horas de juego.",
+        "brand": "GXTrust",
+        "gtin": "Blackfriday26"
+    }
+]
