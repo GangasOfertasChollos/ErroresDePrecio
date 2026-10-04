@@ -1,5 +1,19 @@
 [
     {
+        "id": 6857,
+        "date": "2026-10-04T11:12:41+00:00",
+        "title": "Paraguas plegable con diseño invertido y apertura y cierre automático, 10 resistentes varillas, secado rápido por 15,99€.",
+        "price": "15.99 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08NDBL1YB?tag=gangas054-21",
+        "image": "data/images/oferta_6857.jpg",
+        "categoria": "general",
+        "description": "Cuando se pone a llover solemos pensar «pues nada cojo el paraguas y listo», sin embargo en la mayoría de las ocasiones en especial cuando se trata de una fuerte tormenta o hace mucho viento como es el caso de las Danas",
+        "brand": "Paraguas plegable",
+        "gtin": "OFERTA"
+    },
+    {
         "id": 6856,
         "date": "2026-10-04T11:06:01+00:00",
         "title": "Tommy Hilfiger Cortavientos Hombre Harrington impermeable, Rojo (Medium Red), L",
@@ -404,19 +418,5 @@
         "description": "12,19 € (antes 18,00 €)",
         "brand": "Vichy, Normaderm",
         "gtin": "Normaderm"
-    },
-    {
-        "id": 6825,
-        "date": "2026-10-04T07:16:46+00:00",
-        "title": "3x2 en Fairy Platinum Plus Limón – 71 Cápsulas",
-        "price": "23.40 €",
-        "old_price": "26.49 €",
-        "discount": "-12%",
-        "amazon_url": "https://www.amazon.es/dp/B0GW43JCYR?tag=gangas054-21",
-        "image": "data/images/oferta_6825.jpg",
-        "categoria": "general",
-        "description": "Ahorro total con el 3x2: 29,58 € 3 packs por solo 46,80 €.",
-        "brand": "3x2 en",
-        "gtin": "Platinum"
     }
 ]
