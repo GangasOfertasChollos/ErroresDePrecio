@@ -1,4 +1,4 @@
-"""Prueba de extremo a extremo: un mensaje de Telegram -> JSON -> HTML en la pagina.
+﻿"""Prueba de extremo a extremo: un mensaje de Telegram -> JSON -> HTML en la pagina.
 
 Simula un mensaje real con foto, comprueba que el bot lo clasifica y guarda bien,
 y despues renderiza el HTML con assets/app.js y verifica que la oferta aparece
@@ -54,6 +54,35 @@ class MsgReal:
         return str(destino)
 
 
+class ClienteFalso:
+    """Sustituye al cliente de Telethon y cuenta las descargas de imagen.
+
+    El paso que se elimino de extraer_imagen bajaba la foto con
+    `client.download_media(mensaje.media, file=...)`, o sea usando el cliente
+    del bot, no el metodo del mensaje. Con el cliente real sin conectar, la
+    descarga fallaba y el except se comia el error, de modo que data/images/
+    no llegaba a crearse por casualidad y el test pasaba sin comprobar nada.
+    Aqui el cliente falso escribe el fichero de verdad, asi que si alguien
+    vuelve a meter la descarga, el test falla.
+    """
+    descargas = 0
+
+    async def download_media(self, media, file=None, **_):
+        ClienteFalso.descargas += 1
+        destino = Path(file)
+        destino.parent.mkdir(parents=True, exist_ok=True)
+        destino.write_bytes(b"PNG-falso")
+        return str(destino)
+
+    async def get_messages(self, canal=None, limit=0, **_):
+        # El historial del canal: los mensajes de MENSAJES, del mas nuevo al
+        # mas viejo, como los devuelve Telethon.
+        return [MsgReal(mid, texto) for mid, texto in reversed(MENSAJES)][:limit]
+
+
+bot.client = ClienteFalso()
+
+
 MENSAJES = [
     (1001, "Zapatillas Nike Air Zoom Running\nAntes ~~299,99\u20ac~~\nAhora 89,95\u20ac\n"
            "https://www.amazon.es/dp/B0XYZ123/ref=sr_1_1"),
@@ -74,6 +103,8 @@ async def main():
                                              "https://www.amazon.es/dp/B0TEST"), origen="e2e")
     check("no se crea data/images/", not (TMP / "data" / "images").exists(),
           list((TMP / "data").iterdir()))
+    check("el bot no intenta descargar la foto del mensaje", ClienteFalso.descargas == 0,
+          f"{ClienteFalso.descargas} descargas")
     oferta0 = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))[0]
     check("la oferta se guarda con la imagen vacia (sin unfurl)", oferta0["image"] == "",
           oferta0["image"])
@@ -116,6 +147,8 @@ async def main():
     check("general.json ordenado de mayor a menor id",
           [o["id"] for o in general] == [1005, 1004, 1003, 1002, 1001, 1000],
           [o["id"] for o in general])
+    check("ninguno de los 6 mensajes con foto ha descargado nada", ClienteFalso.descargas == 0,
+          f"{ClienteFalso.descargas} descargas")
 
     print("\n== 6. La pagina HTML renderiza la oferta ==")
     r = subprocess.run(["node", str(RAIZ / "tests" / "test_app.js")],
@@ -131,6 +164,97 @@ async def main():
     check("la pagina declara su feed", 'data-feed="ropa-y-calzado"' in html_cat)
     check("la pagina declara og:image", "assets/og-image.png" in html_cat)
     check("no queda ningun binario en data/", not (TMP / "data" / "images").exists())
+
+    print("\n== 8. Cada arranque vacia el catalogo y lo reconstruye ==")
+    # Con REINICIAR_CATALOGO los JSON se vacian y se repueblan con el
+    # historial, para que nunca acumulen ofertas caducadas ni edits a mano.
+    check("REINICIAR_CATALOGO viene activado", bot.REINICIAR_CATALOGO is True,
+          bot.REINICIAR_CATALOGO)
+
+    # Una oferta caduca que no esta en el historial actual: al reiniciar el
+    # catalogo tiene que desaparecer, no quedarse pegada.
+    caducada = dict(por_id[1001], id=9999, title="Oferta caducada de hace un mes")
+    (TMP / "data" / "general.json").write_text(
+        json.dumps([caducada] + general, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
+    check("antes de reiniciar, la caducada sigue ahi",
+          any(o["id"] == 9999 for o in
+              json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))))
+
+    await bot.recuperar_mensajes_perdidos()
+
+    general2 = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))
+    check("la oferta caducada se ha ido al reiniciar",
+          not any(o["id"] == 9999 for o in general2), [o["id"] for o in general2])
+    check("el catalogo se ha reconstruido con los 5 mensajes del canal",
+          [o["id"] for o in general2] == [1005, 1004, 1003, 1002, 1001],
+          [o["id"] for o in general2])
+    check("reiniciar no duplica ofertas", len(general2) == len({o["id"] for o in general2}))
+    # La oferta 1000 se proceso en el paso 0 pero no viene del historial:
+    # al reconstruir desde el canal desaparece, que es lo que se busca.
+    check("lo que no esta en el canal desaparece", 1000 not in [o["id"] for o in general2],
+          [o["id"] for o in general2])
+
+    print("\n== 8b. Las imagenes tambien se borran ==")
+    # Si algo vuelve a crear data/images/, el reinicio lo elimina: dentro solo
+    # puede haber binarios que el navegador no puede resolver desde GitHub Pages.
+    imagenes = TMP / "data" / "images"
+    imagenes.mkdir(parents=True, exist_ok=True)
+    for n in (700, 701, 702):
+        (imagenes / f"oferta_{n}.jpg").write_bytes(b"JPEG-falso" * 100)
+    (imagenes / "sub").mkdir()
+    (imagenes / "sub" / "oferta_703.jpg").write_bytes(b"JPEG-falso")
+    check("hay imagenes antes de reiniciar", len(list(imagenes.rglob("*.jpg"))) == 4,
+          list(imagenes.rglob("*.jpg")))
+
+    await bot.recuperar_mensajes_perdidos()
+
+    check("data/images/ borrado tras reiniciar", not imagenes.exists(), list(TMP.joinpath("data").iterdir()))
+    check("no queda ninguna imagen suelta en data/",
+          not any(p.suffix.lower() in (".jpg", ".jpeg", ".png", ".gif", ".webp")
+                  for p in (TMP / "data").rglob("*")),
+          [str(p) for p in (TMP / "data").rglob("*") if p.is_file()])
+
+    print("\n== 8c. Lo no publicable se descarta ==")
+    # Un mensaje sin enlace no lleva a ninguna parte, y uno sin precio no
+    # sirve en un sitio de errores de precio: no deben acabar en los JSON.
+    for mid, texto in [(2001, "Zapatillas Nike Air\nAhora 39,99 \u20ac"),
+                       (2002, "Aviso: el canal cambia de horario\nhttps://t.me/canal/1"),
+                       (2003, "Camiseta de prueba\nhttps://www.amazon.es/dp/B0SINPRECIO")]:
+        await bot.procesar_mensaje(MsgReal(mid, texto), origen="e2e")
+    tras = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))
+    ids_tras = [o["id"] for o in tras]
+    check("mensaje sin enlace no se publica", 2001 not in ids_tras, ids_tras)
+    check("mensaje sin precio no se publica", 2003 not in ids_tras, ids_tras)
+    check("todas las ofertas publicadas tienen enlace",
+          all(o["amazon_url"] for o in tras), [o["id"] for o in tras if not o["amazon_url"]])
+    check("todas las ofertas publicadas tienen precio",
+          all(o["price"] for o in tras), [o["id"] for o in tras if not o["price"]])
+
+    print("\n== 9. Si Telegram falla, el catalogo se conserva ==")
+    # El vaciado va despues de leer el historial a proposito: si la lectura
+    # falla, un vaciado previo dejaria la web vacia y sin repuesto.
+    antes = (TMP / "data" / "general.json").read_text(encoding="utf-8")
+
+    class ClienteSinHistorial(ClienteFalso):
+        async def get_messages(self, *a, **kw):
+            raise ConnectionError("sin red")
+
+    bot.client = ClienteSinHistorial()
+    await bot.recuperar_mensajes_perdidos()
+    check("general.json intacto tras un fallo de Telegram",
+          (TMP / "data" / "general.json").read_text(encoding="utf-8") == antes,
+          "el catalogo se vacio pese al fallo")
+
+    class ClienteSinMensajes(ClienteFalso):
+        async def get_messages(self, *a, **kw):
+            return []
+
+    bot.client = ClienteSinMensajes()
+    await bot.recuperar_mensajes_perdidos()
+    check("general.json intacto si el canal no devuelve mensajes",
+          (TMP / "data" / "general.json").read_text(encoding="utf-8") == antes,
+          "el catalogo se vacio pese a no haber mensajes")
+    bot.client = ClienteFalso()
 
 asyncio.run(main())
 shutil.rmtree(TMP, ignore_errors=True)

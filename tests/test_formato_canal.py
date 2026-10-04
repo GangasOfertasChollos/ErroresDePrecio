@@ -77,10 +77,24 @@ check("no acepta una suplantacion",
       not bot.RE_ENLACE_PLANO.match("https://amazon.es.evil.com/x"))
 
 print("\n== 3. El titulo no se traga la estructura del mensaje ==")
-for etiqueta in ("\U0001F4B8 Ahora:", "\U0001F3F7\ufe0f Antes:", "\U0001F4C9 Descuento:",
-                 "\U0001F4B0 Ahorras:", "\U0001F517"):
-    t = bot.extraer_titulo(etiqueta + " lo que sea")
+# El formato real del canal: etiqueta seguida del numero. Las lineas de
+# estructura se descartan por el numero que las acompana, no por la palabra
+# suelta: si no, un titulo real que empieza por 'Oferta' o 'Amazon'
+# ('Oferta Amazon: Zapatillas Nike') se perderia.
+for etiqueta, valor in (("\U0001F4B8 Ahora:", "13,99 \u20ac"),
+                       ("\U0001F3F7\ufe0f Antes:", "25,99 \u20ac"),
+                       ("\U0001F4C9 Descuento:", "-46 %"),
+                       ("\U0001F4B0 Ahorras:", "12,00 \u20ac"),
+                       ("\U0001F517", "")):
+    t = bot.extraer_titulo(etiqueta + " " + valor)
     check(f"descarta linea que empieza por {etiqueta!r}", t == "Oferta Amazon", t)
+# Y el caso que motivó exigir el numero: un titulo de verdad que empieza por una
+# de esas palabras debe sobrevivir.
+for titulo in ("Oferta Amazon: Zapatillas Nike Air Zoom",
+               "Precio especial: Lenovo ThinkPad E14",
+               "Amazon Basics - Auriculares Bluetooth"):
+    check(f"titulo real que empieza por palabra de etiqueta: {titulo[:28]!r}",
+          bot.extraer_titulo(titulo) == titulo, bot.extraer_titulo(titulo))
 check("descarta el hashtag", bot.extraer_titulo("#Amazon") == "Oferta Amazon")
 check("descarta el enlace suelto",
       bot.extraer_titulo("https://www.amazon.es/dp/B0X") == "Oferta Amazon")

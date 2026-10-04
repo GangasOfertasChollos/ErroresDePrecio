@@ -4,6 +4,7 @@ import json
 import logging
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -78,8 +79,19 @@ REPO_PATH        = Path(__file__).resolve().parent
 DATA_PATH        = REPO_PATH / 'data'
 IMAGES_PATH      = DATA_PATH / 'images'
 DICCIONARIO_PATH = REPO_PATH / 'categorias.json'
-MAX_OFERTAS      = _leer_int('MAX_OFERTAS', 30)
+MAX_OFERTAS      = _leer_int('MAX_OFERTAS', 100)
 BACKFILL_LIMIT   = _leer_int('BACKFILL_LIMIT', 100)
+# Al arrancar, el catalogo se vacia y se vuelve a construir con los ultimos
+# BACKFILL_LIMIT mensajes del canal. Asi los JSON nunca acumulan ofertas
+# viejas ni edits a mano: lo publicado es siempre el estado actual del canal.
+# MAX_OFERTAS no puede quedar por debajo de BACKFILL_LIMIT: si lo hiciera, el
+# recorte de _guardar_en_archivo tiraria ofertas que si se han leido del canal,
+# y el catalogo recien reiniciado saldria incompleto solo por el limite.
+if MAX_OFERTAS < BACKFILL_LIMIT > 0:
+    log.warning(f"MAX_OFERTAS={MAX_OFERTAS} es menor que BACKFILL_LIMIT={BACKFILL_LIMIT}: "
+                f"el recorte descartara ofertas leidas del canal. Se sube MAX_OFERTAS a {BACKFILL_LIMIT}.")
+    MAX_OFERTAS = BACKFILL_LIMIT
+REINICIAR_CATALOGO = str(os.getenv('REINICIAR_CATALOGO', '1')).strip().lower() not in ('0', 'false', 'no')
 TIMEOUT_UNFURL   = _leer_int('TIMEOUT_UNFURL', 15)
 USAR_UNFURL      = str(os.getenv('USAR_UNFURL', '1')).strip().lower() not in ('0', 'false', 'no')
 
@@ -103,10 +115,10 @@ _ultima_publicacion = 0.0
 
 log.info(f"Canal objetivo     : {MI_CANAL}")
 log.info(f"Directorio de datos: {DATA_PATH}")
-log.info(f"Directorio imagenes: {IMAGES_PATH}")
 log.info(f"Diccionario        : {DICCIONARIO_PATH}")
 log.info(f"Max. ofertas/JSON  : {MAX_OFERTAS}")
 log.info(f"Backfill al inicio : {BACKFILL_LIMIT} mensajes (0 = desactivado)")
+log.info(f"Reinicio catalogo  : {REINICIAR_CATALOGO}" + ("" if REINICIAR_CATALOGO else " (se conserva lo que haya)"))
 log.info(f"Unfurling imagen   : {USAR_UNFURL}" + (f" (timeout {TIMEOUT_UNFURL}s)" if USAR_UNFURL else " (desactivado)"))
 log.info(f"Auto-publicacion   : {AUTO_PUBLICAR}" + (f" -> {GIT_REMOTO}/{GIT_RAMA} cada {PUBLICAR_CADA_S}s" if AUTO_PUBLICAR else " (desactivada)"))
 
@@ -276,13 +288,50 @@ RE_EMOJI_INICIAL = re.compile(
 # titulo: asi se descartan de golpe el emoji del enlace, los hashtags y los
 # emojis sueltos que preceden al texto.
 RE_SOLO_EMOJI = re.compile(r'^[\W_]+$', re.UNICODE)
-# Palabras que delatan una linea de estructura del canal, no el nombre del producto
 # El emoji del enlace del canal (🔗) delante de texto tambien se descarta
 RE_EMOJI_ENLACE = re.compile(r'^🔗', re.UNICODE)
-# Palabras que delatan una linea de estructura del canal, no el nombre del producto
+# Palabras que delatan una linea de estructura del canal, no el nombre del producto.
+# La palabra solo delata una etiqueta si va seguida de un separador de campo
+# ('Ahora:' / 'Precio ='), de un precio ('Ahora 10,00 €', 'Save 20%') o si la
+# linea se acaba ahi ('Oferta'). Antes bastaba con '^precio', y eso tiraba el
+# titulo entero de productos reales que empiezan por una de esas palabras:
+# "Amazon Echo Dot 4", "Precio unico pack 3", "Ahora mismo tu movil"... Al
+# perder el titulo, extraer_titulo devolvia el marcador 'Oferta Amazon' y
+# _motivo_descarte descartaba la oferta entera, en silencio. Con 100 mensajes en
+# el backfill eso son ofertas que nunca se publican.
 RE_LINEA_ETIQUETA = re.compile(
     r'^(?:ahora|antes|descuento|ahorras|precio|oferta|ver|comprar|amazon|enlace|'
-    r'discount|save|price|was|now)\b', re.I
+    r'discount|save|price|was|now)\b'
+    r'(?:'
+      r'\s*[:=]'                                     # 'Precio:' / 'Ahora: lo que sea'
+    r'|'
+      r'\s*[-–—]?\s*[-+]?\d[\d.,]*\s*(?:%|€|eur)'    # 'Ahora 10,00 €' / 'Ahora - 10,00 €'
+    r'|'
+      r'\s*$'                                         # 'Oferta' a secas
+    r')',
+    re.I
+)
+# Palabras que, cuando sueles un precio, no aportan texto al producto. Sirven
+# para detectar las lineas que solo son precios, como '16,91 € (antes 29,99 €)'.
+RE_PALABRA_PRECIO = re.compile(
+    r'\b(?:ahora|antes|antes\s*rebajado|precio|precio\s*anterior|descuento|ahorras|'
+    r'valia|valor|vp|pvp)\b', re.I
+)
+# Etiquetas del canal que se cuelan en el texto ('|#Chollos|', '#Amazon').
+RE_HASHTAG = re.compile(r'\|?\s*#\w+\s*\|?', re.UNICODE)
+# Llamada a la accion ripiada de otro canal: '👉 Míralo en Ofertitas.es'. Se
+# quita la cola cuando viene con emoji delante o cuando acaba en un dominio;
+# un 'ver' suelto al final de una frase de producto no se toca.
+_CTA_VERBO = (r'(?:m[íi]ra\w*|m[áa]s\s+informaci[óo]n|descubre\w*|aprovecha\w*|'
+              r'pincha\w*|click|entra\w*|visita\w*)')
+RE_CTA_ENLACE = re.compile(
+    r'(?:'
+      r'[\U0001F300-\U0001FAFF\u2600-\u27BF\uFE0F\u2B00-\u2BFF\u200d\u20e3]+\s*'
+      + _CTA_VERBO + r'\b[^|>]*'
+    r'|'
+      + _CTA_VERBO + r'\b[^|>]*?\.\s*(?:es|com|net|eu)\b'
+    r')\s*[|·]?\s*$',
+    re.I | re.UNICODE
 )
 
 # --- Imagenes (unfurling) ---
@@ -436,6 +485,20 @@ def extraer_titulo(texto):
     log.debug("  [TITULO] Ninguna linea parecia un titulo")
     return 'Oferta Amazon'
 
+def _es_linea_solo_precios(linea):
+    """True si la linea no tiene texto propio: solo precios y palabras de precio.
+
+    El canal publica a veces el precio en una linea combinada ('16,91 €
+    (antes 29,99 €)') en vez de en las lineas etiquetadas de siempre. Esa linea
+    no es descripcion del producto, y ademas el precio ya esta en sus propios
+    campos, asi que como descripcion solo duplicaba (o contradecía) el precio.
+    """
+    resto = RE_PRECIO_CUALQUIERA.sub(' ', linea)
+    # Sin el precio solo quedan parentesos, signos y palabras como 'antes'.
+    resto = re.sub(r'[^\w\s]', ' ', resto, flags=re.UNICODE)
+    resto = RE_PALABRA_PRECIO.sub(' ', resto)
+    return not re.search(r'\w', resto, re.UNICODE)
+
 def extraer_descripcion(texto):
     """Extrae una descripcion del producto del mensaje del canal.
 
@@ -465,12 +528,33 @@ def extraer_descripcion(texto):
         # Si es el titulo, no lo incluir en la descripcion
         if limpio == extraer_titulo(texto):
             continue
+        # Las etiquetas del canal se van antes de mirar si la linea es solo
+        # precios: si no, '|#Chollos|' haria que una linea de precios pareciese
+        # texto de producto.
+        limpio = RE_HASHTAG.sub(' ', limpio)
+        if _es_linea_solo_precios(limpio):
+            continue
+        limpio = _limpiar_resto_descripcion(limpio)
+        if len(limpio) < 3:
+            continue
         descripcion_lineas.append(limpio)
 
     descripcion = ' '.join(descripcion_lineas)[:500]
     if descripcion:
         log.debug(f"  [DESCRIPCION] '{descripcion[:80]}...'")
     return descripcion
+
+def _limpiar_resto_descripcion(texto):
+    """Quita de una linea lo que no describe el producto.
+
+    Van fuera las etiquetas del canal ('|#Chollos|', '#Amazon'), el emoji de
+    llamada a la accion y el dominio al que enlaza ('👉 Míralo en Ofertitas.es'):
+    son ripeo de otros canales, se publican como description de schema.org y no
+    dicen nada del producto.
+    """
+    texto = RE_HASHTAG.sub(' ', texto)
+    texto = RE_CTA_ENLACE.sub('', texto)
+    return re.sub(r'\s+', ' ', texto).strip(' |·-–—,;:')
 
 def extraer_marca(titulo):
     """Extrae la marca del producto del titulo.
@@ -484,105 +568,103 @@ def extraer_marca(titulo):
     # Buscar marca antes de un guion o dos puntos
     m = re.match(r'^([A-ZÁÉÍÓÚÑ][A-ZÁÉÍÓÚÑa-záéíóúñ0-9\s]{1,20}?)\s*[-:]\s*', titulo)
     if m:
-        marca = m.group(1).strip()
-        if len(marca) >= 2:
+        marca = _marca_util(m.group(1))
+        if marca:
             log.debug(f"  [MARCA] '{marca}'")
             return marca
 
     # Si no hay guion, probar con las dos primeras palabras
     palabras = titulo.split()
     if len(palabras) >= 2:
-        marca = ' '.join(palabras[:2])
-        if len(marca) >= 3:
+        # 'Marks & Spencer' es una sola marca: si la segunda palabra es un
+        # conector hay que coger la tercera, o la marca queda partida.
+        conector = len(palabras) >= 3 and palabras[1].lower() in ('&', '+', 'and', 'y')
+        marca = _marca_util(' '.join(palabras[:3 if conector else 2]))
+        if marca:
             log.debug(f"  [MARCA] '{marca}'")
             return marca
 
     return ''
 
+def _marca_util(texto):
+    """Limpia un candidato a marca y lo descarta si no sirve como marca.
+
+    El titulo trae emojis y ZWJ pegados al nombre ('⌨️ GXTrust', '‍♀️ ghd'),
+    y las dos primeras palabras de un titulo sin guion suelen ser un sustantivo
+    comun ('Alfombrilla de', 'Zapatillas', 'Neceser'). Publicar eso como
+    itemprop="brand" es peor que no publicar marca, asi que se devuelve cadena
+    vacia y el frontend se la salta.
+    """
+    # Emoji, selectores de variation y ZWJ: no son parte del nombre de la marca.
+    marca = re.sub(
+        r'[\U0001F300-\U0001FAFF\u2600-\u27BF\uFE0F\u2B00-\u2BFF\u200d\u20e3]+', '', texto
+    )
+    marca = re.sub(r'[^\w\sÀ-ÿ&+.-]', ' ', marca, flags=re.UNICODE)
+    marca = re.sub(r'\s+', ' ', marca).strip(' -–—.,')
+    # Sin al menos dos letras no hay marca (quedan '&', '+', '-'...).
+    if len(marca) < 2 or not re.search(r'[A-Za-zÀ-ÿ]{2}', marca, re.UNICODE):
+        return ''
+    # Una marca no termina en una preposicion suelta ('Alfombrilla de') ni en un
+    # conector: eso significa que el nombre esta partido ('Marks &').
+    if re.search(r'\b(?:de|del|la|el|los|las|para|con|sin|en|por|of|and|y)$', marca, re.I):
+        return ''
+    if re.search(r'[&+]$', marca):
+        return ''
+    return marca
+
+def _gtin_valido(codigo):
+    """Comprueba el digito de control de un GTIN (EAN-8, UPC-A o EAN-13).
+
+    Un GTIN alterna pesos 3 y 1 de derecha a izquierda sobre todos los
+    digitos menos el de control, y el de control es lo que falta para que la
+    suma sea multiple de 10. Sin esta comprobacion, cualquier numero largo
+    del mensaje (un telefono, un ISBN) se publicaba como codigo de barras.
+    """
+    if not codigo.isdigit() or len(codigo) not in (8, 12, 13):
+        return False
+    total = 0
+    # El ultimo digito es el de control: no entra en la suma.
+    for i, digito in enumerate(reversed(codigo[:-1])):
+        total += int(digito) * (3 if i % 2 == 0 else 1)
+    return (10 - total % 10) % 10 == int(codigo[-1])
+
 def extraer_gtin(texto):
     """Busca un GTIN (EAN-13, UPC-A) o MPN en el mensaje.
 
-    Los GTIN tienen 13 digitos (EAN) o 12 (UPC). Los MPN suelen ser
-    alfanumericos de 6-20 caracteres.
+    Los GTIN tienen 13 digitos (EAN) o 12 (UPC), y se validan por digito de
+    control. Los MPN son codigos de pieza: llevan letras y digitos ('M210',
+    'i7-1355U').
     """
     if not texto:
         return ''
 
-    # Buscar EAN-13 (13 digitos seguidos, posiblemente con espacios)
-    m = re.search(r'\b(\d{13})\b', texto)
-    if m:
-        log.debug(f"  [GTIN] EAN-13: {m.group(1)}")
-        return m.group(1)
+    # Buscar EAN-13 / UPC-A / EAN-8 con el digito de control correcto. La
+    # comilla Lookbehind y la Lookahead evitan arrancar el codigo en mitad de
+    # otro numero o de un precio con separador de millares.
+    for m in re.finditer(r'(?<![\d.,])(\d{8}|\d{12,13})(?![\d.,])', texto):
+        if _gtin_valido(m.group(1)):
+            log.debug(f"  [GTIN] GTIN: {m.group(1)}")
+            return m.group(1)
 
-    # Buscar UPC-A (12 digitos seguidos)
-    m = re.search(r'\b(\d{12})\b', texto)
-    if m:
-        log.debug(f"  [GTIN] UPC-A: {m.group(1)}")
-        return m.group(1)
-
-    # Buscar MPN (alfanumerico de 6-20 caracteres, a veces con guiones)
-    m = re.search(r'\b([A-Z0-9][A-Z0-9\-]{5,19})\b', texto, re.I)
-    if m:
-        mpn = m.group(1).strip('-')
-        if len(mpn) >= 6:
-            log.debug(f"  [GTIN] MPN: {mpn}")
-            return mpn
+    # Buscar MPN. Se exige al menos un digito: un codigo de pieza los trae
+    # siempre, mientras que una palabra suelta no. Sin esa exigencia el regex
+    # devolvia la marca o un sustantivo del titulo ('Scottex', 'OFERTA',
+    # 'Zapatillas') y se publicaba como itemprop="gtin", que es informacion
+    # falsa. El ASIN de los enlaces tampoco sirve: no es un GTIN.
+    # El MPN se busca fuera de los enlaces: el tag de afiliado del propio bot
+    # ('?tag=gangas054-21') tiene guion y digitos, asi que si se buscara en el
+    # texto entero apareceria como codigo de pieza en casi todas las ofertas.
+    texto_plano = RE_ENLACE_PLANO.sub(' ', texto)
+    asins = {a.upper() for a in RE_ASIN.findall(texto or '')}
+    for token in re.findall(r'[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*', texto_plano):
+        if not 6 <= len(token) <= 20 or token.isdigit():
+            continue
+        if not any(c.isdigit() for c in token) or token.upper() in asins:
+            continue
+        log.debug(f"  [GTIN] MPN: {token}")
+        return token
 
     return ''
-
-async def _descargar_imagen(url, nombre_archivo):
-    """Descarga una imagen y la guarda localmente en data/images/."""
-    if not url:
-        return ''
-    
-    try:
-        # Crear el directorio si no existe
-        IMAGES_PATH.mkdir(parents=True, exist_ok=True)
-        
-        # Determinar la extensión del archivo
-        extension = '.jpg'  # por defecto
-        if '.png' in url.lower():
-            extension = '.png'
-        elif '.webp' in url.lower():
-            extension = '.webp'
-        elif '.gif' in url.lower():
-            extension = '.gif'
-        
-        ruta_archivo = IMAGES_PATH / f"{nombre_archivo}{extension}"
-        
-        # Si ya existe, no volver a descargar
-        if ruta_archivo.exists():
-            log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
-            return f"data/images/{ruta_archivo.name}"
-        
-        # Descargar la imagen con headers completos para evitar 403/404
-        headers = {
-            'User-Agent': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 '
-                           '(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'),
-            'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
-            'Accept-Language': 'es-ES,es;q=0.9',
-            'Referer': 'https://t.me/',
-        }
-        peticion = urllib.request.Request(url, headers=headers)
-        respuesta = await asyncio.to_thread(
-            urllib.request.urlopen, peticion, None, TIMEOUT_UNFURL
-        )
-        datos = await asyncio.to_thread(respuesta.read)
-        respuesta.close()
-        
-        # Verificar que se descargaron datos válidos
-        if not datos or len(datos) < 100:
-            log.warning(f"  [IMG] Imagen descargada vacía o muy pequeña de {url[:60]}")
-            return ''
-        
-        # Guardar la imagen
-        ruta_archivo.write_bytes(datos)
-        log.info(f"  [IMG] Imagen descargada: {ruta_archivo.name} ({len(datos)} bytes)")
-        
-        return f"data/images/{ruta_archivo.name}"
-    except Exception as e:
-        log.warning(f"  [IMG] No se pudo descargar imagen de {url[:60]}: {e}")
-        return ''
 
 async def _pedir_og_image(url_publica):
     """Descarga la pagina publica del mensaje en t.me y devuelve su og:image.
@@ -622,67 +704,27 @@ async def _pedir_og_image(url_publica):
     _CACHE_IMAGENES[url_publica] = ''
     return ''
 
-async def _descargar_imagen_de_telegram(mensaje):
-    """Descarga la imagen directamente de Telegram usando la API de Telethon.
-    
-    Este método es más fiable que el unfurling porque no depende de URLs
-    externas que expiran. Usa la API oficial de Telegram para obtener
-    la imagen del mensaje.
-    """
-    if not mensaje or not mensaje.media:
-        return ''
-    
-    try:
-        nombre = f"oferta_{mensaje.id}"
-        ruta_archivo = IMAGES_PATH / f"{nombre}.jpg"
-        
-        # Si ya existe, no volver a descargar
-        if ruta_archivo.exists():
-            log.debug(f"  [IMG] Imagen ya existe: {ruta_archivo.name}")
-            return f"data/images/{ruta_archivo.name}"
-        
-        # Descargar la imagen usando Telethon
-        log.info(f"  [IMG] Descargando imagen de Telegram para mensaje {mensaje.id}...")
-        ruta = await client.download_media(mensaje.media, file=ruta_archivo)
-        
-        if ruta and Path(ruta).exists():
-            # Crear el directorio si no existe (solo cuando se va a guardar)
-            IMAGES_PATH.mkdir(parents=True, exist_ok=True)
-            tamaño = Path(ruta).stat().st_size
-            log.info(f"  [IMG] Imagen descargada de Telegram: {Path(ruta).name} ({tamaño} bytes)")
-            return f"data/images/{Path(ruta).name}"
-        else:
-            log.warning(f"  [IMG] No se pudo descargar la imagen de Telegram para mensaje {mensaje.id}")
-            return ''
-    except Exception as e:
-        log.warning(f"  [IMG] Error descargando imagen de Telegram: {e}")
-        return ''
-
 async def extraer_imagen(texto, mensaje=None):
-    """Descarga la miniatura de la oferta y devuelve la ruta local.
+    """Devuelve la URL de la miniatura de la oferta, o '' si no hay ninguna.
 
     Orden de busqueda:
-      1. Imagen directamente de Telegram (más fiable)
-      2. URL de imagen que venga escrita en el propio mensaje
+      1. URL de imagen que venga escrita en el propio mensaje
+      2. URL de imagen en las entidades del mensaje
       3. Unfurling de la pagina publica del mensaje (https://t.me/canal/ID)
 
-    La imagen se descarga a data/images/ y se devuelve una ruta relativa
-    (data/images/nombre.jpg) para que sea permanente y no dependa de URLs externas.
+    No se descarga nada a disco: `image` guarda la URL, como dice el README.
+    Antes este paso 1 bajaba la foto del mensaje a data/images/, lo que dejaba
+    35 MB de binarios en el repositorio y rutas locales que el navegador no
+    puede resolver desde GitHub Pages.
     """
-    # 1) Intentar descargar directamente de Telegram (más fiable)
-    if mensaje and mensaje.media:
-        ruta = await _descargar_imagen_de_telegram(mensaje)
-        if ruta:
-            return ruta
-
-    # 2) URL de imagen en el texto
+    # 1) URL de imagen en el texto
     m = RE_IMAGEN_CUALQUIERA.search(texto or '')
     if m:
         url = m.group(0).rstrip('.,')
         log.debug(f"  [IMG] URL de imagen en el texto: {url[:80]}")
         return url
 
-    # 2b) URL de imagen en las entidades del mensaje
+    # 2) URL de imagen en las entidades del mensaje
     if mensaje and getattr(mensaje, 'entities', None):
         for ent in mensaje.entities:
             url = getattr(ent, 'url', None)
@@ -784,17 +826,47 @@ def _guardar_en_archivo(archivo, oferta):
         return False
 
 def limpiar_imagenes_huerfanas():
-    """Retirada: las imagenes ya no se guardan en disco.
+    """Borra data/images/ entero y devuelve cuantos ficheros ha eliminado.
 
-    Antes el bot descargaba cada foto a data/images/ y esta funcion borraba las
-    que ningun JSON referenciaba. Ahora `image` guarda la URL de la CDN de
-    Amazon, asi que no hay nada que limpiar. Se mantiene la funcion vacia para
-    no romper llamadas antiguas, y avisa si data/images/ sigue existiendo.
+    Las ofertas no guardan imagenes en disco: `image` guarda la URL de la
+    miniatura (ver extraer_imagen, que ya no descarga nada). El directorio se
+    borra en cada reinicio del catalogo porque si algo lo vuelve a recrear, lo
+    unico que puede haber dentro son ficheros que el navegador no puede resolver
+    desde GitHub Pages: 35 MB de basura en el repositorio.
     """
-    if IMAGES_PATH.exists() and any(IMAGES_PATH.iterdir()):
-        log.warning(f"  [IMG] {IMAGES_PATH} ya no se usa. "
-                    f"Borra sus imagenes antiguas o elimina el directorio.")
-    return 0
+    if not IMAGES_PATH.exists():
+        return 0
+    try:
+        borrados = sum(1 for p in IMAGES_PATH.rglob('*') if p.is_file())
+        shutil.rmtree(IMAGES_PATH)
+        log.info(f"[IMG] {IMAGES_PATH.name}/ borrado ({borrados} ficheros)")
+        return borrados
+    except Exception as e:
+        log.error(f"[IMG] No se pudo borrar {IMAGES_PATH}: {e}")
+        return 0
+
+def _motivo_descarte(oferta):
+    """Devuelve por que no se puede publicar la oferta, o None si se puede.
+
+    El canal no es solo un volcado de enlaces: hay mensajes sueltos, avisos y
+    junk. Una oferta sin enlace no lleva a ninguna parte (el boton de la tarjeta
+    es 'Ver oferta en Amazon'), una sin titulo no se puede buscar y una sin
+    precio no sirve en un sitio de errores de precio. Publicar esas tarjetas
+    vacias es peor que no publicarlas, asi que se descartan antes de escribir.
+
+    Se exige ademas que el titulo no sea el marcador de posicion 'Oferta Amazon',
+    que es lo que devuelve extraer_titulo cuando el mensaje no trae ninguno.
+    """
+    if not oferta.get('amazon_url'):
+        return 'sin enlace de Amazon'
+    titulo = (oferta.get('title') or '').strip()
+    if not titulo or titulo == 'Oferta Amazon':
+        return 'sin titulo'
+    if not oferta.get('price'):
+        return 'sin precio'
+    if len(titulo) < 3:
+        return 'titulo demasiado corto'
+    return None
 
 async def actualizar_json(categoria, mensaje):
     """Procesa y guarda la oferta en el JSON de su categoria y en el JSON general."""
@@ -830,9 +902,6 @@ async def actualizar_json(categoria, mensaje):
     if gtin:
         log.info(f"  [OFERTA] GTIN     : {gtin}")
 
-    if not enlace:
-        log.warning("  [OFERTA] Sin enlace Amazon -> la oferta se guarda sin URL")
-
     oferta = {
         'id':         mensaje.id,
         'date':       mensaje.date.isoformat() if mensaje.date else '',
@@ -848,6 +917,16 @@ async def actualizar_json(categoria, mensaje):
         'gtin':        gtin
     }
 
+    # Descartar lo que no se puede publicar antes de escribir en los JSON.
+    motivo = _motivo_descarte(oferta)
+    if motivo:
+        # Se apunta el motivo para que el resumen del backfill pueda decir
+        # por que se quedaron fuera mensajes, y no solo cuantos.
+        _DESCARTES[motivo] = _DESCARTES.get(motivo, 0) + 1
+        log.warning(f"  [OFERTA] Descartada (ID={mensaje.id}, {motivo}): "
+                    f"{(titulo or '')[:70]!r}")
+        return False
+
     # Guardar en la categoria correspondiente y en el feed global.
     # El cerrojo cubre la lectura+escritura de ambos archivos: sin el, dos
     # mensajes concurrentes perdian ofertas al pisarse.
@@ -860,12 +939,20 @@ async def actualizar_json(categoria, mensaje):
 
     if not guardado_cat and not guardado_gen:
         log.warning(f"  [OFERTA] La oferta (ID={mensaje.id}) era duplicada en todos los archivos")
+        return False
+
+    return True
 
 # ─────────────────────────────────────────────
 # HANDLER DE NUEVOS MENSAJES
 # ─────────────────────────────────────────────
 async def procesar_mensaje(msg, origen='nuevo'):
-    """Clasifica y guarda un mensaje. Compartido por el handler y el backfill."""
+    """Clasifica y guarda un mensaje. Compartido por el handler y el backfill.
+
+    Devuelve True solo si la oferta ha llegado a los JSON: lo que se descarta
+    por no ser publicable cuenta como no procesado, que es lo que espera el
+    recuento del backfill.
+    """
     texto  = msg.text or getattr(msg, 'message', '') or ''
 
     if not texto and not msg.media:
@@ -874,8 +961,7 @@ async def procesar_mensaje(msg, origen='nuevo'):
 
     categoria = clasificar_oferta(texto)
     log.info(f"[PROCESO] Procesando ID={msg.id} ({origen}) -> Categoria: {categoria}")
-    await actualizar_json(categoria, msg)
-    return True
+    return await actualizar_json(categoria, msg)
 
 # ─────────────────────────────────────────────
 # PUBLICACIÓN AUTOMÁTICA EN GIT
@@ -1007,27 +1093,82 @@ def solicitar_codigo(phone=None):
         log.error("[AUTENTICACIÓN] Entrada cancelada, no se puede autorizar la sesión.")
         return None
 
+def _vaciar_catalogo():
+    """Deja vacios los JSON de ofertas de data/. Devuelve cuantos se vaciaron.
+
+    Solo toca los ficheros cuyo contenido es una lista: si un diccionario como
+    categorias.json acabara en data/, no se toca. Un JSON ilegible se cuenta
+    como lista vacia (ver _leer_json) y por tanto se sobrescribe, que es justo
+    lo que se quiere: un archivo corrupto no debe dejar la web sin datos para
+    siempre.
+    """
+    vaciados = 0
+    for archivo in sorted(DATA_PATH.glob('*.json')):
+        try:
+            if not isinstance(_leer_json(archivo), list):
+                log.warning(f"[CATALOGO] {archivo.name} no es una lista de ofertas; se deja como esta")
+                continue
+            _escribir_json_atomico(archivo, [])
+            vaciados += 1
+        except Exception as e:
+            log.error(f"[CATALOGO] No se pudo vaciar {archivo.name}: {e}")
+    return vaciados
+
+def _reiniciar_catalogo():
+    """Borra todas las ofertas y las imagenes asociadas. Devuelve un resumen.
+
+    Ofertas e imagenes se borran juntas y en un solo sitio a proposito: si el
+    borrado quedara partido entre dos funciones, un fallo en mitad dejaria
+    imagenes huerfanas o JSON sin vaciar sin que nadie se entere.
+    """
+    json_vaciados = _vaciar_catalogo()
+    imagenes = limpiar_imagenes_huerfanas()
+    log.info(f"[CATALOGO] Reiniciado: {json_vaciados} JSON vacios, "
+             f"{imagenes} imagenes borradas")
+    return json_vaciados, imagenes
+
 async def recuperar_mensajes_perdidos():
-    """Recupera ofertas publicadas mientras el bot estaba apagado.
+    """Reconstruye el catalogo con los ultimos mensajes del canal.
 
     events.NewMessage solo dispara con mensajes nuevos, asi que una parada de
     horas dejaba huecos en el JSON. Se procesan del mas antiguo al mas reciente
     para que el orden por ID en _guardar_en_archivo quede correcto.
+
+    Con REINICIAR_CATALOGO los JSON se vacian antes de repoblar, de modo que
+    lo publicado es siempre el estado actual del canal y no se acumulan ofertas
+    caducadas ni retoques a mano.
+
+    El vaciado va DESPUES de leer el historial, nunca antes: si Telegram falla,
+    el canal esta vacio o no se puede acceder, un vaciado previo dejaria la web
+    vacia y sin forma de reponerse. Ante cualquier fallo se conserva lo que
+    hubiera.
     """
     if BACKFILL_LIMIT <= 0:
-        log.info("[BACKFILL] Desactivado (BACKFILL_LIMIT=0)")
+        if REINICIAR_CATALOGO:
+            log.warning("[CATALOGO] BACKFILL_LIMIT=0 pero REINICIAR_CATALOGO=1: "
+                        "no hay mensajes con los que reconstruir, se conserva el catalogo actual")
+        else:
+            log.info("[BACKFILL] Desactivado (BACKFILL_LIMIT=0)")
         return
 
     log.info(f"[BACKFILL] Recuperando hasta {BACKFILL_LIMIT} mensajes recientes...")
     try:
         mensajes = await client.get_messages(MI_CANAL, limit=BACKFILL_LIMIT)
     except Exception as e:
-        log.error(f"[BACKFILL] No se pudo leer el historial: {e}")
+        log.error(f"[BACKFILL] No se pudo leer el historial: {e}. "
+                  "Se conserva el catalogo actual.")
         return
 
     if not mensajes:
-        log.info("[BACKFILL] No hay mensajes en el canal")
+        log.warning("[BACKFILL] El canal no devolvio ningun mensaje. "
+                    "Se conserva el catalogo actual.")
         return
+
+    if REINICIAR_CATALOGO:
+        async with LOCK_ARCHIVOS:
+            json_vaciados, imagenes = _reiniciar_catalogo()
+        log.info(f"[CATALOGO] Se reconstruyen con {len(mensajes)} mensajes del canal "
+                 f"({json_vaciados} JSON vacios, {imagenes} imagenes borradas)")
 
     procesados = 0
     for msg in reversed(mensajes):   # del mas antiguo al mas reciente
@@ -1037,7 +1178,8 @@ async def recuperar_mensajes_perdidos():
         except Exception as e:
             log.error(f"[BACKFILL] Fallo con el mensaje {getattr(msg, 'id', '?')}: {e}")
 
-    log.info(f"[BACKFILL] {procesados}/{len(mensajes)} mensajes procesados")
+    log.info(f"[BACKFILL] {procesados}/{len(mensajes)} mensajes publicados "
+             f"({len(mensajes) - procesados} descartados por no publicables o ya guardados)")
     if procesados:
         await publicar_en_git(forzar=True)
 
@@ -1060,6 +1202,8 @@ async def main():
     me = await client.get_me()
     log.info(f"[SESION] Conectado como {me.first_name or '?'} (id={me.id})")
 
+    # Al arrancar, el catalogo se borra entero y se reconstruye con el
+    # historial del canal (ver recuperar_mensajes_perdidos).
     await recuperar_mensajes_perdidos()
 
     log.info("[CONECTADO] Bot escuchando mensajes nuevos...")
@@ -1078,6 +1222,16 @@ async def main():
             break
         log.warning("[CONEXION] Perdida. Reconectando en 5 s...")
         await asyncio.sleep(5)
+        # Tras reconectar, las ofertas publicadas durante el corte se
+        # perdieron: events.NewMessage solo dispara con lo que llega a partir
+        # de ahora. Sin este backfill, un corte largo deja huecos que solo se
+        # arreglarian reiniciando el bot a mano.
+        try:
+            await recuperar_mensajes_perdidos()
+        except Exception as e:
+            log.exception(f"[ERROR] Fallo reconstruyendo el catalogo tras reconectar: {e}")
+        else:
+            log.info("[CONEXION] Catalogo reconstruido tras reconectar")
 
     # Ultimo intento de subir lo pendiente antes de salir.
     await publicar_en_git(forzar=True)

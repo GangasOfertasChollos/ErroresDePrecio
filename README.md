@@ -107,6 +107,38 @@ consola y por `bot.log`. Si ejecutas el bot como servicio y se cuelga esperando
 ese código, borra `sesion_json_bot.session` y autorízalo en una terminal
 interactiva.
 
+### El catálogo se reconstruye en cada arranque
+
+Al arrancar, el bot hace tres cosas, en este orden:
+
+1. **Lee** los últimos `BACKFILL_LIMIT` (100) mensajes del canal.
+2. **Borra todas las ofertas y todas las imágenes**: los JSON de `data/` se
+   vacían y `data/images/` se elimina entero.
+3. **Vuelve a publicar** esas ofertas en los JSON, ya saneadas, y las sube a
+   git.
+
+Lo publicado es por tanto siempre el estado actual del canal: no se acumulan
+ofertas caducadas ni retoques a mano, y un JSON corrupto se regenera solo. Lo
+mismo pasa al **reconectar** tras una caída de conexión, porque durante el corte
+las ofertas se pierden y `events.NewMessage` solo dispara con lo que llega
+después.
+
+Detalles que conviene tener presentes:
+
+- **El borrado va después de leer el historial, nunca antes.** Si Telegram
+  falla, el canal está vacío o no se puede acceder, se conserva el catálogo
+  anterior en lugar de dejar la web vacía y sin repuesto. Hay pruebas de esto
+  en `tests/test_flujo.py`.
+- **Mirar 100 mensajes no es publicar 100 ofertas.** `MAX_OFERTAS` (30) sigue
+  mandando: cada JSON guarda como máximo 30 ofertas, las más recientes. Para
+  publicar más, sube `MAX_OFERTAS`.
+- **Se descarta lo que no se puede publicar.** Una oferta sin enlace de Amazon,
+  sin título o sin precio no llega a los JSON: serían tarjetas rotas o sin
+  información. Cada descarte queda anotado en el log con el motivo.
+
+Con `REINICIAR_CATALOGO=0` se conserva el comportamiento anterior: los JSON se
+van llenando de forma incremental y el backfill solo rellena huecos.
+
 ## Publicación
 
 La web se sirve desde GitHub Pages, así que los cambios en `data/` tienen que
@@ -146,6 +178,7 @@ python generar_sitemap.py       # sitemap.xml (verifica que las URLs existen)
 ## Imágenes y formato de los mensajes
 
 Las ofertas no guardan imágenes en disco: el campo `image` guarda una **URL**.
+Por eso `data/` solo contiene los siete JSON de ofertas y ningún binario.
 
 La miniatura se obtiene con *link unfurling*, el mismo mecanismo que usan
 Facebook o WhatsApp al pegar un enlace: se pide la página pública del mensaje
@@ -157,6 +190,12 @@ porque es la única que funciona:
 | `og:image` de `t.me/canal/ID` | **Sí.** ~0,8 s, sin CAPTCHA, imagen real |
 | `og:image` de la ficha de `amazon.es` | No: devuelve una página de CAPTCHA a cualquier cliente automatizado |
 | Deducir la URL de la imagen del ASIN | No: el nombre del fichero no es derivable (devuelve un GIF de 1×1) |
+
+> Antes el bot bajaba cada foto a `data/images/` y guardaba la ruta local. Eso
+> dejaba 35 MB de binarios en el repositorio y rutas que el navegador no puede
+> resolver, así que el paso se eliminó del todo: `extraer_imagen` solo devuelve
+> URLs. `limpiar_imagenes_huerfanas()` avisa si ese directorio vuelve a
+> aparecer.
 
 Las URLs obtenidas se cachean en memoria, así que el backfill no repite
 peticiones. Si el bot no está en el canal no puede construir la URL pública, y
@@ -180,6 +219,29 @@ https://www.amazon.es/dp/B0GCQX9YY4?tag=gangas054-21
 De ahí se extraen el título, el precio de oferta (`price`), el precio original
 (`old_price`), el descuento (`discount`) y el enlace. Se aceptan tanto el
 enlace directo como los acortadores `amzn.to`, `amzn.eu` y `amzlink.to`.
+
+### Los campos que van a schema.org
+
+`description`, `brand` y `gtin` se publican tal cual como
+`itemprop`/JSON-LD, así que un valor inventado es información falsa en los
+resultados de Google. De ahí las reglas:
+
+- **`gtin`** solo se rellena con un GTIN de verdad (EAN-8, UPC-A o EAN-13)
+  **validado por su dígito de control**, o con un MPN que lleve letras *y*
+  dígitos. Se buscan fuera de los enlaces, porque el tag de afiliado del
+  propio bot (`?tag=gangas054-21`) también tiene guion y dígitos. Antes se
+  aceptaba cualquier palabra de 6 a 20 caracteres, así que casi todas las
+  ofertas publishaban como `gtin` la marca o un sustantivo del título
+  (`"Scottex"`, `"OFERTA"`, `"Zapatillas"`).
+- **`description`** descarta las líneas que solo son precios
+  (`"16,91 € (antes 29,99 €)"`), las etiquetas del canal (`|#Chollos|`) y las
+  llamadas a la acción de otros canales (`👉 Míralo en Ofertitas.es`). El
+  precio ya vive en sus propios campos.
+- **`brand`** descarta los emojis que se cuelan (`⌨️ GXTrust`) y los
+  fragmentos que no son una marca (`"Alfombrilla de"`, `"Neceser"`); si no hay
+  marca, el campo queda vacío y el frontend lo omite.
+
+Cuando un dato no está, el campo va vacío. Es preferible a inventarlo.
 
 ## Comprobar los cambios
 
@@ -207,6 +269,7 @@ Todo en `.env` (ver `.env.example`):
 | `TELEGRAM_CHANNEL` | `@GangasOfertasChollos` | Canal que se escucha |
 | `MAX_OFERTAS` | `30` | Ofertas guardadas por JSON |
 | `BACKFILL_LIMIT` | `100` | Mensajes del histórico a recuperar al arrancar (`0` desactiva) |
+| `REINICIAR_CATALOGO` | `1` | Borrar ofertas e imágenes al arrancar y reconstruirlas desde el canal (`0` conserva lo que haya) |
 | `USAR_UNFURL` | `1` | Obtener la miniatura desde la página pública del mensaje (`0` desactiva) |
 | `TIMEOUT_UNFURL` | `15` | Segundos de espera al pedir la miniatura |
 | `AUTO_PUBLICAR` | `0` | Publica `data/` en git automáticamente |

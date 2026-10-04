@@ -15,3 +15,13 @@ __pycache__/
 # Artefactos de pruebas
 repo_prueba/
 _prueba_*/
+
+# El bot no guarda imagenes en disco (el campo image es una URL), pero si algo
+# las recreara, data/ debe seguir siendo solo JSON: cualquier binario ahi
+# acabaria servido por GitHub Pages en rutas que el navegador no resuelve.
+data/images/
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.gif
+data/**/*.webp

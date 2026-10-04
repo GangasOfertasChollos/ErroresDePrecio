@@ -1,5 +1,5 @@
 """Pruebas de las funciones puras de bot.py sin tocar Telegram."""
-import os, sys, json, asyncio, importlib.util
+import os, sys, json, asyncio, importlib.util, shutil, tempfile
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -49,6 +49,83 @@ check("markdown fuera", bot.extraer_titulo("**Sony** headphones") == "Sony headp
 check("salta linea de solo precio", bot.extraer_titulo("49,99€\nSony headphones") == "Sony headphones",
       bot.extraer_titulo("49,99€\nSony headphones"))
 check("texto vacio", bot.extraer_titulo("") == "Oferta Amazon")
+
+print("\n== extraer_gtin (solo codigos que son de verdad un GTIN) ==")
+# El fallback MPN antiguo devolvia la marca o un sustantivo del titulo y se
+# publicaba como itemprop="gtin", que es informacion falsa.
+for texto in ("Scottex Papel Higienico Humedo", "OFERTA Chollo Zapatillas",
+              "Zapatillas Auriculares Inalambricos", "Mando DualSense PS5",
+              "Logitech G，显 Mouse", "Cepillos Interdentales"):
+    check(f"sin codigo real -> '' ({texto[:24]!r})", bot.extraer_gtin(texto) == "",
+          bot.extraer_gtin(texto))
+check("EAN-13 con digito de control valido", bot.extraer_gtin("EAN 8412345678905") == "8412345678905",
+      bot.extraer_gtin("EAN 8412345678905"))
+check("EAN-13 sin digito de control valido -> ''", bot.extraer_gtin("EAN 8412345678907") == "",
+      bot.extraer_gtin("EAN 8412345678907"))
+check("UPC-A con digito de control valido", bot.extraer_gtin("codigo 012345678905") == "012345678905",
+      bot.extraer_gtin("codigo 012345678905"))
+check("EAN-8 con digito de control valido", bot.extraer_gtin("ref 12345670") == "12345670",
+      bot.extraer_gtin("ref 12345670"))
+check("un telefono no es un GTIN", bot.extraer_gtin("Llama al 600123456789") == "",
+      bot.extraer_gtin("Llama al 600123456789"))
+check("el ASIN del enlace no es un GTIN",
+      bot.extraer_gtin("https://www.amazon.es/dp/B07CCWCNFR?tag=x") == "",
+      bot.extraer_gtin("https://www.amazon.es/dp/B07CCWCNFR?tag=x"))
+check("MPN con digitos si se acepta", bot.extraer_gtin("modelo i7-1355U") == "i7-1355U",
+      bot.extraer_gtin("modelo i7-1355U"))
+check("MPN solo con letras no", bot.extraer_gtin("modelo GXTrust") == "",
+      bot.extraer_gtin("modelo GXTrust"))
+# El tag de afiliado del propio bot tiene guion y digitos: si se buscara en el
+# texto entero, 'gangas054-21' salia como codigo de pieza en casi todas las ofertas.
+check("el tag de afiliado no es un MPN",
+      bot.extraer_gtin("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21") == "",
+      bot.extraer_gtin("Teclado\nhttps://www.amazon.es/dp/B0GTW78BS4?tag=gangas054-21"))
+check("precio con miles no es un GTIN", bot.extraer_gtin("Ahora: 1.299,00 € antes 2.999,00 €") == "",
+      bot.extraer_gtin("Ahora: 1.299,00 € antes 2.999,00 €"))
+check("sin texto -> ''", bot.extraer_gtin("") == "")
+check("None -> ''", bot.extraer_gtin(None) == "")
+
+print("\n== extraer_descripcion (el precio no es una descripcion) ==")
+# El canal publica a veces '16,91 € (antes 29,99 €)' en una sola linea: como
+# descripcion duplicaba el precio y ademas se publicaba como description.
+check("linea de precio combinada se descarta",
+      bot.extraer_descripcion("Zapatillas Nike\n\n16,91 € (antes 29,99 €)") == "",
+      bot.extraer_descripcion("Zapatillas Nike\n\n16,91 € (antes 29,99 €)"))
+check("linea de precio con hashtag se descarta",
+      bot.extraer_descripcion("Pack 6 desodorantes\n7,23 € (antes 15,39 €) |#Chollos|") == "",
+      bot.extraer_descripcion("Pack 6 desodorantes\n7,23 € (antes 15,39 €) |#Chollos|"))
+check("el hashtag se quita de la descripcion",
+      bot.extraer_descripcion("Zapatillas\n\nAjuste perfecto. |#Chollos|") == "Ajuste perfecto.",
+      bot.extraer_descripcion("Zapatillas\n\nAjuste perfecto. |#Chollos|"))
+check("CTA ripeada de otro canal se quita",
+      bot.extraer_descripcion("Zapatillas\n\n\U0001F449 Míralo en Ofertitas.es") == "",
+      bot.extraer_descripcion("Zapatillas\n\n\U0001F449 Míralo en Ofertitas.es"))
+check("CTA al final de una linea real solo quita la cola",
+      bot.extraer_descripcion("Zapatillas\n\nBotín de cuero con suela de goma. \U0001F449 Míralo en Ofertitas.es")
+      == "Botín de cuero con suela de goma.",
+      bot.extraer_descripcion("Zapatillas\n\nBotín de cuero con suela de goma. \U0001F449 Míralo en Ofertitas.es"))
+check("'ver' al final de una frase no se toca",
+      bot.extraer_descripcion("Zapatillas\n\nImpermeable, se nota al ver el resultado.")
+      == "Impermeable, se nota al ver el resultado.",
+      bot.extraer_descripcion("Zapatillas\n\nImpermeable, se nota al ver el resultado."))
+check("descripcion con un precio dentro se conserva",
+      bot.extraer_descripcion("Zapatillas\n\nFiltros MPT6474/10 para 10 euros de cafe.")
+      == "Filtros MPT6474/10 para 10 euros de cafe.",
+      bot.extraer_descripcion("Zapatillas\n\nFiltros MPT6474/10 para 10 euros de cafe."))
+
+print("\n== extraer_marca (sin emojis ni fragmentos) ==")
+check("emoji inicial fuera", bot.extraer_marca("\u2328️ GXTrust - Teclado TKL 80%") == "GXTrust",
+      bot.extraer_marca("\u2328️ GXTrust - Teclado TKL 80%"))
+check("ZWJ fuera", bot.extraer_marca("‍♀️ ghd Plancha de pelo") == "ghd",
+      bot.extraer_marca("‍♀️ ghd Plancha de pelo"))
+check("marca antes de guion se queda", bot.extraer_marca("Tommy Hilfiger - Camiseta Azul") == "Tommy Hilfiger",
+      bot.extraer_marca("Tommy Hilfiger - Camiseta Azul"))
+check("'Marks & Spencer' no se parte", bot.extraer_marca("Marks & Spencer Secador") == "Marks & Spencer",
+      bot.extraer_marca("Marks & Spencer Secador"))
+for titulo in ("Alfombrilla de gaming XXL", "Neceser de viaje", "Sofá de dos plazas",
+               "Pulverizador de facial", "Marks &"):
+    check(f"fragmento no es marca ({titulo!r})", bot.extraer_marca(titulo) == "",
+          bot.extraer_marca(titulo))
 
 print("\n== clasificar_oferta (normalizada, tildes ignoradas) ==")
 casos_cat = [
@@ -114,7 +191,6 @@ finally:
     builtins.input = _entrada_real
 
 print("\n== escritura atomica / orden por ID / limite ==")
-import tempfile
 prueba = Path(tempfile.mkdtemp(prefix="_prueba_json_"))
 
 async def prueba_escritura():
@@ -127,13 +203,63 @@ async def prueba_escritura():
     return datos
 
 class MensajeFalso:
+    """Mensaje con los tres datos que una oferta necesita para publicarse.
+
+    Si le falta el enlace o el precio, actualizar_json lo descarta (ver
+    _motivo_descarte) y este test de escritura no escribiria nada.
+    """
     def __init__(self, mid):
         self.id = mid
         self.date = None
         self.media = None
-        self.text = f"Oferta numero {mid}"
+        self.text = (f"Zapatillas oferta numero {mid}\n"
+                     f"Ahora 10,00 €\nhttps://www.amazon.es/dp/B{mid:09d}")
         self.message = self.text
         self.entities = None
+
+class MensajeIncompleto(MensajeFalso):
+    def __init__(self, mid, texto):
+        super().__init__(mid)
+        self.text = texto
+        self.message = texto
+
+print("\n== _motivo_descarte ==")
+casos_descarte = [
+    ({"amazon_url": "", "title": "Zapatillas", "price": "9.00 €"}, "sin enlace de Amazon"),
+    ({"amazon_url": "https://amazon.es/dp/B1", "title": "", "price": "9.00 €"}, "sin titulo"),
+    ({"amazon_url": "https://amazon.es/dp/B1", "title": "Oferta Amazon", "price": "9.00 €"}, "sin titulo"),
+    ({"amazon_url": "https://amazon.es/dp/B1", "title": "Zapatillas", "price": ""}, "sin precio"),
+    ({"amazon_url": "https://amazon.es/dp/B1", "title": "ab", "price": "9.00 €"}, "titulo demasiado corto"),
+]
+for oferta, esperado in casos_descarte:
+    check(f"descartada: {esperado}",
+          bot._motivo_descarte(oferta) == esperado, bot._motivo_descarte(oferta))
+check("oferta completa -> publicable",
+      bot._motivo_descarte({"amazon_url": "https://amazon.es/dp/B1", "title": "Zapatillas Nike",
+                            "price": "9.00 €"}) is None)
+
+print("\n== actualizar_json no escribe lo que no es publicable ==")
+async def prueba_descarte():
+    d = Path(tempfile.mkdtemp(prefix="_prueba_descarte_"))
+    bot.DATA_PATH = d
+    casos = [
+        (9001, "Zapatillas Nike\nAhora 39,99 €"),                    # sin enlace
+        (9002, "Aviso del canal\nhttps://t.me/canal/1"),             # sin enlace ni precio
+        (9003, "Camiseta\nhttps://www.amazon.es/dp/B0SINPRECIO"),    # sin precio
+        (9004, "Solo texto sin nada"),                              # sin nada
+        (9005, "Champu Tresemme\nAhora 11,99 €\nhttps://www.amazon.es/dp/B0OK"),
+    ]
+    guardados = []
+    for mid, texto in casos:
+        if await bot.actualizar_json("general", MensajeIncompleto(mid, texto)):
+            guardados.append(mid)
+    ids_en_json = [o["id"] for o in json.loads((d / "general.json").read_text(encoding="utf-8"))]
+    shutil.rmtree(d, ignore_errors=True)
+    return guardados, ids_en_json
+
+_g, _j = asyncio.run(prueba_descarte())
+check("solo se publica la oferta completa", _g == [9005], _g)
+check("el JSON solo contiene la oferta completa", _j == [9005], _j)
 
 async def main():
     datos = await prueba_escritura()
@@ -142,25 +268,31 @@ async def main():
     check("no se recorta por debajo del limite", len(datos) == 6, f"n={len(datos)}")
     check("conserva los 6 mas recientes", ids == [110, 108, 105, 103, 101, 99], f"ids={ids}")
 
-    # recorte real: 45 mensajes, deben quedar los 30 mas nuevos
-    for f in prueba.glob("*.json"):
-        f.unlink()
-    await asyncio.gather(*[bot.actualizar_json("general", MensajeFalso(500 + i)) for i in range(45)])
-    ids = [d["id"] for d in json.loads((prueba / "general.json").read_text(encoding="utf-8"))]
-    check("45 mensajes -> quedan 30", len(ids) == bot.MAX_OFERTAS, f"n={len(ids)}")
-    check("quedan los 30 mas recientes (515-544)",
-          ids == list(range(544, 514, -1)), f"ids={ids}")
+    # El recorte se comprueba contra MAX_OFERTAS, no contra un numero fijo:
+    # el limite es configurable y el valor por defecto subio a 100 al anadir
+    # el reinicio del catalogo, asi que un 30 fijo aqui solo daria fallos falsos.
+    tope = bot.MAX_OFERTAS
 
-    # CONCURRENCIA: 60 mensajes a la vez. El cerrojo mantiene coherente el
-    # archivo, y el orden por ID asegura que sobreviven los mas recientes.
+    # recorte real: tope + 15 mensajes, deben quedar los 'tope' mas nuevos
     for f in prueba.glob("*.json"):
         f.unlink()
-    await asyncio.gather(*[bot.actualizar_json("general", MensajeFalso(200 + i)) for i in range(60)])
+    n = tope + 15
+    await asyncio.gather(*[bot.actualizar_json("general", MensajeFalso(500 + i)) for i in range(n)])
     ids = [d["id"] for d in json.loads((prueba / "general.json").read_text(encoding="utf-8"))]
-    check("60 escrituras concurrentes sin perdidas", len(ids) == bot.MAX_OFERTAS, f"n={len(ids)}")
+    check(f"{n} mensajes -> quedan {tope}", len(ids) == tope, f"n={len(ids)}")
+    check(f"quedan los {tope} mas recientes",
+          ids == list(range(500 + n - 1, 500 + n - 1 - tope, -1)), f"ids={ids}")
+
+    # CONCURRENCIA: todos a la vez. El cerrojo mantiene coherente el archivo,
+    # y el orden por ID asegura que sobreviven los mas recientes.
+    for f in prueba.glob("*.json"):
+        f.unlink()
+    await asyncio.gather(*[bot.actualizar_json("general", MensajeFalso(200 + i)) for i in range(n)])
+    ids = [d["id"] for d in json.loads((prueba / "general.json").read_text(encoding="utf-8"))]
+    check(f"{n} escrituras concurrentes sin perdidas", len(ids) == tope, f"n={len(ids)}")
     check("orden correcto tras concurrencia", ids == sorted(ids, reverse=True), f"ids={ids}")
-    check("conserva los 30 mas nuevos (230-259)",
-          ids == list(range(259, 229, -1)), f"ids={ids}")
+    check(f"conserva los {tope} mas nuevos",
+          ids == list(range(200 + n - 1, 200 + n - 1 - tope, -1)), f"ids={ids}")
 
     # el fichero nunca debe quedar corrupto ni con extension .tmp colgando
     check("sin ficheros .tmp residuales", not list(prueba.glob("*.tmp")), list(prueba.glob("*.tmp")))
@@ -169,7 +301,6 @@ async def main():
 
 asyncio.run(main())
 
-import shutil
 shutil.rmtree(prueba, ignore_errors=True)
 
 print("\n" + ("=" * 50))
