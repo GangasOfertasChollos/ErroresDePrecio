@@ -55,7 +55,7 @@ print("\n== extraer_gtin (solo codigos que son de verdad un GTIN) ==")
 # publicaba como itemprop="gtin", que es informacion falsa.
 for texto in ("Scottex Papel Higienico Humedo", "OFERTA Chollo Zapatillas",
               "Zapatillas Auriculares Inalambricos", "Mando DualSense PS5",
-              "Logitech G，显 Mouse", "Cepillos Interdentales"):
+              "Logitech G, Mouse", "Cepillos Interdentales"):
     check(f"sin codigo real -> '' ({texto[:24]!r})", bot.extraer_gtin(texto) == "",
           bot.extraer_gtin(texto))
 check("EAN-13 con digito de control valido", bot.extraer_gtin("EAN 8412345678905") == "8412345678905",
