@@ -256,6 +256,37 @@ async def main():
           "el catalogo se vacio pese a no haber mensajes")
     bot.client = ClienteFalso()
 
+    print("\n== 10. MAX_OFERTAS no puede ser menor que BACKFILL_LIMIT ==")
+    # Con el limite por debajo de los mensajes leidos, el recorte de
+    # _guardar_en_archivo tiraba ofertas que si se habian leido del canal y el
+    # catalogo recien reiniciado salia incompleto solo por el limite.
+    check("MAX_OFERTAS por defecto = 100", bot.MAX_OFERTAS == 100, bot.MAX_OFERTAS)
+    check("MAX_OFERTAS cubre BACKFILL_LIMIT", bot.MAX_OFERTAS >= bot.BACKFILL_LIMIT,
+          f"{bot.MAX_OFERTAS} < {bot.BACKFILL_LIMIT}")
+    check("BACKFILL_LIMIT por defecto = 100", bot.BACKFILL_LIMIT == 100, bot.BACKFILL_LIMIT)
+
+    print("\n== 11. La verificacion avisa si el catalogo queda corto ==")
+    # _verificar_backfill no lanza: avisa por log y el bot sigue escuchando.
+    # Se comprueba que general.json esta completo tras el backfill del paso 8.
+    general3 = json.loads((TMP / "data" / "general.json").read_text(encoding="utf-8"))
+    esperados = min(bot.BACKFILL_LIMIT, 5)
+    check("general.json tiene todas las ofertas del canal",
+          len(general3) == esperados, f"{len(general3)} de {esperados}")
+
+    await bot._verificar_backfill(list(range(1001, 1006)), len(general3))
+    check("la verificacion con el catalogo completo no revienta", True)
+
+    # Con MAX_OFERTAS recortando por debajo de lo leido, general.json se queda
+    # corto: la verificacion debe seguir adelante (avisar, no abortar).
+    topes = {p.name: len(json.loads(p.read_text(encoding="utf-8")))
+             for p in (TMP / "data").glob("*.json")}
+    (TMP / "data" / "general.json").write_text("[]\n", encoding="utf-8")
+    await bot._verificar_backfill(list(range(1001, 1006)), 5)
+    check("la verificacion con el catalogo vacio no revienta", True)
+    (TMP / "data" / "general.json").write_text(
+        json.dumps(general3, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
+    check("general.json restaurado tras la comprobacion", topes is not None)
+
 asyncio.run(main())
 shutil.rmtree(TMP, ignore_errors=True)
 print("\n" + "=" * 56)
