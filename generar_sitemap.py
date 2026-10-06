@@ -51,6 +51,17 @@ PAGINAS = [
     ("BlackFriday/sobre-nosotros.html", "monthly", "0.4"),
     ("BlackFriday/aviso-legal.html", "yearly", "0.3"),
     ("BlackFriday/politica-privacidad.html", "yearly", "0.3"),
+    # ── seccion Prime Days ──
+    # Cadencia "daily": la campaña está en marcha y el canal actualiza el
+    # catálogo a diario. Cuando termine, bajar a weekly.
+    ("PrimeDays/index.html", "daily", "0.9"),
+    ("PrimeDays/fechas-amazon-prime-days.html", "daily", "0.9"),
+    ("PrimeDays/ofertas-prime-days-2026.html", "daily", "0.8"),
+    ("PrimeDays/que-es-amazon-prime-days.html", "weekly", "0.7"),
+    ("PrimeDays/descuentos-reales-o-falsos.html", "weekly", "0.7"),
+    ("PrimeDays/como-aprovechar-prime-days.html", "weekly", "0.7"),
+    ("PrimeDays/canal-telegram-ofertas.html", "weekly", "0.7"),
+    ("PrimeDays/faq.html", "weekly", "0.7"),
 ]
 
 NS = "http://www.sitemaps.org/schemas/sitemap/0.9"

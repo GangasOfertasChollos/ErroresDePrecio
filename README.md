@@ -24,7 +24,9 @@ assets/icono-tg.jpg    Icono del canal (esquina superior derecha)
 index.html             Portada
 <slug>.html            Páginas de catálogo, una por categoría
 BlackFriday/           Sección Black Friday 2026 (17 páginas, CSS y assets propios)
+PrimeDays/             Sección Amazon Prime Days 2026 (8 páginas, CSS y assets propios)
 plantilla_comun.py     Marcado compartido: menú, icono y pie
+plantilla_prime_days.py  Equivalente de plantilla_comun.py para PrimeDays/
 generar_*.py           Generadores de HTML y sitemap
 tests/                 Pruebas del bot, del front y del sitio
 CNAME                  Dominio personalizado de GitHub Pages: gangasofertas.com
@@ -39,6 +41,7 @@ Dos hojas de estilo, las dos **de fondo claro**:
 |---|---|---|
 | Sitio principal | `assets/style.css` | naranja Amazon (`--naranja-texto` para texto) |
 | Sección Black Friday | `BlackFriday/assets/css/style.css` | negro (`--accent`) |
+| Sección Prime Days | `PrimeDays/assets/css/style.css` | negro (`--accent`) + cian `--cyan` para enlaces |
 
 El negro se usa como elemento de marca —barra superior, botones, barra de
 marca— sobre fondo blanco. Los colores de marca que no llegan a 4.5:1 sobre
@@ -60,7 +63,7 @@ estructuras de cabecera distintas y todas están contempladas en el CSS:
 |---|---|
 | Portada | `<header class="hero"><div>` |
 | Catálogos, SEO, ofertas en vivo | `<header class="cabecera"><div class="wrap">` |
-| Sección Black Friday | `<header class="site-header"><div class="wrap nav">` |
+| Secciones Black Friday y Prime Days | `<header class="site-header"><div class="wrap nav">` |
 | 404 | `<main class="error404">` |
 
 Esos contenedores son `position: relative`, así que el icono se coloca con
@@ -81,6 +84,40 @@ cambios de maquetación y los menús no divergen entre sí.
 La sección Black Friday tiene su propia hoja porque su diseño original era
 oscuro; se migró a claro cambiando `--bg` a `#ffffff` y `--accent` a negro, y
 ajustando los ~29 colores que estaban fijados en las reglas.
+
+## Secciones de campaña
+
+Hay dos secciones que cubren campañas concretas, y son hermanas: mismo
+generador de contenido, mismo tipo de página, mismo patrón de enlazado, y se
+enlazan mutuamente desde el menú porque el lector es el mismo.
+
+| | Black Friday | Prime Days |
+|---|---|---|
+| Campaña | 27 de noviembre de 2026 | 6 y 7 de octubre de 2026 |
+| Generador | `BlackFriday/` (HTML ya generado) | `generar_prime_days.py` |
+| Plantilla | incluida en la sección | `plantilla_prime_days.py` |
+| Análisis SEO | `BlackFriday/docs/SEO-STRATEGY.md` | `PrimeDays/docs/SEO-STRATEGY.md` |
+
+**Sobre las fechas.** Cada sección publica la fecha de su campaña y el
+historial, pero **solo los datos que tienen fuente**, y la fuente se enlaza en
+la propia página. La sección Prime Days se corrigió por esto: un borrador
+anterior afirmaba que Amazon no había anunciado la fecha de octubre de 2026,
+que era cierto cuando se escribió y dejó de serlo antes de publicarse. El
+principio no cambió (no inventar fechas); lo que cambió es el dato. Cuando
+Amazon confirme la edición de 2027, se editan las constantes `FECHA_INICIO_2026`
+y `FECHA_FIN_2026` de `generar_prime_days.py` y se vuelve a generar.
+
+> La sección Prime Days marca la campaña como «en marcha» y lleva una cuenta
+> atrás. **Eso es correcto el 6 y el 7 de octubre y falso después.** Está todo
+> en `cuenta_atras()` y en el hero de `PAGINA_INDEX`, y las fechas que aparecen
+> en la tabla del sitemap (`daily`) deben bajar a `weekly` el 8 de octubre.
+
+### Tablas anchas dentro de `.prose`
+
+La columna de texto mide 74ch. Una tabla de cuatro o cinco columnas dentro de
+ella parte cada celda en tres o cuatro palabras y deja de ser legible, así que
+`tabla(..., ancho_completo=True)` la saca a un `.wrap` completo. Las tablas de
+dos columnas caben sin problema dentro de `.prose`.
 
 ## Dominio
 
@@ -196,10 +233,11 @@ generador y vuelve a lanzarlo, **en este orden**:
 ```bash
 python generar_categorias.py    # 7 páginas de catálogo
 python generar_seo.py           # 4 páginas SEO
+python generar_prime_days.py    # 8 páginas de Prime Days
 python generar_sitemap.py       # sitemap.xml (verifica que las URLs existen)
 ```
 
-> Los tres generadores se ejecutan siempre en ese orden y en una sola pasada.
+> Los cuatro generadores se ejecutan siempre en ese orden y en una sola pasada.
 > `generar_categorias.py` es la fuente de las 7 páginas de catálogo: si algo
 > las modifica a mano, se pierde al regenerarlas. Por eso las páginas se
 > regeneran, no se parchean.
@@ -297,6 +335,20 @@ python tests/test_flujo.py          # extremo a extremo: mensaje -> JSON -> pág
 node tests/test_app.js              # render, escapado, whitelist de URLs, JSON-LD
 python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmaciones
 ```
+
+Y los de la sección Prime Days:
+
+```bash
+python tests/validar_prime_days.py          # texto, alfabetos, estructura por página
+python tests/validar_prime_days_enlaces.py  # enlaces, JSON-LD, FAQ vs schema, rel del canal
+python tests/validar_prime_days_faq.py      # el toggle despliega todos los <details>
+python tests/validar_prime_days_movil.py    # desborde horizontal, viewport, tokens largos
+```
+
+> `validar_sitio.py` recorre `RAIZ.glob("*.html")`, así que **no baja a los
+> subdirectorios**: ni ve `BlackFriday/` ni ve `PrimeDays/`. Por eso la sección
+> tiene sus propios validadores, que sí resuelven las referencias relativas
+> contra el directorio de cada HTML.
 
 Las pruebas no necesitan credenciales de Telegram ni conexión: sustituyen el
 cliente y el `fetch` por dobles de prueba y trabajan sobre copias en un

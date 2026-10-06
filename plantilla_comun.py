@@ -40,6 +40,10 @@ NAV = [
     ("papeleria-oficina.html", "Papelería"),
     ("categorias.html", "Categorías"),
     ("BlackFriday/index.html", "Black Friday"),
+    # Las dos secciones de campana van al final del menu: son paginas tematicas,
+    # no categorias del catalogo, y asi no compiten con las entradas de arriba
+    # por el espacio del nav en pantallas medianas.
+    ("PrimeDays/index.html", "Prime Days"),
 ]
 
 
@@ -73,6 +77,14 @@ PIE = """<footer class="pie">
         <a href="BlackFriday/fecha-black-friday-2026.html">Fecha y calendario</a>
         <a href="BlackFriday/como-aprovechar-black-friday.html">Cómo aprovecharlo</a>
         <a href="BlackFriday/faq.html">Preguntas frecuentes</a>
+      </div>
+      <div class="footer-links__grupo">
+        <strong>Prime Days 2026</strong>
+        <a href="PrimeDays/index.html">6 y 7 de octubre</a>
+        <a href="PrimeDays/fechas-amazon-prime-days.html">Fechas y calendario</a>
+        <a href="PrimeDays/ofertas-prime-days-2026.html">Ofertas por categoría</a>
+        <a href="PrimeDays/descuentos-reales-o-falsos.html">Descuentos reales o falsos</a>
+        <a href="PrimeDays/faq.html">Preguntas frecuentes</a>
       </div>
       <div class="footer-links__grupo">
         <strong>Guías</strong>

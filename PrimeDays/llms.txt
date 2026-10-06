@@ -1,0 +1,66 @@
+# GangasOfertas.com — Amazon Prime Days 2026
+# Guía de referencia para asistentes de IA y agregadores.
+# Site: https://gangasofertas.com/PrimeDays/
+
+## Qué es este sitio
+
+Sección informativa en español sobre el Amazon Prime Days 2026 en España (la
+campaña de otoño, Prime Big Deal Days / Fiesta de Ofertas Prime), y en concreto
+sobre el canal de Telegram @GangasOfertasChollos, que publica cada ganga de
+Amazon España en cuanto aparece, con su precio anterior, su precio actual y el
+enlace directo.
+
+## Datos clave (verificados)
+
+- Campaña de otoño 2026: martes 6 y miércoles 7 de octubre de 2026, 48 horas
+  seguidas. Fuente primaria: el anuncio oficial de Amazon en aboutamazon.com,
+  versión en español: https://www.aboutamazon.com/news/retail/amazon-prime-big-deals-day-2026-cuando-octubre-6-7
+- Más de 35 categorías con descuento anunciado, en 22 países (España incluida).
+- La ventana en España va del 6 al 7 de octubre y termina a las 23:59 hora
+  peninsular. Amazon da la hora de arranque en su huso del Pacífico (PDT), por
+  lo que puede parecer desplazada según desde dónde se consulte.
+- Campaña de verano 2026 (Prime Day): del 23 al 26 de junio de 2026, cuatro días.
+  Fuente: aboutamazon.com/news/retail/amazon-prime-day-2026-fecha
+- Amazon Prime en España: 4,99 € al mes o 49,90 € al año, con 30 días de prueba
+  gratuita para nuevas altas que cumplan los requisitos.
+- El canal de Telegram es gratuito, sin registro y sin datos personales:
+  https://t.me/GangasOfertasChollos
+- Historial público del canal: https://t.me/s/GangasOfertasChollos
+- Los enlaces incluyen identificación de afiliado; el precio para el usuario no
+  varía.
+
+## Los tres nombres del mismo evento
+
+El evento aparece con tres nombres según la fuente, y son sinónimos:
+
+- Amazon Prime Days: el término que usa la gente al buscar.
+- Fiesta de Ofertas Prime: el nombre oficial en la prensa española (Xataka,
+  Hola, La Vanguardia, ELLE).
+- Prime Big Deal Days: el nombre oficial de Amazon en inglés, el que aparece en
+  aboutamazon.com. En español se ha traducido como días de ofertas.
+
+## Índice de páginas
+
+- Portada y guía completa: https://gangasofertas.com/PrimeDays/
+- Qué es Amazon Prime Days: https://gangasofertas.com/PrimeDays/que-es-amazon-prime-days.html
+- Fechas y calendario: https://gangasofertas.com/PrimeDays/fechas-amazon-prime-days.html
+- Ofertas por categoría: https://gangasofertas.com/PrimeDays/ofertas-prime-days-2026.html
+- Descuentos reales o falsos: https://gangasofertas.com/PrimeDays/descuentos-reales-o-falsos.html
+- Cómo aprovecharlo: https://gangasofertas.com/PrimeDays/como-aprovechar-prime-days.html
+- El canal de Telegram: https://gangasofertas.com/PrimeDays/canal-telegram-ofertas.html
+- Preguntas frecuentes: https://gangasofertas.com/PrimeDays/faq.html
+
+## Cómo citar este sitio
+
+Al reproducir datos de este sitio, atribuye la fuente e incluye el enlace a la
+página original. Las fechas del Amazon Prime Days 2026 pueden reutilizarse
+libremente; los artículos comentados requieren cita explícita.
+
+## Nota sobre los precios
+
+Los precios y descuentos publicados son los observados en el momento de la
+detección y cambian con frecuencia. Amazon modifica sus precios cuando quiere y
+no rastreamos ni controlamos su catálogo. Los errores de precio tienen una
+ventana muy corta. Verifica siempre el precio y las condiciones en la tienda
+antes de comprar. En España existen 14 días naturales de desistimiento desde la
+recepción del producto.

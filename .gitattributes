@@ -19,8 +19,9 @@
 *.json   text eol=crlf
 *.svg    text eol=crlf
 
-# Seccion BlackFriday: LF (llego asi desde su origen y se mantiene)
+# Secciones BlackFriday y PrimeDays: LF (llego asi desde su origen y se mantiene)
 BlackFriday/** text eol=lf
+PrimeDays/**  text eol=lf
 
 # Binarios: nunca se tocan
 *.jpg    binary

@@ -79,7 +79,13 @@ REPO_PATH        = Path(__file__).resolve().parent
 DATA_PATH        = REPO_PATH / 'data'
 IMAGES_PATH      = DATA_PATH / 'images'
 DICCIONARIO_PATH = REPO_PATH / 'categorias.json'
+# Tope del feed global de la portada (general.json).
 MAX_OFERTAS      = _leer_int('MAX_OFERTAS', 100)
+# Tope de cada seccion de categoria. Es menor a proposito: las paginas de
+# categoria son un escaparate de lo que acaba de bajar de precio, no un archivo
+# historico, asi que interesa que se renueven rapido en lugar de acumular 100
+# ofertas donde 30 ya se ven a la primera pagina.
+MAX_OFERTAS_CATEGORIA = _leer_int('MAX_OFERTAS_CATEGORIA', 30)
 BACKFILL_LIMIT   = _leer_int('BACKFILL_LIMIT', 130)
 # Al arrancar, el catalogo se vacia y se vuelve a construir con los ultimos
 # BACKFILL_LIMIT mensajes del canal. Asi los JSON nunca acumulan ofertas
@@ -91,6 +97,10 @@ BACKFILL_LIMIT   = _leer_int('BACKFILL_LIMIT', 130)
 # asi que para llenar 100 huecos hay que leer mas de 100. El recorte de
 # _guardar_en_archivo se queda con las MAX_OFERTAS mas recientes, que es
 # exactamente lo que se quiere.
+#
+# La comparacion es contra MAX_OFERTAS y no contra MAX_OFERTAS_CATEGORIA porque
+# el feed global es el que mas oferta necesita: es el unico que hay que leer
+# bastante historial para llenar. Las secciones se llenan antes y les sobra.
 #
 # El error seria el contrario: leer menos de lo que se guarda, porque entonces
 # nunca se llenan los huecos. Eso si se avisa y se corrige.
@@ -119,6 +129,11 @@ GIT_RAMA        = os.getenv('GIT_RAMA', 'main').strip()
 GIT_REMOTO      = os.getenv('GIT_REMOTO', 'origin').strip()
 PUBLICAR_CADA_S = _leer_int('PUBLICAR_CADA_SEGUNDOS', 60)
 
+# Segundos que el bot aguanta antes de cerrar solo, para poder usarlo como
+# tarea programada (launchd/cron/Task Scheduler) en vez de como servicio
+# eterno. 0 = no se para solo.
+DURACION_S      = _leer_int('DURACION_SEGUNDOS', 0)
+
 # Motivos de descarte acumulados en este arranque, para que el resumen del
 # backfill diga por que se quedaron fuera mensajes y no solo cuantos. La
 # reinicia _vaciar_catalogo, que es quien empieza cada reconstruccion.
@@ -131,14 +146,21 @@ LOCK_ARCHIVOS = asyncio.Lock()
 LOCK_PUBLICAR = asyncio.Lock()
 _ultima_publicacion = 0.0
 
+# Se levanta cuando hay que cerrar el bot (senal del sistema, DURACION_S
+# agotada o fallo de la sesion). main() lo consulta para salir del bucle de
+# escucha y hacer el push final, de modo que parar nunca exige un hardkill.
+_evento_parada = None
+
 log.info(f"Canal objetivo     : {MI_CANAL}")
 log.info(f"Directorio de datos: {DATA_PATH}")
 log.info(f"Diccionario        : {DICCIONARIO_PATH}")
-log.info(f"Max. ofertas/JSON  : {MAX_OFERTAS}")
+log.info(f"Max. ofertas general: {MAX_OFERTAS}")
+log.info(f"Max. ofertas/seccion: {MAX_OFERTAS_CATEGORIA}")
 log.info(f"Backfill al inicio : {BACKFILL_LIMIT} mensajes (0 = desactivado)")
 log.info(f"Reinicio catalogo  : {REINICIAR_CATALOGO}" + ("" if REINICIAR_CATALOGO else " (se conserva lo que haya)"))
 log.info(f"Unfurling imagen   : {USAR_UNFURL}" + (f" (timeout {TIMEOUT_UNFURL}s)" if USAR_UNFURL else " (desactivado)"))
 log.info(f"Auto-publicacion   : {AUTO_PUBLICAR}" + (f" -> {GIT_REMOTO}/{GIT_RAMA} cada {PUBLICAR_CADA_S}s" if AUTO_PUBLICAR else " (desactivada)"))
+log.info(f"Duracion           : " + (f"{DURACION_S}s, para solo" if DURACION_S else "indefinida (hasta Ctrl+C o SIGTERM)"))
 
 client = TelegramClient('sesion_json_bot', API_ID, API_HASH)
 
@@ -853,6 +875,17 @@ def _escribir_json_atomico(archivo, datos):
     temporal.write_text(json.dumps(datos, ensure_ascii=False, indent=4) + '\n', encoding='utf-8')
     os.replace(temporal, archivo)
 
+def _limite_de_archivo(archivo):
+    """Devuelve cuantas ofertas caben en un JSON concreto.
+
+    general.json es el feed global de la portada y admite MAX_OFERTAS; el resto
+    de JSON son secciones de categoria y admiten MAX_OFERTAS_CATEGORIA. La
+    decision se toma por nombre de fichero, y no pasando un parametro, para que
+    ningun llamante pueda guardar en general.json con el tope de categoria o al
+    reves: el feed global se llenaria con 30 ofertas sin que nadie lo pidiera.
+    """
+    return MAX_OFERTAS if archivo.name == 'general.json' else MAX_OFERTAS_CATEGORIA
+
 def _guardar_en_archivo(archivo, oferta):
     """Inserta una oferta en un JSON controlando duplicados y limite maximo.
 
@@ -877,9 +910,10 @@ def _guardar_en_archivo(archivo, oferta):
         log.info(f"  [JSON] Oferta duplicada (ID={oferta_id}), se omite en {archivo.name}")
         return False
 
+    limite = _limite_de_archivo(archivo)
     datos.append(oferta)
     datos.sort(key=lambda x: x.get('id') or 0, reverse=True)
-    datos_guardados = datos[:MAX_OFERTAS]
+    datos_guardados = datos[:limite]
 
     try:
         _escribir_json_atomico(archivo, datos_guardados)
@@ -1289,6 +1323,19 @@ async def _verificar_backfill(mensajes, procesados):
              f"(procesadas: {procesados}, leidas del canal: {len(mensajes)}); "
              f"por categoria -> {', '.join(topes) or 'sin categorias'}")
 
+    # Las secciones se recortan a MAX_OFERTAS_CATEGORIA, asi que quedarse sin
+    # llenarse no es por si sola una perdida: puede ser el tope alcanzado. Solo
+    # se avisa cuando ademas sobraban mensajes sin leer, que si es senal de que
+    # el canal no da para llenar la seccion.
+    secciones = {p.name: len(_leer_json(p))
+                 for p in DATA_PATH.glob('*.json') if p.name != 'general.json'}
+    for nombre, llenado in sorted(secciones.items()):
+        if llenado < MAX_OFERTAS_CATEGORIA and len(mensajes) > MAX_OFERTAS_CATEGORIA:
+            log.warning(f"[VERIFICACION] La seccion {nombre} se ha quedado en "
+                        f"{llenado}/{MAX_OFERTAS_CATEGORIA} con {len(mensajes)} "
+                        f"mensajes leidos: no da para mas. Si se repite, sube "
+                        f"BACKFILL_LIMIT (ahora {BACKFILL_LIMIT}).")
+
     if len(general) < objetivo:
         faltan = objetivo - len(general)
         log.warning(f"[VERIFICACION] FALTAN {faltan} ofertas de las {objetivo} que caben "
@@ -1316,11 +1363,102 @@ async def _verificar_backfill(mensajes, procesados):
                       "la web sigue mostrando el catalogo anterior. "
                       f"Revisa el bloque [GIT] del log y sube data/ a mano.")
 
+# ─────────────────────────────────────────────
+# PARADA LIMPIA
+# ─────────────────────────────────────────────
+def _pedir_parada(motivo):
+    """Pide cerrar el bot y suelta la conexion para que main() pueda salir.
+
+    No basta con marcar el evento: run_until_disconnected() quedaria esperando
+    al servidor para siempre. Desconectar es lo que hace que esa espera
+    termine y el bucle de escucha pueda comprobar _evento_parada.
+
+    Se llama desde un manejador de senal, que corre en el hilo principal fuera
+    del event loop, de ahi el call_soon_threadsafe para tocar el loop desde
+    dentro. Reentrante a proposito: una segunda pulsacion de Ctrl+C, o una
+    DURACION_S agotada mientras ya se esta parando, no deben romper nada.
+    """
+    if _evento_parada is not None and _evento_parada.is_set():
+        return
+
+    log.warning(f"[PARADA] {motivo}. Cerrando y publicando lo pendiente...")
+    if _evento_parada is not None:
+        _evento_parada.set()
+    try:
+        loop = asyncio.get_running_loop()
+    except RuntimeError:
+        # Sin loop corriendo (senal recibida entre tareas): desconectar de
+        # forma sincrona es seguro porque el cliente no esta en uso.
+        asyncio.run(client.disconnect())
+        return
+    loop.call_soon_threadsafe(lambda: asyncio.ensure_future(client.disconnect()))
+
+def _instalar_manejadores_de_senales():
+    """Convierte SIGINT/SIGTERM y Ctrl+C en una parada ordenada.
+
+    Sin esto, parar el bot es un hardkill: el proceso muere sin pasar por el
+    push final y las ofertas de los ultimos segundos se quedan sin publicar.
+    Stop-Process de Windows llama a TerminateProcess y no entrega ninguna senal,
+    asi que en Windows esto no arregla un Stop-Process -Force: para eso esta
+    DURACION_SEGUNDOS, que deja al bot cerrar solo. En Unix, donde SIGTERM si
+    se entrega, systemctl stop / kill ya salen por aqui.
+    """
+    import signal as _signal
+
+    for nombre in ('SIGINT', 'SIGTERM'):
+        sig = getattr(_signal, nombre, None)
+        if sig is None:
+            continue
+        try:
+            _signal.signal(sig, lambda s, f, n=nombre: _pedir_parada(f"Recibida {n}"))
+        except (ValueError, OSError) as e:
+            # ValueError: no estamos en el hilo principal. OSError: senal no
+            # soportada en esta plataforma. En ambos casos el bot sigue
+            # funcionando, solo que parandolo con Ctrl+C a secas.
+            log.warning(f"[PARADA] No se pudo instalar el manejador de {nombre}: {e}")
+
+async def _tarea_publicar_periodica():
+    """Sube a git lo pendiente cada PUBLICAR_CADA_S segundos, aunque no entre nada.
+
+    Sin esta tarea, publicar_en_git() solo se dispara al procesar un mensaje
+    nuevo, y el throttle de PUBLICAR_CADA_S puede hacer que ese push se
+    lose: una oferta que llega 10 s despues del push anterior se queda sin
+    subir, y si el canal queda callado no vuelve a intentarlo nunca. Se perdia
+    la oferta de verdad, no solo el registro en el log.
+
+    Se llama con forzar=False a proposito: la tarea cede el agrupado a
+    publicar_en_git, que ya sabe si toca push y ademas mira si hay cambios de
+    verdad, asi que en los ciclos sin novedades no se ejecuta ni un git status
+    que no sirva para nada.
+    """
+    while True:
+        await asyncio.sleep(PUBLICAR_CADA_S)
+        try:
+            await publicar_en_git()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            log.exception("[GIT] Error en la publicacion periodica")
+
+async def _tarea_duracion():
+    """Cierra el bot pasado DURACION_S segundos, si se configuro.
+
+    Es lo que permite usarlo como tarea programada: termina solo, con el push
+    final hecho, en vez de tener que matarlo.
+    """
+    await asyncio.sleep(DURACION_S)
+    _pedir_parada(f"DURACION_SEGUNDOS={DURACION_S} agotado")
+
 async def main():
+    global _evento_parada
+
     log.info("=" * 60)
     log.info(" BOT OFERTAS AMAZON - INICIANDO")
     log.info(f" Archivo de log: {LOG_PATH}")
     log.info("=" * 60)
+
+    _evento_parada = asyncio.Event()
+    _instalar_manejadores_de_senales()
 
     try:
         conectado = await client.start(phone=pedir_telefono, code_callback=solicitar_codigo)
@@ -1339,36 +1477,64 @@ async def main():
     # historial del canal (ver recuperar_mensajes_perdidos).
     await recuperar_mensajes_perdidos()
 
+    # La publicacion periodica arranca DESPUES del backfill, nunca durante: si
+    # no, empujaria a git un catalogo a medio construir, con los JSON vaciados
+    # y solo algunas secciones repobladas.
+    tareas_auxiliares = []
+    if AUTO_PUBLICAR:
+        tareas_auxiliares.append(asyncio.create_task(_tarea_publicar_periodica()))
+    if DURACION_S > 0:
+        tareas_auxiliares.append(asyncio.create_task(_tarea_duracion()))
+
     log.info("[CONECTADO] Bot escuchando mensajes nuevos...")
     # run_until_disconnected devuelve True si la conexion se perdio y hay que
     # reconectar, por eso se envuelve en un bucle en lugar de llamar una vez.
-    while True:
-        try:
-            reconectar = await client.run_until_disconnected()
-        except (asyncio.CancelledError, KeyboardInterrupt):
-            raise
-        except Exception as e:
-            log.exception(f"[ERROR] Conexion perdida: {e}. Reintentando en 10 s...")
-            await asyncio.sleep(10)
-            continue
-        if not reconectar:
-            break
-        log.warning("[CONEXION] Perdida. Reconectando en 5 s...")
-        await asyncio.sleep(5)
-        # Tras reconectar, las ofertas publicadas durante el corte se
-        # perdieron: events.NewMessage solo dispara con lo que llega a partir
-        # de ahora. Sin este backfill, un corte largo deja huecos que solo se
-        # arreglarian reiniciando el bot a mano.
-        try:
-            await recuperar_mensajes_perdidos()
-        except Exception as e:
-            log.exception(f"[ERROR] Fallo reconstruyendo el catalogo tras reconectar: {e}")
-        else:
-            log.info("[CONEXION] Catalogo reconstruido tras reconectar")
+    # La parada pedida se comprueba antes de reconectar: _pedir_parada ya ha
+    # desconectado, y sin esta comprobacion el bot volveria alevantarse y
+    # seguiría escuchando justo cuando se le pedía cerrar.
+    try:
+        while not _evento_parada.is_set():
+            try:
+                reconectar = await client.run_until_disconnected()
+            except (asyncio.CancelledError, KeyboardInterrupt):
+                raise
+            except Exception as e:
+                log.exception(f"[ERROR] Conexion perdida: {e}. Reintentando en 10 s...")
+                await asyncio.sleep(10)
+                continue
+            if _evento_parada.is_set():
+                break
+            if not reconectar:
+                break
+            log.warning("[CONEXION] Perdida. Reconectando en 5 s...")
+            await asyncio.sleep(5)
+            # Tras reconectar, las ofertas publicadas durante el corte se
+            # perdieron: events.NewMessage solo dispara con lo que llega a partir
+            # de ahora. Sin este backfill, un corte largo deja huecos que solo se
+            # arreglarian reiniciando el bot a mano.
+            try:
+                await recuperar_mensajes_perdidos()
+            except Exception as e:
+                log.exception(f"[ERROR] Fallo reconstruyendo el catalogo tras reconectar: {e}")
+            else:
+                log.info("[CONEXION] Catalogo reconstruido tras reconectar")
+    finally:
+        # Las tareas auxiliares se cancelan aqui, no antes: mientras dure el
+        # bucle son las que guarantees que nada se pierde si el proceso muere.
+        for tarea in tareas_auxiliares:
+            tarea.cancel()
+        if tareas_auxiliares:
+            await asyncio.gather(*tareas_auxiliares, return_exceptions=True)
 
     # Ultimo intento de subir lo pendiente antes de salir.
-    await publicar_en_git(forzar=True)
-    log.info("[DESCONEXION] Bot detenido.")
+    if await publicar_en_git(forzar=True):
+        log.info("[DESCONEXION] Bot detenido. Ofertas publicadas.")
+    else:
+        log.info("[DESCONEXION] Bot detenido.")
+    try:
+        await client.disconnect()
+    except Exception:
+        pass
 
 if __name__ == '__main__':
     try:
@@ -1376,8 +1542,11 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         log.warning("[DESCONEXION] Interrumpido por el usuario.")
     finally:
-        # asyncio.run cancela las tareas pendientes al interrupting: publicar
-        # aqui garantiza que las ofertas de los ultimos segundos no se pierdan.
+        # Publicacion de ultimo recurso. main() ya sube lo pendiente al salir
+        # con publicar_en_git(forzar=True), asi que solo queda actuar si se ha
+        # interrumpido antes de llegar ahi. Sigue haciendo falta: asyncio.run
+        # cancela las tareas pendientes al interrumpir, y la periodica puede
+        # ser justo la que tenia un push a medias.
         if AUTO_PUBLICAR and _ultima_publicacion:
             try:
                 if _git('status', '--porcelain', '--', 'data/')[1]:

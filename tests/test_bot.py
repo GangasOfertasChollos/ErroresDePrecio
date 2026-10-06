@@ -1,5 +1,5 @@
 """Pruebas de las funciones puras de bot.py sin tocar Telegram."""
-import os, sys, json, asyncio, importlib.util, shutil, tempfile
+import os, sys, json, time, asyncio, importlib.util, shutil, tempfile, inspect
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -344,6 +344,29 @@ async def main():
     check(f"quedan los {tope} mas recientes",
           ids == list(range(500 + n - 1, 500 + n - 1 - tope, -1)), f"ids={ids}")
 
+    # TOPE POR SECCION: las categorias se recortan a MAX_OFERTAS_CATEGORIA,
+    # que es menor que el del feed global. El feed global no se deja intacto al
+    # probar las categorias: se lee aparte para que un fallo aqui no oculte al
+    # de general, y viceversa.
+    for f in prueba.glob("*.json"):
+        f.unlink()
+    tope_cat = bot.MAX_OFERTAS_CATEGORIA
+    n_cat = tope_cat + 15
+    await asyncio.gather(*[bot.actualizar_json("gaming-consolas", MensajeFalso(500 + i))
+                           for i in range(n_cat)])
+    ids_cat = [d["id"] for d in json.loads((prueba / "gaming-consolas.json").read_text(encoding="utf-8"))]
+    check(f"seccion: {n_cat} mensajes -> quedan {tope_cat}", len(ids_cat) == tope_cat, f"n={len(ids_cat)}")
+    check(f"seccion: quedan los {tope_cat} mas recientes",
+          ids_cat == list(range(500 + n_cat - 1, 500 + n_cat - 1 - tope_cat, -1)), f"ids={ids_cat}")
+    # n_cat supera el tope de seccion pero no llega al del feed global, asi que
+    # general.json debe conservarlos TODOS. Si el tope se aplicase por error a
+    # general, aqui se quedaria en tope_cat en lugar de n_cat.
+    ids_gen = [d["id"] for d in json.loads((prueba / "general.json").read_text(encoding="utf-8"))]
+    check(f"la seccion no arrastra su tope al feed global (guarda los {n_cat})",
+          len(ids_gen) == n_cat, f"n={len(ids_gen)}, esperado={n_cat}")
+    check("el feed global y la seccion tienen topes distintos",
+          tope_cat < tope, f"categoria={tope_cat}, general={tope}")
+
     # CONCURRENCIA: todos a la vez. El cerrojo mantiene coherente el archivo,
     # y el orden por ID asegura que sobreviven los mas recientes.
     for f in prueba.glob("*.json"):
@@ -359,6 +382,96 @@ async def main():
     check("sin ficheros .tmp residuales", not list(prueba.glob("*.tmp")), list(prueba.glob("*.tmp")))
     check("JSON valido en disco",
           isinstance(json.loads((prueba / "general.json").read_text(encoding="utf-8")), list))
+
+    # ── PUBLICACION PERIODICA ──
+    # El fallo que se comprueba aqui: una oferta que entra justo despues de
+    # un push se queda sin subir por el agrupado, y sin otro mensaje nunca
+    # sale. Se reproduce con el agrupado real y un publicar_en_git simulado
+    # que lo respeta igual, para no tocar el repositorio de verdad.
+    print("\n== la oferta atascada por el agrupado se publica sola ==")
+    intervalo = bot.PUBLICAR_CADA_S
+    # Se encoge el agrupado en vez de esperar al real: lo que se prueba es la
+    # logica de "publicar cada N sin que entre nada", no el reloj.
+    bot.PUBLICAR_CADA_S = 0.05
+    publicaciones = []
+
+    async def publicar_falso(forzar=False):
+        ahora = time.monotonic()
+        if not forzar and (ahora - bot._ultima_publicacion) < bot.PUBLICAR_CADA_S:
+            return False
+        bot._ultima_publicacion = ahora
+        publicaciones.append(forzar)
+        return True
+
+    original = bot.publicar_en_git
+    bot.publicar_en_git = publicar_falso
+    try:
+        # El agrupado, por si mismo: dos intentos seguidos dentro de la
+        # ventana dan un solo push, que es lo que evita un commit por oferta.
+        # _ultima_publicacion se pone a 0 para simular "hace mucho que no se
+        # publica": con el reloj ya actualizado el primer intento caeria dentro
+        # de la ventana, que es justo el agrupado funcionando.
+        bot._ultima_publicacion = 0.0
+        check("el agrupado deja pasar un intento fuera de la ventana",
+              await bot.publicar_en_git() is True, "no publico")
+        check("el agrupado agrupa el segundo intento inmediato",
+              await bot.publicar_en_git() is False, "publico dos veces seguidas")
+        check("el agrupado no se salta con forzar=True",
+              await bot.publicar_en_git(forzar=True) is True, "forzar no publico")
+
+        # Y el fallo original: sin que entre ningun mensaje, la tarea tiene que
+        #.publish por su cuenta.
+        publicaciones.clear()
+        bot._ultima_publicacion = time.monotonic()
+        tarea = asyncio.create_task(bot._tarea_publicar_periodica())
+        await asyncio.sleep(0.3)   # varias ventanas de agrupado
+        tarea.cancel()
+        await asyncio.gather(tarea, return_exceptions=True)
+        check("la tarea periodica publica sola, sin mensajes nuevos",
+              len(publicaciones) >= 1, f"publicaciones={len(publicaciones)}")
+        check("no publica en cada vuelta (el agrupado la frena)",
+              len(publicaciones) < 6, f"publicaciones={len(publicaciones)}")
+
+        # Y el cierre ordenado, que es la otra via de salida.
+        publicaciones.clear()
+        await bot.publicar_en_git(forzar=True)
+        check("el cierre ordenado publica lo pendiente",
+              len(publicaciones) == 1, f"publicaciones={len(publicaciones)}")
+    finally:
+        bot.publicar_en_git = original
+        bot.PUBLICAR_CADA_S = intervalo
+
+    # ── PARADA LIMPIA ──
+    print("\n== parar el bot no es un hardkill ==")
+    # main() consulta _evento_parada entre reconnect y reconnect: si no se
+    # comprobara, se levantaria otra vez justo cuando se le pide cerrar.
+    fuente = inspect.getsource(bot.main)
+    check("main() sale del bucle cuando se pide parar",
+          "_evento_parada.is_set()" in fuente, "no comprueba el evento de parada")
+    # El orden importa y no basta con que la comprobacion exista: si se
+    # comprueba despues de reconectar, el bot se levanta otra vez justo cuando
+    # se le pide cerrar, que es el fallo que evita este break.
+    check("main() comprueba la parada antes de reconectar",
+          fuente.index("if _evento_parada.is_set():\n                break")
+          < fuente.index("[CONEXION] Perdida"),
+          "comprueba la parada despues de reconectar")
+    check("main() cancela las tareas auxiliares", "tarea.cancel()" in fuente, "no cancela nada")
+    check("main() desconecta al salir", "await client.disconnect()" in fuente, "no desconecta")
+
+    # El manejador de senales es lo que convierte Ctrl+C/SIGTERM en una parada
+    # ordenada. Sin el, hay que matar el proceso y se pierde lo pendiente.
+    for nombre in ("_pedir_parada", "_instalar_manejadores_de_senales", "_tarea_duracion"):
+        check(f"existe {nombre}()", callable(getattr(bot, nombre, None)), "no encontrada")
+    fuente_senales = inspect.getsource(bot._instalar_manejadores_de_senales)
+    check("se atienden SIGINT y SIGTERM",
+          "SIGINT" in fuente_senales and "SIGTERM" in fuente_senales, "falta alguna senal")
+
+    # La periodica no puede arrancar antes del backfill: si no, empujaria a git
+    # un catalogo a medio construir, con los JSON recien vaciados.
+    check("la tarea periodica se crea despues de recuperar_mensajes_perdidos()",
+          fuente.index("recuperar_mensajes_perdidos()")
+          < fuente.index("_tarea_publicar_periodica()"),
+          "se crea antes del backfill")
 
 asyncio.run(main())
 

@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /docs/
 Disallow: /BlackFriday/docs/
+Disallow: /PrimeDays/docs/
 
 Sitemap: https://gangasofertas.com/sitemap.xml
