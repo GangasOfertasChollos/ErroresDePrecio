@@ -86,6 +86,32 @@ check("GENERADORES en el orden correcto (HTML antes que sitemap)",
       bot.GENERADORES == ("generar_categorias.py", "generar_guias.py",
                           "generar_sitemap.py"), str(bot.GENERADORES))
 
+print("\n== 6. Sin ofertas nuevas no se regenera el HTML ==")
+# La tarea periodica entra en publicar_en_git() cada PUBLICAR_CADA_S segundos.
+# Regenerar antes de comprobar si data/ ha cambiado lanzaba los tres
+# generadores en cada pasada, con el canal callado. Se comprueba el orden
+# leyendo el codigo: el chequeo de data/ tiene que ir antes que la llamada a
+# _regenerar_html().
+import inspect
+
+fuente = inspect.getsource(bot.publicar_en_git)
+# La llamada real es 'asyncio.to_thread(_regenerar_html)': sin parentesis,
+# porque se pasa la funcion. Buscarla con parentesis no la encuentra.
+pos_check = fuente.find("'status', '--porcelain', '--', 'data/'")
+pos_regen = fuente.find("_regenerar_html")
+pos_salida = fuente.find("No hay cambios que publicar")
+check("el generador aparece en el codigo", pos_regen != -1)
+check("data/ se comprueba ANTES de regenerar",
+      pos_check != -1 and pos_check < pos_regen,
+      f"check={pos_check} regen={pos_regen}")
+check("el chequeo limita a data/, no al arbol entero",
+      "--', 'data/'" in fuente,
+      "un status sobre todo el arbol haria que un HTML sin commitear "
+      "disparase el push en cada pasada")
+check("se sale antes de regenerar si no hay cambios",
+      pos_salida != -1 and pos_salida < pos_regen,
+      f"salida={pos_salida} regen={pos_regen}")
+
 print("\n" + "=" * 56)
 print(f"{len(fallos)} FALLOS")
 raise SystemExit(1 if fallos else 0)

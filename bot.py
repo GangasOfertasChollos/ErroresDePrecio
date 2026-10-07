@@ -1182,10 +1182,26 @@ async def publicar_en_git(forzar=False):
         _ultima_publicacion = time.monotonic()
         log.info("[GIT] Publicando cambios de data/ y el HTML regenerado ...")
         try:
-            # El HTML se regenera ANTES de mirar que haya cambios: si solo ha
-            # cambiado una oferta, el HTML es lo unico que va a diferir y sin
-            # esto el commit se haria vacio ("No hay cambios que publicar").
-            # Se hace dentro del lock porque escribe en el arbol de trabajo.
+            # Se mira primero si hay ofertas nuevas y, si no hay, se sale
+            # sin tocar nada mas. La tarea periodica entra aqui cada
+            # PUBLICAR_CADA_S segundos: regenerar antes de este chequeo
+            # lanzaba los tres generadores (tres procesos de Python) en cada
+            # pasada, incluso con el canal callado y sin una sola oferta
+            # nueva. Solo hace falta cuando data/ ha cambiado de verdad.
+            ok, salida = await asyncio.to_thread(
+                _git, 'status', '--porcelain', '--', 'data/')
+            if not salida:
+                log.info("[GIT] No hay cambios que publicar")
+                return False
+
+            # Hay ofertas nuevas, asi que se regenera el HTML a partir de
+            # ellas ANTES de commitear: si el commit saliera sin el, el
+            # repositorio quedaria con los JSON de una tanda y el HTML de la
+            # anterior, y el crawler no veria las ofertas nuevas. Un commit
+            # vacio no es posible aqui porque data/ acaba de cambiar.
+            #
+            # Va dentro del lock porque los generadores escriben en el arbol
+            # de trabajo mientras el lock es lo unico que serializa esto.
             if REGENERAR_HTML:
                 fallos = await asyncio.to_thread(_regenerar_html)
                 if fallos:
@@ -1208,11 +1224,6 @@ async def publicar_en_git(forzar=False):
                 if not ok:
                     log.error(f"[GIT] Fallo en 'git add' del HTML: {salida}")
                     return False
-
-            ok, salida = await asyncio.to_thread(_git, 'status', '--porcelain')
-            if not salida:
-                log.info("[GIT] No hay cambios que publicar")
-                return False
 
             total = len(_leer_json(DATA_PATH / 'general.json'))
             mensaje = f"Actualizar ofertas ({total} en general.json)"

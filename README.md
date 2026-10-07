@@ -397,9 +397,14 @@ data/*.json + generar_categorias.py + generar_guias.py + generar_sitemap.py
 
 Detalles que importan:
 
-- El HTML se regenera **antes** de comprobar si hay cambios. Si solo ha
-  cambiado una oferta, el HTML es lo único que va a diferir, y mirando los
-  cambios primero el commit saldría vacío.
+- **Se comprueba `data/` antes de regenerar nada.** La tarea periódica entra en
+  `publicar_en_git()` cada `PUBLICAR_CADA_S` segundos, así que regenerar sin
+  mirar antes lanzaba los tres generadores (tres procesos de Python) en cada
+  pasada, con el canal callado. Con el chequeo previo, el HTML solo se
+  regenera cuando hay ofertas nuevas de verdad.
+- El HTML se regenera **antes de commitear**, nunca después: si el commit
+  saliera sin él, el repositorio quedaría con los JSON de una tanda y el HTML de
+  la anterior. Un commit vacío no es posible porque `data/` acaba de cambiar.
 - Las páginas se listan una a una (`_paginas_generadas()`) en vez de usar
   `git add *.html`, porque un pathspec con comodín también alcanzaría
   `BlackFriday/` y `PrimeDays/`.
@@ -408,6 +413,11 @@ Detalles que importan:
   del generador.
 - Se puede desactivar con `REGENERAR_HTML=0`, que devuelve el bot al
   comportamiento anterior (solo `data/`).
+
+`test_publicar_html.py` incluye una comprobación del **orden** dentro de
+`publicar_en_git()`: que el chequeo de `data/` preceda a la regeneración y que
+el retorno por "no hay cambios" también. Es un detalle fácil de deshacer por
+error, y cuesta tres procesos de Python por minuto.
 
 ### Orden dentro de una página de categoría
 
