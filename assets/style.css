@@ -656,14 +656,15 @@ main.contenido{padding:35px 0}
 
 /* ==========================================================================
    Bloque editorial de las paginas de catalogo
-   generar_categorias.py escribe el texto de cada categoria antes de las
+   generar_categorias.py escribe el texto de cada categoria DESPUES de las
    tarjetas. Antes no existia: las paginas eran solo una lista de productos y
-   no tenian nada propio que oferecer al lector ni al crawler.
+   no tenian nada propio que ofrecer al lector ni al crawler.
 
-   El bloque va arriba del todo y las ofertas debajo a proposito: lo primero
-   que se lee es la respuesta a "que es esto y por que me sirve", y la lista
-   sigue estando a un scroll. Al reves, el visitante decide en tres segundos
-   si la pagina le sirve.
+   El bloque va abajo a proposito. La intencion de quien llega a una pagina de
+   categoria es ver precios: si lo primero que encuentra son 600-800 palabras
+   antes de ver un producto, se va. El texto queda despues para quien quiera
+   leerlo, y no se pierde seo por el orden porque un crawler recorre la pagina
+   entera; lo que si cambia es la UX, y aqui manda la intencion de compra.
    ========================================================================== */
 .editorial {
   background: #fff;
@@ -742,3 +743,24 @@ main.contenido{padding:35px 0}
   .editorial { padding: 22px 18px; }
   .editorial__h2 { font-size: 22px; }
 }
+
+/* ==========================================================================
+   Cabecera del bloque de ofertas
+   El listado va antes que el texto editorial (ver generar_categorias.py): la
+   intencion de quien llega a una pagina de categoria es ver precios. El texto
+   queda debajo, ya separado, para quien quiera leerlo.
+   ========================================================================== */
+.catalogo__cabecera { margin-bottom: 20px; }
+.catalogo__cabecera h2 {
+  font-size: 20px;
+  line-height: 1.3;
+  margin: 0 0 6px;
+  color: var(--azul-oscuro);
+}
+.catalogo__cabecera p { margin: 0; font-size: 14px; color: var(--texto-claro); line-height: 1.6; }
+.catalogo__cabecera a { color: var(--naranja-texto); }
+
+/* El texto editorial ahora llega despues de un listado que puede ser largo
+   (general.html son 100 tarjetas). Sin este corte visual parece un final de
+   pagina en lugar de una seccion nueva. */
+.editorial--final { margin-top: 40px; }

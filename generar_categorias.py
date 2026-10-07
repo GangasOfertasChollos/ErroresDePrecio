@@ -222,13 +222,38 @@ def tarjeta(o) -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 # Bloque editorial
 # ─────────────────────────────────────────────────────────────────────────────
+def catalogo_cabecera(slug: str, h1_cabecera: str, n: int) -> str:
+    """Titular del bloque de ofertas.
+
+    Va antes de las tarjetas, no dentro del bloque editorial, porque el listado
+    es lo primero que ve quien llega con intencion de compra. Sin este h2 las
+    tarjetas colgarian del h1 de la cabecera y el texto editorial de mas abajo
+    seria el unico bloque con jerarquia propia.
+
+    El recuento de ofertas se declara en el texto y no solo en el JSON-LD: da
+    una idea inmediata de si la pagina tiene contenido o esta vacia, sin
+    necesidad de ver las tarjetas.
+    """
+    if n:
+        plural = "oferta" if n == 1 else "ofertas"
+        cuenta = f"{n} {plural} publicadas desde el canal de Telegram"
+    else:
+        cuenta = "Todavía no hay ofertas en esta sección"
+    return (f'<div class="catalogo__cabecera">'
+            f'<h2>{esc(h1_cabecera)} en Amazon España</h2>'
+            f'<p>{esc(cuenta)}. Los precios son los que se detectaron al '
+            f'publicarse; <a href="{CANAL}" target="_blank" rel="noopener">únete al '
+            f'canal</a> para recibirlas en cuanto entren.</p>'
+            f"</div>")
+
+
 def bloque_editorial(slug: str) -> str:
     d = CONTENIDO[slug]
     # Sin h1 propio: el de la cabecera (<h1>📱 Móviles y electrónica</h1>) ya es
     # el titular de la pagina y meter un segundo h1 con el mismo texto solo
     # confunde al crawler. Este h2 es la variante larga, la que incluye
     # "en Amazon España" y por tanto la intencion de busqueda completa.
-    partes = ['<div class="editorial">']
+    partes = ['<div class="editorial editorial--final">']
     partes.append(f'<h2 class="editorial__h2">{esc(d["h1"])}</h2>')
     for p in d["intro"]:
         partes.append(f"<p>{p}</p>")
@@ -399,7 +424,7 @@ PLANTILLA = """<!doctype html>
 
 <main class="contenido wrap">
 
-  {editorial}
+  {catalogo_cabecera}
 
   {estado_bloque}
   <section id="ofertas" class="rejilla" aria-live="polite">{tarjetas}</section>
@@ -407,6 +432,8 @@ PLANTILLA = """<!doctype html>
   <p class="enlace-telegram">
     ¿Quieres más? <a href="{canal}" target="_blank" rel="noopener">Únete al canal de Telegram</a>
   </p>
+
+  {editorial}
 
 </main>
 
@@ -450,6 +477,7 @@ def main() -> None:
             h1_cabecera=h1_cabecera, subtitulo=subtitulo, icono_cat=icono_cat,
             nav=nav_html(f"{slug}.html"),
             icono=ICONO_TG.format(prefijo="", canal=CANAL),
+            catalogo_cabecera=catalogo_cabecera(slug, h1_cabecera, len(ofertas)),
             editorial=bloque_editorial(slug),
             estado_bloque=estado_bloque, tarjetas=tarjetas,
             schema=schema, pie=PIE,

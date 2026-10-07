@@ -335,6 +335,8 @@ python tests/test_flujo.py          # extremo a extremo: mensaje -> JSON -> pág
 node tests/test_app.js              # render, escapado, whitelist de URLs, JSON-LD
 python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmaciones
 python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
+python tests/validar_orden.py       # orden ofertas→texto, clases y JSON-LD
+python tests/test_publicar_html.py  # el bot regenera y sube el HTML correcto
 ```
 
 `validar_servido.py` comprueba lo que un crawler recibe de verdad por HTTP, no lo
@@ -406,6 +408,29 @@ Detalles que importan:
   del generador.
 - Se puede desactivar con `REGENERAR_HTML=0`, que devuelve el bot al
   comportamiento anterior (solo `data/`).
+
+### Orden dentro de una página de categoría
+
+```
+h1 (cabecera)
+  h2  Móviles y electrónica en Amazon España   ← cuenta de ofertas
+      [grid de tarjetas]
+  h2  Ofertas de móviles y electrónica en Amazon España
+      h3  Móviles: el precio oficial casi nunca es el precio real
+      h3  Cómo elegir y cuándo comprar
+      h3  Preguntas frecuentes
+```
+
+El listado va **antes** que el texto. Quien llega a una página de categoría
+busca precios, y 600-800 palabras antes del primer producto hacen que se vaya.
+
+No cuesta SEO: un crawler recorre la página entera, así que el texto se sigue
+leyendo e indexando igual, y el `ItemList` del JSON-LD no depende de la posición.
+Lo que sí cambia es la UX, y en una página transaccional manda la intención de
+compra. El texto editorial queda como respuesta larga para quien la busca.
+
+`tests/validar_orden.py` fija el orden, las clases del CSS nuevo y que el
+JSON-LD siga declarando `ItemList` y `FAQPage`.
 
 Y los de la sección Prime Days:
 
