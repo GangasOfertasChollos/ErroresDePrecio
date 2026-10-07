@@ -129,6 +129,28 @@ GIT_RAMA        = os.getenv('GIT_RAMA', 'main').strip()
 GIT_REMOTO      = os.getenv('GIT_REMOTO', 'origin').strip()
 PUBLICAR_CADA_S = _leer_int('PUBLICAR_CADA_SEGUNDOS', 60)
 
+# Regenerar el HTML a partir de los JSON antes de subirlo. Las paginas de
+# catalogo se sirven con las ofertas ya escritas dentro (ver
+# generar_categorias.py): si no se regeneran, el JSON avanza y el HTML se
+# queda en la tanda anterior, con lo que un crawler no ve las ofertas nuevas.
+# El orden importa: primero el HTML (que lee data/), despues el sitemap (que
+# comprueba que las paginas existan).
+#
+# Si un generador falla NO se aborta la publicacion: es preferible subir los
+# JSON con el HTML viejo a no subir nada. El error queda en el log.
+REGENERAR_HTML   = str(os.getenv('REGENERAR_HTML', '1')).strip().lower() in ('1', 'true', 'yes', 'si')
+GENERADORES      = ('generar_categorias.py', 'generar_guias.py', 'generar_sitemap.py')
+
+# Paginas que escriben los generadores, todas en la raiz del repo. Se listan
+# una a una en vez de usar 'git add *.html' porque un pathspec con comodin
+# tambien alcanzaria BlackFriday/ y PrimeDays/, que no deben entrar en el
+# commit del bot ni por error ni por una diferencia de contenido alli.
+def _paginas_generadas():
+    from contenido_categoria import CONTENIDO
+    from guias import GUIAS
+    return [f"{slug}.html" for slug in CONTENIDO] + \
+           ["guias.html"] + [f"{g[0]}.html" for g in GUIAS] + ["sitemap.xml"]
+
 # Segundos que el bot aguanta antes de cerrar solo, para poder usarlo como
 # tarea programada (launchd/cron/Task Scheduler) en vez de como servicio
 # eterno. 0 = no se para solo.
@@ -1089,12 +1111,61 @@ def _git(*args):
     salida = (proc.stdout or '') + (proc.stderr or '')
     return proc.returncode == 0, salida.strip()
 
+
+def _regenerar_html():
+    """Ejecuta los generadores de paginas.
+
+    Se llama con el mismo lock que el push, justo antes de git add: escribir
+    el HTML y subirlo tienen que ser la misma operacion, o el repositorio
+    queda con los JSON de una tanda y el HTML de otra.
+
+    Devuelve la lista de generadores que fallaron (vacia si todo fue bien).
+    """
+    fallos = []
+    for script in GENERADORES:
+        destino = REPO_PATH / script
+        if not destino.exists():
+            # No es un error: un despliegue parcial puede no traerse todos.
+            log.warning(f"[HTML] {script} no existe, se omite")
+            continue
+        try:
+            proc = subprocess.run(
+                [sys.executable, str(destino)], cwd=REPO_PATH,
+                capture_output=True, text=True, encoding='utf-8',
+                errors='replace', timeout=120
+            )
+        except Exception as e:
+            log.error(f"[HTML] Fallo al ejecutar {script}: {e}")
+            fallos.append(script)
+            continue
+
+        if proc.returncode != 0:
+            # Se registra la salida porque los generadores informative de por
+            # si, y sin esto un fallo de sintaxis seria invisible.
+            log.error(f"[HTML] {script} fallo: {(proc.stderr or proc.stdout or '').strip()}")
+            fallos.append(script)
+            continue
+
+        # Los generadores imprimen un resumen por pagina; en el log interesa.
+        resumen = (proc.stdout or '').strip().replace("\n", " | ")
+        log.info(f"[HTML] {script}: {resumen or 'ok'}")
+    return fallos
+
 async def publicar_en_git(forzar=False):
-    """Sube data/ al repositorio para que GitHub Pages sirva el cambio.
+    """Sube data/ y el HTML regenerado al repositorio para que GitHub Pages
+    sirva el cambio.
 
     El bot escribe los JSON, pero sin esto la web solo se actualiza cuando
     alguien ejecuta git add/commit/push a mano. Se agrupa la subida cada
     PUBLICAR_CADA_SEGUNDOS segundos en lugar de un commit por oferta.
+
+    El HTML se regenera aqui y no a mano porque las paginas de catalogo se
+    sirven con las ofertas escritas dentro: sin regenerar, el repositorio
+    tendria los JSON de una tanda y el HTML de la anterior, y un crawler no
+    veria las ofertas nuevas hasta que alguien se acordase.
+
+    Con REGENERAR_HTML=0 se comporta como antes (solo data/), por si hay que
+    publicar los JSON sin tocar el HTML.
     """
     global _ultima_publicacion
 
@@ -1109,14 +1180,36 @@ async def publicar_en_git(forzar=False):
     # puede tardar segundos y no debe congelar la escucha de mensajes.
     async with LOCK_PUBLICAR:
         _ultima_publicacion = time.monotonic()
-        log.info("[GIT] Publicando cambios de data/ ...")
+        log.info("[GIT] Publicando cambios de data/ y el HTML regenerado ...")
         try:
-            ok, salida = await asyncio.to_thread(_git, 'add', 'data/')
+            # El HTML se regenera ANTES de mirar que haya cambios: si solo ha
+            # cambiado una oferta, el HTML es lo unico que va a diferir y sin
+            # esto el commit se haria vacio ("No hay cambios que publicar").
+            # Se hace dentro del lock porque escribe en el arbol de trabajo.
+            if REGENERAR_HTML:
+                fallos = await asyncio.to_thread(_regenerar_html)
+                if fallos:
+                    # No se aborta: subir los JSON con el HTML viejo es mejor
+                    # que no subir nada, y el error queda en el log.
+                    log.error(f"[HTML] Generadores con fallo: {fallos}. "
+                              "Se sube igualmente con el HTML anterior.")
+
+            ok, salida = await asyncio.to_thread(_git, 'add', '--', 'data/')
             if not ok:
                 log.error(f"[GIT] Fallo en 'git add data/': {salida}")
                 return False
 
-            ok, salida = await asyncio.to_thread(_git, 'status', '--porcelain', '--', 'data/')
+            # El HTML tambien entra en el commit: sin esto las paginas
+            # regeneradas se quedarian sin subir y el bot las reescribiria en
+            # cada tanda, dejando el arbol siempre sucio.
+            if REGENERAR_HTML:
+                ok, salida = await asyncio.to_thread(
+                    _git, 'add', '--', *_paginas_generadas())
+                if not ok:
+                    log.error(f"[GIT] Fallo en 'git add' del HTML: {salida}")
+                    return False
+
+            ok, salida = await asyncio.to_thread(_git, 'status', '--porcelain')
             if not salida:
                 log.info("[GIT] No hay cambios que publicar")
                 return False
@@ -1361,7 +1454,9 @@ async def _verificar_backfill(mensajes, procesados):
         else:
             log.error("[VERIFICACION] Los JSON se han escrito pero el push ha fallado: "
                       "la web sigue mostrando el catalogo anterior. "
-                      f"Revisa el bloque [GIT] del log y sube data/ a mano.")
+                      f"Revisa el bloque [GIT] del log y sube data/"
+                      + (" y el HTML regenerado" if REGENERAR_HTML else "")
+                      + " a mano.")
 
 # ─────────────────────────────────────────────
 # PARADA LIMPIA

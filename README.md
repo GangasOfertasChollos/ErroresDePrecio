@@ -337,13 +337,23 @@ python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmacio
 python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
 ```
 
-`validar_servido.py` necesita un servidor local y comprueba lo que un crawler
-recibe de verdad, no lo que hay en disco:
+`validar_servido.py` comprueba lo que un crawler recibe de verdad por HTTP, no lo
+que hay en disco. Acepta un dominio como argumento:
 
 ```bash
-python -m http.server 8123          # en otra terminal
-python tests/validar_servido.py
+python tests/validar_servido.py                          # contra gangasofertas.com
+python tests/validar_servido.py http://localhost:8124     # contra un servidor local
 ```
+
+Contra el sitio desplegado añade dos comprobaciones que en local no tienen
+sentido: que las 45 URLs del sitemap responden de verdad (una URL que solo
+existe en el repositorio no la encuentra Google) y que el dominio y sus
+variantes `www` / `http` resuelven a la misma canónica. Reintenta cada
+petición tres veces, porque sin eso un corte de red al leer `general.html`
+(~240 KB) se lee como un sitio caído.
+
+`test_publicar_html.py` comprueba que el bot sube el HTML regenerado y que la
+lista de páginas no toca `BlackFriday/` ni `PrimeDays/`.
 
 ## Generar las páginas
 
@@ -367,6 +377,35 @@ llega con las tarjetas ya escritas y `app.js` solo refresca los datos; si el
 Si se toca la lógica de precios hay que tocar las dos copias: `precios()` en
 `generar_categorias.py` y `preciosDe()` en `assets/app.js`. Si divergieran, la
 página cambiaría sola al cargar el script.
+
+### El bot regenera el HTML al publicar
+
+Antes el bot escribía los JSON y los subía, pero el HTML se generaba a mano.
+Como las páginas se sirven con las ofertas escritas dentro, el repositorio
+acababa con los JSON de una tanda y el HTML de la anterior: las ofertas nuevas
+no llegaban al crawler hasta que alguien se acordaba de regenerar.
+
+`publicar_en_git()` ahora ejecuta los tres generadores antes del `git add` y
+los incluye en el mismo commit:
+
+```
+data/*.json + generar_categorias.py + generar_guias.py + generar_sitemap.py
+  -> un solo commit -> un solo push
+```
+
+Detalles que importan:
+
+- El HTML se regenera **antes** de comprobar si hay cambios. Si solo ha
+  cambiado una oferta, el HTML es lo único que va a diferir, y mirando los
+  cambios primero el commit saldría vacío.
+- Las páginas se listan una a una (`_paginas_generadas()`) en vez de usar
+  `git add *.html`, porque un pathspec con comodín también alcanzaría
+  `BlackFriday/` y `PrimeDays/`.
+- Si un generador falla, **no se aborta la subida**: es preferible subir los
+  JSON con el HTML viejo a no subir nada. El fallo queda en el log con la salida
+  del generador.
+- Se puede desactivar con `REGENERAR_HTML=0`, que devuelve el bot al
+  comportamiento anterior (solo `data/`).
 
 Y los de la sección Prime Days:
 
