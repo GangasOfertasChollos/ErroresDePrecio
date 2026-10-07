@@ -1,5 +1,35 @@
 [
     {
+        "id": 8185,
+        "date": "2026-10-07T20:08:11+00:00",
+        "title": "Pepe Jeans DARREN TREK W",
+        "price": "47.09 €",
+        "old_price": "110.00 €",
+        "discount": "-57%",
+        "amazon_url": "https://www.amazon.es/dp/B0DV89RWSW?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/KwoRRmf_g3Z6nqAtMmoRttada3gP3gW7DZ9ydtS9k3qRz9Ah1_1vkwyt8ehTciDcpXkIBDF_IKt3H-6bz3BII3YAwQnZBoptXOUh557KU01e1uM7IkPWWnKsx_j0XduLGHZPrst7K_phNL5BYjDGfY0HuP1zAjJS-LgVBHuedrGFuyZOFteJCihbSHINlhGdcSyB2DqEK6lqmO_voyrgUL5skJIa36wVA8kxMNpi-jWFq7KgVOnHyNnsMDuTKef69Ba6fMXeEs8OzzgNLSUrv5iQlm64PWnReiSTQyjVVJOXxmGgyVO2Pi_NYAtefqbUzaGHVOH-KF3HwFdbLALIgQ.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Zapatillas deportivas estilo trekking.",
+        "brand": "Pepe Jeans",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
+        "id": 8180,
+        "date": "2026-10-07T20:08:10+00:00",
+        "title": "Amazon Essentials Camisetas de Manga Corta Niñas, Paquete de 3, Azul Agua/Blanco/Rosa, 7-8 años",
+        "price": "7.48 €",
+        "old_price": "19.70 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B078HFRQQ1?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/HxQe3I0hGbTppaUKRH8-9T83mbSY0GUVGCZCdKcXQ1jT6xuqXwXGR8PxpsaOPnOEoIbA7slmbKmXbZ0SAUFu8UxF7GzC7GbVepTuJjOBXL_r6saRH7x7CXEFd5EPergJI_whPlofuKbphdjFBcHeq-UAajeCvT5V1XJEksCQXw_UcHiqf6Jn4yewJUfswGKQ3YeWV3kuy2RNPWf9lbpryvXkbKD-jnZabLGElqVJcFJcM-qynnXyay_GubEhGBKVJb3u_rz97Ytwi6wSaIRmHTjZTS-l-RdOCEAE4ZFEWMYg5ddJiGsI9T5fhylNF57eLhzYUWhnfZq_tQCttSluWw.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
+        "brand": "Amazon Essentials",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8171,
         "date": "2026-10-07T19:50:24+00:00",
         "title": "Vileda Infinity Flex Ultimate – Tendedero telescópico 30 m",
