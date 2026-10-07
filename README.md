@@ -334,7 +334,39 @@ python tests/test_unfurl.py         # unfurling y caché (red simulada)
 python tests/test_flujo.py          # extremo a extremo: mensaje -> JSON -> página
 node tests/test_app.js              # render, escapado, whitelist de URLs, JSON-LD
 python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmaciones
+python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
 ```
+
+`validar_servido.py` necesita un servidor local y comprueba lo que un crawler
+recibe de verdad, no lo que hay en disco:
+
+```bash
+python -m http.server 8123          # en otra terminal
+python tests/validar_servido.py
+```
+
+## Generar las páginas
+
+Las páginas de catálogo y las guías no se escriben a mano: el texto vive en
+`contenido_categoria.py` y `guias.py`, y los generadores son la única fuente
+del HTML.
+
+```bash
+python generar_categorias.py   # las 7 páginas de catálogo
+python generar_guias.py        # guias.html + 6 artículos
+python generar_sitemap.py      # sitemap.xml (verifica que cada URL exista)
+```
+
+`generar_categorias.py` lee `data/<slug>.json` y **escribe las ofertas en el
+HTML**, no solo en el JSON. Antes las páginas se generaban con un
+`<section id="ofertas">` vacío que `app.js` rellenaba con `fetch()`: lo que
+recibía un crawler eran cuarenta palabras y ni una sola oferta. Ahora el HTML
+llega con las tarjetas ya escritas y `app.js` solo refresca los datos; si el
+`fetch` falla, no borra lo que ya hay.
+
+Si se toca la lógica de precios hay que tocar las dos copias: `precios()` en
+`generar_categorias.py` y `preciosDe()` en `assets/app.js`. Si divergieran, la
+página cambiaría sola al cargar el script.
 
 Y los de la sección Prime Days:
 

@@ -21,6 +21,18 @@ function elem(tag) {
     get innerHTML() { return this._html; },
     remove() { this._eliminado = true; },
     appendChild(c) { this.children.push(c); c.parentElement = this; return c; },
+    insertAdjacentHTML(pos, html) {
+      // Solo se usa con pos="afterbegin" (ver mostrarEstado en app.js).
+      if (pos !== "afterbegin") throw new Error("pos no soportada: " + pos);
+      this._prepend = (this._prepend || "") + html;
+    },
+    // app.js pregunta si el contenedor ya trae tarjetas servidas por el
+    // generador antes de vaciarlo: si el fetch falla, las ofertas del HTML se
+    // conservan y el aviso se antepone.
+    querySelector(sel) {
+      if (sel !== ".oferta") return null;
+      return (this._html || "").indexOf('class="oferta"') >= 0 ? { _match: true } : null;
+    },
     // contains() hace falta porque app.js comprueba si el #estado es el
     // placeholder que cuelga de #ofertas (páginas de catálogo) o un <p> aparte
     // (black-friday-2026.html).
@@ -178,6 +190,29 @@ function leerDatosCatalogo() {
   // black-friday-2026.html: el #estado es un <p> HERMANO de #ofertas y el texto
   // de carga vive dentro de #ofertas. Antes de vaciar el contenedor, el
   // "Cargando ofertas..." se quedaba pegado al lado del error.
+  console.log("\n== HTML ya servido con tarjetas (fallo de red) ==");
+  // generar_categorias.py escribe las ofertas en el HTML. Si el fetch falla,
+  // app.js no debe vaciar #ofertas: la pagina perderia su contenido por un
+  // fallo de red, y quien llega sin JavaScript no veria ninguna oferta.
+  const servido = crearDoc(["ofertas", "estado"]);
+  servido.body.dataset = { feed: "general" };
+  // Se emula el HTML generado: #estado no cuelga de #ofertas porque con
+  // ofertas ya no se emite, y #ofertas trae tarjetas.
+  const of = servido.getElementById("ofertas");
+  of._html = '<article class="oferta" id="1">PS5</article>';
+  of.children = [];
+  // crearDoc cuelga #estado de #ofertas por defecto; con ofertas ya servidas
+  // el generador no lo emite, asi que se saca de ahi.
+  servido.getElementById("estado").parentElement = null;
+  await ejecutarApp(servido, "__fallo__");
+  check("las tarjetas del HTML no se borran al fallar el fetch",
+    (of.innerHTML || "").indexOf('class="oferta"') !== -1,
+    of.innerHTML);
+  check("el aviso de error se antepone sin limpiar",
+    (of._prepend || "").indexOf("No se han podido cargar") !== -1, of._prepend);
+  check("no se crea un #estado nuevo sobre las tarjetas",
+    servido.getElementById("estado")._text === "", servido.getElementById("estado")._text);
+
   console.log("\n== Estado con #estado aparte (black-friday-2026.html) ==");
   const hermano = crearDoc(["ofertas", "estado"], false);
   hermano.body.dataset = { feed: "general" };

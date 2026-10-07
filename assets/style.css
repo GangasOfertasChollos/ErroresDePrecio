@@ -653,3 +653,92 @@ main.contenido{padding:35px 0}
 .subnav a { font-size: 13px; padding: 6px 12px; background: #fff; border-color: var(--gris-borde); }
 .subnav a:hover,
 .subnav a:focus-visible { border-color: var(--naranja); color: var(--naranja-texto); }
+
+/* ==========================================================================
+   Bloque editorial de las paginas de catalogo
+   generar_categorias.py escribe el texto de cada categoria antes de las
+   tarjetas. Antes no existia: las paginas eran solo una lista de productos y
+   no tenian nada propio que oferecer al lector ni al crawler.
+
+   El bloque va arriba del todo y las ofertas debajo a proposito: lo primero
+   que se lee es la respuesta a "que es esto y por que me sirve", y la lista
+   sigue estando a un scroll. Al reves, el visitante decide en tres segundos
+   si la pagina le sirve.
+   ========================================================================== */
+.editorial {
+  background: #fff;
+  border: 1px solid var(--gris-borde);
+  border-radius: 14px;
+  padding: 28px 26px;
+  margin-bottom: 32px;
+}
+.editorial__h2 {
+  font-size: 26px;
+  line-height: 1.25;
+  margin: 0 0 16px;
+  color: var(--azul-oscuro);
+}
+.editorial h3 {
+  font-size: 19px;
+  line-height: 1.35;
+  margin: 28px 0 10px;
+  color: var(--azul-oscuro);
+}
+.editorial p {
+  margin: 0 0 14px;
+  line-height: 1.75;
+  color: var(--texto-oscuro);
+}
+.editorial a { color: var(--naranja-texto); }
+.editorial__lista { margin: 0 0 8px; padding-left: 22px; }
+.editorial__lista li { margin-bottom: 10px; line-height: 1.7; }
+.editorial__rel {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--gris-borde);
+  font-size: 14px;
+}
+.editorial__nota {
+  font-size: 13px;
+  color: var(--texto-claro);
+  margin-bottom: 0;
+}
+
+/* FAQ: mismo patron que en la portada, con el acordeon ya presente en el
+   HTML (antes solo existia si JavaScript lo escribia). */
+.editorial .faq { margin-top: 4px; }
+.editorial .faq details {
+  background: #f7f9fc;
+  border: 1px solid var(--gris-borde);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.editorial .faq details[open] { border-color: var(--naranja); }
+.editorial .faq summary {
+  padding: 14px 18px;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+}
+.editorial .faq summary::after { content: "\FF0B"; color: var(--naranja-texto); flex-shrink: 0; }
+.editorial .faq details[open] summary::after { content: "\2212"; }
+.editorial .faq summary::-webkit-details-marker { display: none; }
+.editorial .faq p { padding: 0 18px 14px; margin: 0; font-size: 15px; }
+
+/* La descripcion del producto la escribe el bot con el ASIN; en el catalogo
+   solo aparece en el feed general, y ahi molesta si se corta a media frase. */
+.oferta-descripcion {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--texto-claro);
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .editorial { padding: 22px 18px; }
+  .editorial__h2 { font-size: 22px; }
+}

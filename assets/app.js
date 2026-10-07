@@ -378,6 +378,18 @@
       estado.textContent = texto;
       return;
     }
+
+    // Las páginas de catálogo se generan con las ofertas YA escritas en el
+    // HTML (ver generar_categorias.py). Si hay tarjetas servidas y el fetch
+    // falla, borrarlas sería tirar el contenido por un fallo de red: quien
+    // llegue con JS desactivado, o con la red a medias, vería una página
+    // vacía. Se avisa por encima y se conserva lo que ya había.
+    if (contenedor.querySelector(".oferta")) {
+      contenedor.insertAdjacentHTML(
+        "afterbegin", '<div class="estado">' + esc(texto) + "</div>");
+      return;
+    }
+
     contenedor.innerHTML = "";
     if (estado) {
       estado.textContent = texto;

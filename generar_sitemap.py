@@ -27,6 +27,16 @@ PAGINAS = [
     ("higiene-cuidado-personal.html", "daily", "0.7"),
     ("juguetes-infantil.html", "daily", "0.7"),
     ("papeleria-oficina.html", "daily", "0.7"),
+    # ── guias (contenido informativo, el bloque que mas superficie de busqueda anade) ──
+    # El hub y los articulos van juntos: si el hub existe y el articulo no, o al
+    # reves, el enlace interno se rompe y el sitemap miente.
+    ("guias.html", "weekly", "0.8"),
+    ("como-detectar-errores-de-precio-amazon.html", "monthly", "0.8"),
+    ("ofertas-reales-vs-descuentos-falsos.html", "monthly", "0.8"),
+    ("amazon-warehouse-outlet-y-devoluciones.html", "monthly", "0.7"),
+    ("cuando-comprar-en-amazon-espana.html", "monthly", "0.7"),
+    ("guia-completa-chollos-amazon.html", "monthly", "0.7"),
+    ("mejores-canales-telegram-ofertas.html", "monthly", "0.6"),
     # paginas SEO
     ("chollos-de-amazon.html", "weekly", "0.8"),
     ("errores-de-precio-amazon.html", "weekly", "0.8"),

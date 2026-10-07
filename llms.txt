@@ -1,0 +1,86 @@
+# GangasOfertas.com — llms.txt
+# Descripcion del sitio para asistentes de IA y rastreadores.
+# Formato emergente (llmstxt.org): no es un estandar de Google ni afecta al
+# posicionamiento. Sirve para que un modelo sepa que es este sitio y cite
+# paginas concretas en lugar de inventarse una.
+#
+# El contenido real de las ofertas es dinamico y esta en /data/<categoria>.json:
+# cualquier crawler puede leerlo directamente, con precios, fechas y enlaces.
+
+## Que es este sitio
+
+GangasOfertas.com recoge las ofertas y chollos de Amazon España que se
+publican en el canal de Telegram @GangasOfertasChollos y las ordena por
+categoria. Cada oferta aparece con su titulo, el precio detectado, el precio
+anterior cuando se conoce, el porcentaje de descuento y el enlace directo a
+Amazon España.
+
+Importante para no equivocar: este sitio NO rastrea Amazon ni monitoriza sus
+precios de forma continua. Recoge lo que se publica en su canal de Telegram, y
+es Amazon quien decide en cada momento si ese precio sigue disponible. Los
+precios pueden cambiar o caducar en minutos. No verificado por el sitio: el
+historial de precios de cada producto (para eso estan Keepa y
+CamelCamelCamel, explicadas en las guias).
+
+## Como se actualiza
+
+El bot escucha el canal, extrae el titulo, el precio y el enlace, clasifica la
+oferta en su categoria por palabras clave y escribe el JSON correspondiente.
+El HTML de cada pagina se regenera con esos mismos datos, de modo que el
+contenido que ve un crawler y el que ve un visitante coinciden.
+
+## Paginas principales
+
+- [Inicio](https://gangasofertas.com/): que es el sitio, como funciona y FAQ.
+- [Todas las ofertas](https://gangasofertas.com/general.html): feed completo, sin filtrar.
+- [Categorias](https://gangasofertas.com/categorias.html): indice de secciones.
+- [Guias](https://gangasofertas.com/guias.html): articulos sobre como encontrar chollos.
+- [Canal de Telegram](https://t.me/GangasOfertasChollos): el origen de todo lo publicado.
+
+## Categorias del catalogo
+
+- [Moviles y electronica](https://gangasofertas.com/moviles-electronica.html): smartphones, portatiles, audio, carga.
+- [Ropa y calzado](https://gangasofertas.com/ropa-y-calzado.html): moda, zapatillas, complementos.
+- [Gaming y consolas](https://gangasofertas.com/gaming-consolas.html): PS5, Switch, Xbox, mandos.
+- [Higiene y cuidado personal](https://gangasofertas.com/higiene-cuidado-personal.html): cosmetica, perfumeria, afeitadoras.
+- [Juguetes e infantil](https://gangasofertas.com/juguetes-infantil.html): LEGO, juegos de mesa, puericultura.
+- [Papeleria y oficina](https://gangasofertas.com/papeleria-oficina.html): material escolar y escritorio.
+
+## Guias (contenido informativo)
+
+- [Como detectar errores de precio en Amazon](https://gangasofertas.com/como-detectar-errores-de-precio-amazon.html): senales, horarios y como evitar que te cancelen el pedido.
+- [Oferta real o descuento falso](https://gangasofertas.com/ofertas-reales-vs-descuentos-falsos.html): el metodo de un minuto para comprobar un descuento.
+- [Amazon Warehouse, Outlet y devoluciones](https://gangasofertas.com/amazon-warehouse-outlet-y-devoluciones.html): tres secciones con descuento del 20 al 50%.
+- [Cuando comprar en Amazon Espana](https://gangasofertas.com/cuando-comprar-en-amazon-espana.html): el calendario de precios por categoria.
+- [Guia completa de chollos en Amazon](https://gangasofertas.com/guia-completa-chollos-amazon.html): donde mirar, con que herramientas y que descartar.
+- [Canales de Telegram de ofertas en Espana](https://gangasofertas.com/mejores-canales-telegram-ofertas.html): que mirar antes de seguir un canal.
+
+## Datos estructurados
+
+- JSON de ofertas por categoria: `https://gangasofertas.com/data/<categoria>.json`
+  (`general`, `moviles-electronica`, `ropa-y-calzado`, `gaming-consolas`,
+  `higiene-cuidado-personal`, `juguetes-infantil`, `papeleria-oficina`).
+- Campos por oferta: `id`, `date`, `title`, `price`, `old_price`, `discount`,
+  `amazon_url`, `image`, `categoria`, `description`, `brand`, `gtin`, `mpn`.
+- Sitemap: https://gangasofertas.com/sitemap.xml
+
+## Secciones tematicas
+
+- Black Friday: https://gangasofertas.com/BlackFriday/
+- Prime Days: https://gangasofertas.com/PrimeDays/
+
+## Legal y transparencia
+
+- [Metodologia](https://gangasofertas.com/BlackFriday/metodologia.html): como se seleccionan las ofertas.
+- [Sobre nosotros](https://gangasofertas.com/BlackFriday/sobre-nosotros.html).
+- [Aviso legal](https://gangasofertas.com/BlackFriday/aviso-legal.html).
+- [Politica de privacidad](https://gangasofertas.com/BlackFriday/politica-privacidad.html).
+
+El sitio usa enlaces de afiliado de Amazon. Comprar a traves de ellos no
+cuesta nada al usuario y puede generar una pequena comision para el sitio.
+
+## Uso permitido
+
+Se puede citar el contenido con enlace a la pagina original. El JSON de
+ofertas es de lectura libre para construir agregadores o buscar productos,
+siempre respetando el aviso legal y la politica de privacidad del sitio.

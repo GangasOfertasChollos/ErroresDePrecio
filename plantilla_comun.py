@@ -39,6 +39,10 @@ NAV = [
     ("juguetes-infantil.html", "Juguetes"),
     ("papeleria-oficina.html", "Papelería"),
     ("categorias.html", "Categorías"),
+    # El hub de guias va despues de "Categorias": es donde se busca una
+    # respuesta ("como detectar un error de precio"), no un producto, asi que
+    # tiene menos peso en la navegacion de compra que las categorias.
+    ("guias.html", "Guías"),
     ("BlackFriday/index.html", "Black Friday"),
     # Las dos secciones de campana van al final del menu: son paginas tematicas,
     # no categorias del catalogo, y asi no compiten con las entradas de arriba
@@ -88,6 +92,13 @@ PIE = """<footer class="pie">
       </div>
       <div class="footer-links__grupo">
         <strong>Guías</strong>
+        <a href="guias.html">Todas las guías</a>
+        <a href="ofertas-reales-vs-descuentos-falsos.html">Oferta real o descuento falso</a>
+        <a href="como-detectar-errores-de-precio-amazon.html">Cómo detectar errores de precio</a>
+        <a href="amazon-warehouse-outlet-y-devoluciones.html">Amazon Warehouse y Outlet</a>
+        <a href="cuando-comprar-en-amazon-espana.html">Cuándo comprar en Amazon</a>
+        <a href="guia-completa-chollos-amazon.html">Guía completa de chollos</a>
+        <a href="mejores-canales-telegram-ofertas.html">Canales de Telegram de ofertas</a>
         <a href="chollos-de-amazon.html">Chollos de Amazon</a>
         <a href="errores-de-precio-amazon.html">Errores de precio</a>
         <a href="articulos-rebajados-amazon.html">Artículos rebajados</a>
