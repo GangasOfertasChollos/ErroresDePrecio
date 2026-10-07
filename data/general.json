@@ -1,5 +1,20 @@
 [
     {
+        "id": 8192,
+        "date": "2026-10-07T20:13:57+00:00",
+        "title": "Eastpak Springer Riñonera",
+        "price": "13.19 €",
+        "old_price": "28.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B000NDGCCO?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/cSaGKZO6gbXH1HzY32Du6xHOX5fppWlyaqLEWrvkzoj5Q1aAGH4Xd0PDeEnwCFk2-7_BaDH-icXazI9no_h2QhPn61B4vrGnb8gtrF5EU3s3pzcpaA1beWe3eMSixG2cYTukkQ06PQ7y56enAOSOxBQ23kDUqBHMbj45aKhaLzUCOPyfW-jqCXLoCD5FpaRuTPlU14_sNDY_MLi8DP4w1dASEIcE07XU7a6VShEo2sL44WVdcl2pDNuyBy-jA1lP9liqzu0jnC7tyC5iHNO-8DgoIcDH6doRpk9WrNrtd2KsYfdAn6C3r1yC3lU1QHMkn9C3Nzk5r2EuDjkGYuhnuA.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
+        "brand": "Eastpak Springer",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8191,
         "date": "2026-10-07T20:13:28+00:00",
         "title": "Mesilla de noche HOOBRO con LED y carga",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
         "brand": "ProsourceFit Premium",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 8089,
-        "date": "2026-10-07T17:12:17+00:00",
-        "title": "fischer Tacos para yeso Duotec H con ojal abierto, Gris, 10 mm con gancio",
-        "price": "3.35 €",
-        "old_price": "29.77 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B07CHR8D62?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/J_UqP719H50UuOboT36nsYM8Y1Eg4etLjug9bH9SS_67LJUcGZF3M9atI4pMY3ZBy98ifpEaymo-fdWVLuV2Wl5Youv9j4n9FwModOjhxBqejIIdkgmPZkYbPDkhYmgVasT71T230o2eJd6Igwm6rEau6TIfKjXe2EH9y9-vnpkkJVg0z_IFn4TATk5uQjHYl4sVwmTHLNt3hZZNeG9ML7U5qm2BuI8B35Z9T_KxNz6A5qppHhmbVT3P34s0sx5U5R_7rBA1uBoK2sknUZnC-RNNCH-NOWKGbLbx1T0fy2BrzOqvKHMN_58hX9XWKLRo9cg6kS1zHuMLYMcgHsdMRA.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
-        "brand": "fischer Tacos",
         "gtin": "",
         "mpn": ""
     }
