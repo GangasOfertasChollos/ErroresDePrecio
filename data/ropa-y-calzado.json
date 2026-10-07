@@ -1,5 +1,20 @@
 [
     {
+        "id": 8190,
+        "date": "2026-10-07T20:13:28+00:00",
+        "title": "Adidas Strutter Hombre",
+        "price": "38.88 €",
+        "old_price": "65.00 €",
+        "discount": "-40%",
+        "amazon_url": "https://www.amazon.es/dp/B07SF5B7WJ?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/hOWFWvU2mj2etVQ7IBuA3TlMfhw1JPSw9zdJVq_ZecYxajhJqtig0QZCwmNiR2siQ9-Mhg_DP1a2OPt6dj7LJyxYm2FcPdMbTz9zlDKE_odITpivv38KcYXcwZkMs8529LaXlBy4vWJvcaIKCCXjw4nTMkbqb9xgbg9t0LR392pO5kG1qHuxDu3iyZgVpNQUYy5fSy_v4mp2Hx9TBeB155FXdCL1nx0CHqlozBKBAV3co494y_ONX5FS-4a-HFrUgti9bxQepFQCFb1t01d4QxAnbGikjiciTtmqzuGC9vc5yOIDQ-HTvj4bWsKXHIdagv3-OITgttwUaZ1PgLjd7w.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Zapatillas cómodas para uso diario.",
+        "brand": "Adidas Strutter",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8185,
         "date": "2026-10-07T20:08:11+00:00",
         "title": "Pepe Jeans DARREN TREK W",
