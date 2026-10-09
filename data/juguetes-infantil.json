@@ -1,5 +1,35 @@
 [
     {
+        "id": 8653,
+        "date": "2026-10-09T11:51:03+00:00",
+        "title": "⌚ LOTUS – Smartwatch Hombre de Acero Inoxidable, Resistente al Agua IP65, Control de Música y Frecuencia Cardíaca, Negro",
+        "price": "99.00 €",
+        "old_price": "149.00 €",
+        "discount": "-34%",
+        "amazon_url": "https://www.amazon.es/dp/B09LQX3M4D?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/V2GTpfGJf3epQdSllNIlad_Y6_oManYJY3vSwbqZpKXs5zFz2UWEEgsmIeQ3A4C7i6hUPpBz6LAK_q7wWLeb5iFMIZGuthmUaDIyhQZHNnUVLrybenfXi50vbQ9X7RqCsxpluQzLO6qIiW4aC3LAlGiM-2M0ZWWPKIirhJhpM8nKn7_EcL2I1df0qM2-uAKGxHa7b6IqrVgrUheXGnG6pU9oY2iLMbAQ5FZFC7dLt13z39hympNh7FfWHhgvjEF6QQC3MKeUXlB7hSFz-2JOgxVvLUTn5edXN2k-_oBBsFtYVBY7V8AecnrWSpA931veUCNlYs55EnGenIrhmoxysA.jpg",
+        "categoria": "juguetes-infantil",
+        "description": "¡Elegancia y tecnología en tu muñeca!",
+        "brand": "LOTUS",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
+        "id": 8635,
+        "date": "2026-10-09T11:26:11+00:00",
+        "title": "SoBuy – Librería Infantil con 2 Puertas y Compartimentos, 60x30x103 cm, Blanca",
+        "price": "49.95 €",
+        "old_price": "79.95 €",
+        "discount": "-38%",
+        "amazon_url": "https://www.amazon.es/dp/B0BW3P16CR?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/uI2UEOm4Oj4l7mNTAm2PqjwyzZXwVsWlV9RB0ZWNJWR9BE-Z_UGXJdFUzYJizwoJM95uhGaipMzQQpcqX0WBwxwzgx6YwpGCUqfDO7FpYQblf3vfPAdHwL9qXuojY1QcJA5TprPEBOVr6YrpJZf9mYCMd_yQ2FoNt5xqjqOmHkQms6nx4jZzQznWnR328XrlVhg-8Xs9KwGCcMvgFoW0GmUqa-lj3zrLSnDKvLJ10JsZx0Vq4_JiTG1rk8p5Bad86WA0Z-CIkDKFVX7JqIS4stk0Rm1VujygKiy9mGkAwuG2eZMMRvhy-SKs75-Ud-awEQUBNbZhIBbU570EXaXniA.jpg",
+        "categoria": "juguetes-infantil",
+        "description": "¡Organiza los libros y juguetes con estilo!",
+        "brand": "SoBuy",
+        "gtin": "",
+        "mpn": "60x30x103"
+    },
+    {
         "id": 8589,
         "date": "2026-10-09T06:18:15+00:00",
         "title": "Skibidi Toilet Mystery Figures - Figuras Coleccionables Oficiales Skibidi Toilet Merch con Diseño Sorpresa | 1 Figura de Acción para Fans y Coleccionistas",
