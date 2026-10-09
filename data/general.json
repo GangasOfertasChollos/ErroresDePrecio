@@ -1,5 +1,20 @@
 [
     {
+        "id": 8719,
+        "date": "2026-10-09T18:04:40+00:00",
+        "title": "BELKIN – BoostCharge Cargador Magnético para Coche con MagSafe",
+        "price": "25.99 €",
+        "old_price": "49.99 €",
+        "discount": "-48%",
+        "amazon_url": "https://www.amazon.es/dp/B09GRJ2S8X?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/oW6PRsRr8tHermo24jFHTdMJwFoJKHB-yyZGzPmF6nOEi8Dfpf6K0eoIZKR1HL2oyNyZwAqcUNgecht40twjbrc4kHEaUMy9onnQdh00wkFhVAtzSeis_KBk0IvFmMEkiSnUG98MY2t86ja9t_R3touB-D3tvf1hDfMTL2AsDlDzbZD6IOJf6utfWXj6xB4eYd3LeoQvLq1ZbHl6IfEyeJIlqJHRibIx7WbhIHw9j2vFOG6Merd-8ktHnniojhCX9r48ljAbFzpRL61YtcFCtmlhUCcXaPrmleAwQyfuw0kl4f4ADyMi7JVAxU_ud1zfLTJVBI0jW2ZWGHt4uDWymg.jpg",
+        "categoria": "moviles-electronica",
+        "description": "¡Carga tu móvil cómodamente mientras conduces! Incluye soporte, cable y cargador.",
+        "brand": "BELKIN",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8718,
         "date": "2026-10-09T17:59:54+00:00",
         "title": "Tommy Hilfiger Cinturón Hombre Buckle Webbing 3,5 cm con hebilla de rodillo, Beige (Classic Beige), 105 cm",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Frescor duradero y suavidad para tu ropa. ¡Pack ahorro!",
         "brand": "Lenor Aire",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 8602,
-        "date": "2026-10-09T07:07:01+00:00",
-        "title": "Auriculares Inalámbricos Deportivos 2026, 60H, Sonido por App,Oro Rosa",
-        "price": "21.99 €",
-        "old_price": "59.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0HJVPT3CJ?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/tTl-5fFKMnutpTtirpRZSHd3DuuB2wlhKvTk0mZqmAhAlZN_rU7qRbT6nnFpbnuR2N0ltLPGpVeyIPvhWBq9hnBA2MfmGLMwv_VhSzuKsa8owf2qNjpRRJfatgZ029rN9mbsmCvN5mCtbhbCcGfA0WDNdYRTFFcBiFx5ywAbZ0XFr74k6PDRU6HkIEWAo_UoOMT1HOw9Asc9am1Zv2BzFP0YAxLky1rdwBbrn1iZqQz8vPfi9AGwgmi6WXMsyTsyDy91LLVLH1M3Pz1trdZSmLdV0qUEQ8GSyjF37Adkdz2OAPTcw1obYHdZ8kKPie4z0ouVnyTSA4Iz7XLgVf6Ltw.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
-        "brand": "Auriculares Inalámbricos",
         "gtin": "",
         "mpn": ""
     }

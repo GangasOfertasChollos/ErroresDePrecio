@@ -73,20 +73,5 @@
         "brand": "Bizak Juego",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 8586,
-        "date": "2026-10-09T06:01:15+00:00",
-        "title": "Toladrone TD12Pro – Dron Plegable con Cámara 1080P y Mando con Pantalla",
-        "price": "56.99 €",
-        "old_price": "149.99 €",
-        "discount": "-62%",
-        "amazon_url": "https://www.amazon.es/dp/B0H46D9STW?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/EaU-TPiuL0zjQnu3wSw8-SY3e2FGrpGQrEKBq1mjNrbfrB_ScABfE6wMrYh0q9MCvzi2tOAm7mtP9nFWI20_ZHgBRs93LwtXYL54bvwadSNiP-fw1DOEKXg-cS5HhPdhTfkfxTYO1QcBauMNIlElG5Knsvyjr3U0l2Qccpr2XSC5TpZvMGm6JThaNmyZ9WCrwojIAkeRINmZJEThB53FT0QyOcGyJeNuDcMciiHgEAu3sPtfdCcsw-m0FrNHJDlk-UNFg9SCQo2WmRQA815Q2Hboqeqaq0KIGJu-Fzk9ebpL2ORu-WcREuA545TVA5KggFgq8tpM0gzGF3VjlwNB4w.jpg",
-        "categoria": "gaming-consolas",
-        "description": "Compacto, plegable y fácil de manejar. ¡Ideal para principiantes!",
-        "brand": "Toladrone TD12Pro",
-        "gtin": "",
-        "mpn": "TD12Pro"
     }
 ]
