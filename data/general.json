@@ -1,5 +1,20 @@
 [
     {
+        "id": 8718,
+        "date": "2026-10-09T17:59:54+00:00",
+        "title": "Tommy Hilfiger Cinturón Hombre Buckle Webbing 3,5 cm con hebilla de rodillo, Beige (Classic Beige), 105 cm",
+        "price": "27.00 €",
+        "old_price": "54.90 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0FDGDMXWM?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/nwkbSSKmAJ4DNWyeB47x00m5x1HVi2g5Xwr78GDxDuNvfTAxKuVbG_u4SktptkKLVFpSC6PRQlyMJjPzaUa5v4cXmHHyk34N_ePN7YyEPITY5NiPVtnV_-ROTCq8GiDIydEYgQFAl54jowt7_YBroYZ_6bw44TbP7yxG4-uqd8uwfrdFylaOuxN8YXZBBjv_NoylRUkWxtdksa2M9IR867aTX-zBA3o8qeeBRJQkPPVAeZ-zRB5HR8H8aPvSMW8fwxretYkZ-ah21tYHNs-V3vti7pBGtqHtJ2WEVlVD25h_wFXgPIBbBQ-TBZtmmKtv9qSYF0yqaWOvvUdzG-S3Lg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
+        "brand": "Tommy Hilfiger",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8717,
         "date": "2026-10-09T17:51:13+00:00",
         "title": "Tommy Hilfiger Vaqueros Hombre River Blue Relaxed Fit, Azul (Ike Blue), 35W/36L",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
         "brand": "Auriculares Inalámbricos",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 8601,
-        "date": "2026-10-09T07:05:22+00:00",
-        "title": "Reebok Finale – Zapatillas Deportivas Unisex para Adultos",
-        "price": "37.50 €",
-        "old_price": "75.00 €",
-        "discount": "-50%",
-        "amazon_url": "https://www.amazon.es/dp/B0DMPN2BLK?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/eC4xXDTNm7Wu8mNwXJrgZLjZEVhaBaF2-pF_heE_J96nPQeiEL-fM-aKLcej1NZn2ZNRAriwFBPkffvBQmvhHK2rwvWzu6hW1N1Wu4erjalBTNNdXwJZp0C5BVDPzLrR9J2PwWGLu3FoPyCpniIBRgsP3VruJpk1PCpDmnfd6kP2CNJiZZ_oaNicc9UH44Ko2Lbx_U7ELVN81udWhf324gI9za88uKDeU0prWouD8r7TxgNd2zow4a6NKFKqACktYJn5XAl-ArGM-1ESrF9I81YNgQaiQVyUEhLZjKrpN1Yh6uhQ5YxgDQGtPzgFjYW1CSDvjRFT1rKPzkVUv3aWrQ.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Cómodas, modernas y versátiles. ¡Perfectas para el día a día!",
-        "brand": "Reebok Finale",
         "gtin": "",
         "mpn": ""
     }
