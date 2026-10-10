@@ -24,9 +24,7 @@ assets/icono-tg.jpg    Icono del canal (esquina superior derecha)
 index.html             Portada
 <slug>.html            Páginas de catálogo, una por categoría
 BlackFriday/           Sección Black Friday 2026 (17 páginas, CSS y assets propios)
-PrimeDays/             Sección Amazon Prime Days 2026 (8 páginas, CSS y assets propios)
 plantilla_comun.py     Marcado compartido: menú, icono y pie
-plantilla_prime_days.py  Equivalente de plantilla_comun.py para PrimeDays/
 generar_*.py           Generadores de HTML y sitemap
 tests/                 Pruebas del bot, del front y del sitio
 CNAME                  Dominio personalizado de GitHub Pages: gangasofertas.com
@@ -41,7 +39,6 @@ Dos hojas de estilo, las dos **de fondo claro**:
 |---|---|---|
 | Sitio principal | `assets/style.css` | naranja Amazon (`--naranja-texto` para texto) |
 | Sección Black Friday | `BlackFriday/assets/css/style.css` | negro (`--accent`) |
-| Sección Prime Days | `PrimeDays/assets/css/style.css` | negro (`--accent`) + cian `--cyan` para enlaces |
 
 El negro se usa como elemento de marca —barra superior, botones, barra de
 marca— sobre fondo blanco. Los colores de marca que no llegan a 4.5:1 sobre
@@ -63,7 +60,7 @@ estructuras de cabecera distintas y todas están contempladas en el CSS:
 |---|---|
 | Portada | `<header class="hero"><div>` |
 | Catálogos, SEO, ofertas en vivo | `<header class="cabecera"><div class="wrap">` |
-| Secciones Black Friday y Prime Days | `<header class="site-header"><div class="wrap nav">` |
+| Sección Black Friday | `<header class="site-header"><div class="wrap nav">` |
 | 404 | `<main class="error404">` |
 
 Esos contenedores son `position: relative`, así que el icono se coloca con
@@ -87,30 +84,32 @@ ajustando los ~29 colores que estaban fijados en las reglas.
 
 ## Secciones de campaña
 
-Hay dos secciones que cubren campañas concretas, y son hermanas: mismo
-generador de contenido, mismo tipo de página, mismo patrón de enlazado, y se
-enlazan mutuamente desde el menú porque el lector es el mismo.
+Una sección cubre una campaña concreta. El requisito para tenerla es **ventana
+de posicionamiento**: se publica con antelación suficiente para que Google
+indexe y.positione antes de que la demanda llegue. Black Friday cumple eso con
+holgura (del 2 de octubre al 27 de noviembre). Un evento de 48 horas no lo
+cumple, aunque tenga el mismo contenido: se publica el día que ya está pasando y
+no hay tiempo de posicionar contra nadie. Por eso Prime Days se retiró el 10 de
+octubre de 2026, tres días después de terminar la campaña.
 
-| | Black Friday | Prime Days |
-|---|---|---|
-| Campaña | 27 de noviembre de 2026 | 6 y 7 de octubre de 2026 |
-| Generador | `BlackFriday/` (HTML ya generado) | `generar_prime_days.py` |
-| Plantilla | incluida en la sección | `plantilla_prime_days.py` |
-| Análisis SEO | `BlackFriday/docs/SEO-STRATEGY.md` | `PrimeDays/docs/SEO-STRATEGY.md` |
+| | Black Friday |
+|---|---|
+| Campaña | 27 de noviembre de 2026 |
+| Generador | `BlackFriday/` (HTML ya generado) |
+| Análisis SEO | `BlackFriday/docs/SEO-STRATEGY.md` |
 
-**Sobre las fechas.** Cada sección publica la fecha de su campaña y el
-historial, pero **solo los datos que tienen fuente**, y la fuente se enlaza en
-la propia página. La sección Prime Days se corrigió por esto: un borrador
-anterior afirmaba que Amazon no había anunciado la fecha de octubre de 2026,
-que era cierto cuando se escribió y dejó de serlo antes de publicarse. El
-principio no cambió (no inventar fechas); lo que cambió es el dato. Cuando
-Amazon confirme la edición de 2027, se editan las constantes `FECHA_INICIO_2026`
-y `FECHA_FIN_2026` de `generar_prime_days.py` y se vuelve a generar.
+**Sobre las fechas.** La sección publica la fecha de su campaña y el historial,
+pero **solo los datos que tienen fuente**, y la fuente se enlaza en la propia
+página. Hubo una corrección por esto en la sección retirada: un borrador
+afirmaba que Amazon no había anunciado la fecha de octubre de 2026, que era
+cierto cuando se escribió y dejó de serlo antes de publicarse. El principio no
+cambió (no inventar fechas); lo que cambió es el dato.
 
-> La sección Prime Days marca la campaña como «en marcha» y lleva una cuenta
-> atrás. **Eso es correcto el 6 y el 7 de octubre y falso después.** Está todo
-> en `cuenta_atras()` y en el hero de `PAGINA_INDEX`, y las fechas que aparecen
-> en la tabla del sitemap (`daily`) deben bajar a `weekly` el 8 de octubre.
+> La sección retirada marcaba la campaña como «en marcha» con una cuenta atrás,
+> y el sitemap declaraba `daily` en sus dos URLs principales. Eso era correcto
+> el 6 y el 7 de octubre y falso a partir del 8. Es el recordatorio de por qué
+> una sección de campaña con fecha de caducidad es un pasivo a partir del día
+> que termina.
 
 ### Tablas anchas dentro de `.prose`
 
@@ -226,18 +225,17 @@ git push
 
 ## Regenerar el HTML
 
-Las páginas de catálogo y las páginas SEO se generan con scripts para que
-todas compartan estructura y estilos. Si cambias una sección, edita el
-generador y vuelve a lanzarlo, **en este orden**:
+Las páginas de catálogo y las guías se generan con scripts para que todas
+compartan estructura y estilos. Si cambias una sección, edita el generador y
+vuelve a lanzarlo, **en este orden**:
 
 ```bash
 python generar_categorias.py    # 7 páginas de catálogo
-python generar_seo.py           # 4 páginas SEO
-python generar_prime_days.py    # 8 páginas de Prime Days
+python generar_guias.py         # guias.html + 6 artículos
 python generar_sitemap.py       # sitemap.xml (verifica que las URLs existen)
 ```
 
-> Los cuatro generadores se ejecutan siempre en ese orden y en una sola pasada.
+> Los generadores se ejecutan siempre en ese orden y en una sola pasada.
 > `generar_categorias.py` es la fuente de las 7 páginas de catálogo: si algo
 > las modifica a mano, se pierde al regenerarlas. Por eso las páginas se
 > regeneran, no se parchean.
@@ -334,10 +332,22 @@ python tests/test_unfurl.py         # unfurling y caché (red simulada)
 python tests/test_flujo.py          # extremo a extremo: mensaje -> JSON -> página
 node tests/test_app.js              # render, escapado, whitelist de URLs, JSON-LD
 python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmaciones
+python tests/auditar_seo.py         # titles, descriptions, H1, schema, enlazado, thin
+python tests/verificar_301.py       # enlaces rotos + genera reglas.txt
 python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
 python tests/validar_orden.py       # orden ofertas→texto, clases y JSON-LD
 python tests/test_publicar_html.py  # el bot regenera y sube el HTML correcto
 ```
+
+`auditar_seo.py` barre las 39 páginas y comprueba lo transversal que los otros
+validadores no miran: unicidad y longitud de `<title>` y `description`, un solo
+H1, canonical que apunte al dominio, `og:` completos, presencia de JSON-LD,
+y el grafo de enlaces internos (entrantes y salientes) para detectar páginas
+huérfanas. **No falla el build: informa**, porque casi todo lo que reporta es
+una decisión de contenido y no un error.
+
+> Solo recorre `*.html` de la raíz y `BlackFriday/*.html`. Cualquier sección
+> nueva necesita su equivalente, como ocurrió con Prime Days.
 
 `validar_servido.py` comprueba lo que un crawler recibe de verdad por HTTP, no lo
 que hay en disco. Acepta un dominio como argumento:
@@ -348,14 +358,33 @@ python tests/validar_servido.py http://localhost:8124     # contra un servidor l
 ```
 
 Contra el sitio desplegado añade dos comprobaciones que en local no tienen
-sentido: que las 45 URLs del sitemap responden de verdad (una URL que solo
+sentido: que las URLs del sitemap responden de verdad (una URL que solo
 existe en el repositorio no la encuentra Google) y que el dominio y sus
 variantes `www` / `http` resuelven a la misma canónica. Reintenta cada
 petición tres veces, porque sin eso un corte de red al leer `general.html`
 (~240 KB) se lee como un sitio caído.
 
 `test_publicar_html.py` comprueba que el bot sube el HTML regenerado y que la
-lista de páginas no toca `BlackFriday/` ni `PrimeDays/`.
+lista de páginas no toca `BlackFriday/`.
+
+```bash
+python tests/verificar_301.py   # enlaces rotos + genera reglas.txt
+```
+
+`verificar_301.py` resuelve cada `href` contra el directorio del fichero que lo
+contiene y comprueba que el destino existe en disco. Hay dos motivos por los
+que el chequeo tiene que ser así:
+
+- **Un `href="errores-de-precio-amazon.html"` dentro de `BlackFriday/` no es el
+  mismo enlace que en la raíz.** Resuelto correctamente apunta a
+  `BlackFriday/errores-de-precio-amazon.html`, que es una página distinta y
+  sigue viva. Comparar solo el basename daba 60 falsos positivos.
+- Es el validador que detecta lo que rompe un borrado masivo de páginas, que es
+  justo lo que pasó el 10 de octubre de 2026.
+
+Además **genera `reglas.txt`** con los 301 que hay que crear en Cloudflare:
+GitHub Pages no sirve `.htaccess`, así que las redirecciones no se pueden
+declarar en el repositorio. Ese fichero se regenera, no se edita a mano.
 
 ## Generar las páginas
 
@@ -379,6 +408,37 @@ llega con las tarjetas ya escritas y `app.js` solo refresca los datos; si el
 Si se toca la lógica de precios hay que tocar las dos copias: `precios()` en
 `generar_categorias.py` y `preciosDe()` en `assets/app.js`. Si divergieran, la
 página cambiaría sola al cargar el script.
+
+### Páginas «puente»: retiradas el 10 de octubre de 2026
+
+Había cuatro páginas de 300-360 palabras generadas por `generar_seo.py`
+(`chollos-de-amazon`, `articulos-rebajados-amazon`, `errores-de-precio-amazon`,
+`chollos-amazon-telegram`). Tenían un H1, dos párrafos, una lista de enlaces a
+las categorías y un par de preguntas frecuentes.
+
+ Las cuatro competían entre sí —todas apuntaban a «chollos de Amazon»— y con páginas
+que ya las cubrían mejor. Se retiraron y sus URLs van con 301 a la página que
+hoy ocupa esa intención:
+
+| Retirada | Ahora la cubre |
+|---|---|
+| `chollos-de-amazon` | `general.html` (6.617 palabras, 100 ofertas) |
+| `articulos-rebajados-amazon` | `general.html` |
+| `errores-de-precio-amazon` | `como-detectar-errores-de-precio-amazon.html` (1.932) |
+| `chollos-amazon-telegram` | `mejores-canales-telegram-ofertas.html` (1.406) |
+
+Sus FAQ tampoco apportaban nada: las cinco preguntas ya estaban contestadas en
+`general.html` y en las guías. `generar_seo.py` se borró con ellas.
+
+> La lección está en `guias.py`, que ya las señalaba como el problema antes de
+> que existieran las guías que las reemplazan. **Una página que solo enlaza a
+> otras no es una página**: es un UUID con contenido, y Google la lee como thin
+> content. Si una URL nueva no tiene algo que contar que no esté ya en otra
+> parte, no debería existir.
+
+Las redirecciones no se pueden declarar en el repositorio (GitHub Pages no
+sirve `.htaccess`); van en Cloudflare. Ver `reglas.txt`, que genera
+`tests/verificar_301.py`.
 
 ### El bot regenera el HTML al publicar
 
@@ -407,7 +467,7 @@ Detalles que importan:
   la anterior. Un commit vacío no es posible porque `data/` acaba de cambiar.
 - Las páginas se listan una a una (`_paginas_generadas()`) en vez de usar
   `git add *.html`, porque un pathspec con comodín también alcanzaría
-  `BlackFriday/` y `PrimeDays/`.
+  `BlackFriday/`.
 - Si un generador falla, **no se aborta la subida**: es preferible subir los
   JSON con el HTML viejo a no subir nada. El fallo queda en el log con la salida
   del generador.
@@ -442,19 +502,10 @@ compra. El texto editorial queda como respuesta larga para quien la busca.
 `tests/validar_orden.py` fija el orden, las clases del CSS nuevo y que el
 JSON-LD siga declarando `ItemList` y `FAQPage`.
 
-Y los de la sección Prime Days:
-
-```bash
-python tests/validar_prime_days.py          # texto, alfabetos, estructura por página
-python tests/validar_prime_days_enlaces.py  # enlaces, JSON-LD, FAQ vs schema, rel del canal
-python tests/validar_prime_days_faq.py      # el toggle despliega todos los <details>
-python tests/validar_prime_days_movil.py    # desborde horizontal, viewport, tokens largos
-```
-
 > `validar_sitio.py` recorre `RAIZ.glob("*.html")`, así que **no baja a los
-> subdirectorios**: ni ve `BlackFriday/` ni ve `PrimeDays/`. Por eso la sección
-> tiene sus propios validadores, que sí resuelven las referencias relativas
-> contra el directorio de cada HTML.
+> subdirectorios** y no ve `BlackFriday/`. Por eso la sección tiene sus propios
+> validadores, que sí resuelven las referencias relativas contra el directorio
+> de cada HTML.
 
 Las pruebas no necesitan credenciales de Telegram ni conexión: sustituyen el
 cliente y el `fetch` por dobles de prueba y trabajan sobre copias en un

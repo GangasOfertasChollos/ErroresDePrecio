@@ -46,7 +46,9 @@ ETIQUETA = {
 
 # Titulo del hub. Es una pagina de indice: su trabajo es repartir enlaces a los
 # articulos, no competir con ellos por una consulta concreta.
-HUB_TITULO = "Guías para encontrar chollos y ofertas en Amazon | GangasOfertas"
+# 65 caracteres: se cortaba en el结果显示 de Google a mitad de "GangasOfertas".
+# La marca sobra cuando la SERP ya muestra el dominio en la línea de enlace.
+HUB_TITULO = "Guías para encontrar chollos y ofertas en Amazon"
 HUB_DESC = (
     "Guías prácticas sobre chollos en Amazon: cómo detectar errores de precio, "
     "cómo saber si un descuento es real y cuándo comprar más barato."
@@ -57,15 +59,24 @@ def esc(v) -> str:
     return _html.escape(str(v if v is not None else ""), quote=True)
 
 
-def migas(nombre: str, url: str) -> dict:
+def migas(nombre: str, url: str, con_hub: bool = True) -> dict:
+    """BreadcrumbList.
+
+    `con_hub=False` es para la propia pagina del hub: si no, la migas sale
+    "Inicio > Guias > Guias", con el mismo nodo repetido y una posicion
+    duplicada que Google interpreta como breadcrumb manipulado.
+    """
+    items = [{"@type": "ListItem", "position": 1, "name": "Inicio", "item": f"{BASE}/"}]
+    pos = 2
+    if con_hub:
+        items.append({"@type": "ListItem", "position": pos, "name": "Guías",
+                      "item": f"{BASE}/guias.html"})
+        pos = 3
+    items.append({"@type": "ListItem", "position": pos, "name": nombre, "item": url})
     return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        "itemListElement": [
-            {"@type": "ListItem", "position": 1, "name": "Inicio", "item": f"{BASE}/"},
-            {"@type": "ListItem", "position": 2, "name": "Guías", "item": f"{BASE}/guias.html"},
-            {"@type": "ListItem", "position": 3, "name": nombre, "item": url},
-        ],
+        "itemListElement": items,
     }
 
 
@@ -337,7 +348,7 @@ def main() -> None:
     schema_hub = json.dumps({
         "@context": "https://schema.org",
         "@graph": [
-            migas("Guías", f"{BASE}/guias.html"),
+            migas("Guías", f"{BASE}/guias.html", con_hub=False),
             {
                 "@type": "CollectionPage",
                 "@id": f"{BASE}/guias.html#collection",

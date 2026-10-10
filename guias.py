@@ -392,6 +392,6 @@ GUIAS = [
             ("¿Los canales de ofertas son fiables?",
              "Depende del canal. Los que verifican el historial antes de publicar son fiables; los que solo reenvían lo que ven sin comprobar suelen tener una proporción alta de ofertas infladas. En esta web no verificamos el historial antes de publicar, así que muestra el precio tal como lo detecta el canal: comprueba tú el mínimo si la compra es importante."),
         ],
-        ["general", "chollos-amazon-telegram"],
+        ["general", "mejores-canales-telegram-ofertas"],
     ),
 ]

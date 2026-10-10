@@ -67,7 +67,6 @@ contenido que ve un crawler y el que ve un visitante coinciden.
 ## Secciones tematicas
 
 - Black Friday: https://gangasofertas.com/BlackFriday/
-- Prime Days: https://gangasofertas.com/PrimeDays/
 
 ## Legal y transparencia
 

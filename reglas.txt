@@ -1,0 +1,56 @@
+# Redirecciones 301 — reglas de Cloudflare
+# Generado por tests/verificar_301.py. No editar a mano: se regenera.
+#
+# Cloudflare > Rules > Bulk Redirects (o Single Redirects, una por URL).
+# GitHub Pages no sirve .htaccess, asi que la redireccion tiene que
+# hacerse aqui. Sin ella, estas URLs devuelven 404 y se pierde el
+# poco peso que tuvieran.
+#
+# Contexto: el 10 de octubre de 2026 se retiraron cuatro paginas
+# 'puente' de 300-360 palabras que competian entre si y con paginas que
+# ya las cubrian. Cada 301 pasa el peso a la pagina que hoy cubre esa intencion.
+
+| Origen | Destino |
+|---|---|
+| `https://gangasofertas.com/chollos-de-amazon.html` | `https://gangasofertas.com/general.html` |
+| `https://gangasofertas.com/articulos-rebajados-amazon.html` | `https://gangasofertas.com/general.html` |
+| `https://gangasofertas.com/errores-de-precio-amazon.html` | `https://gangasofertas.com/como-detectar-errores-de-precio-amazon.html` |
+| `https://gangasofertas.com/chollos-amazon-telegram.html` | `https://gangasofertas.com/mejores-canales-telegram-ofertas.html` |
+
+## Formato de texto plano (para Cloudflare Bulk Redirects)
+
+```
+https://gangasofertas.com/chollos-de-amazon.html https://gangasofertas.com/general.html 301
+https://gangasofertas.com/articulos-rebajados-amazon.html https://gangasofertas.com/general.html 301
+https://gangasofertas.com/errores-de-precio-amazon.html https://gangasofertas.com/como-detectar-errores-de-precio-amazon.html 301
+https://gangasofertas.com/chollos-amazon-telegram.html https://gangasofertas.com/mejores-canales-telegram-ofertas.html 301
+```
+
+## Comprobacion tras crearlas
+
+```bash
+curl -sI https://gangasofertas.com/chollos-de-amazon.html | Select-String -Pattern 'HTTP|location'
+```
+
+Debe devolver `HTTP/2 301` y `location: https://gangasofertas.com/general.html`.
+Cloudflare tarda unos minutos en propagar la regla.
+
+## PrimeDays: decidir antes de redirigir
+
+Las ocho URLs de la seccion PrimeDays tambien se retiraron ese dia.
+A diferencia de estas cuatro, aqui el 301 depende de Search Console:
+
+- **Con impresiones** → aplica 301 hacia su equivalente en `/BlackFriday/`:
+
+  - `https://gangasofertas.com/PrimeDays/index.html` → `https://gangasofertas.com/BlackFriday/index.html`
+  - `https://gangasofertas.com/PrimeDays/que-es-amazon-prime-days.html` → `https://gangasofertas.com/BlackFriday/que-es-el-black-friday.html`
+  - `https://gangasofertas.com/PrimeDays/fechas-amazon-prime-days.html` → `https://gangasofertas.com/BlackFriday/fecha-black-friday-2026.html`
+  - `https://gangasofertas.com/PrimeDays/ofertas-prime-days-2026.html` → `https://gangasofertas.com/BlackFriday/ofertas-black-friday-2026.html`
+  - `https://gangasofertas.com/PrimeDays/descuentos-reales-o-falsos.html` → `https://gangasofertas.com/BlackFriday/gangas-black-friday.html`
+  - `https://gangasofertas.com/PrimeDays/como-aprovechar-prime-days.html` → `https://gangasofertas.com/BlackFriday/como-aprovechar-black-friday.html`
+  - `https://gangasofertas.com/PrimeDays/canal-telegram-ofertas.html` → `https://gangasofertas.com/BlackFriday/canal-telegram-ofertas.html`
+  - `https://gangasofertas.com/PrimeDays/faq.html` → `https://gangasofertas.com/BlackFriday/faq.html`
+
+- **Sin impresiones** → no hace falta redirigir. Una URL que nunca se
+  posicionó no tiene peso que traspasar y un 404 no penaliza. Ahorra
+  ocho reglas que no hacen falta.

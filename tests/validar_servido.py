@@ -186,7 +186,7 @@ _vistos = set()
 for ruta in ["/", "/index.html", "/general.html", "/categorias.html", "/guias.html",
              *[f"/{s}.html" for s in GUIAS],
              *[f"/{s}.html" for s in CATS],
-             "/BlackFriday/index.html", "/PrimeDays/index.html"]:
+             "/BlackFriday/index.html"]:
     st, _c, html = pedir(ruta)
     if st != 200:
         err(f"{ruta} no se pudo leer (HTTP {st})")

@@ -43,11 +43,10 @@ NAV = [
     # respuesta ("como detectar un error de precio"), no un producto, asi que
     # tiene menos peso en la navegacion de compra que las categorias.
     ("guias.html", "Guías"),
+    # La seccion de campana va al final del menu: es una pagina tematica, no una
+    # categoria del catalogo, y asi no compite con las entradas de arriba por el
+    # espacio del nav en pantallas medianas.
     ("BlackFriday/index.html", "Black Friday"),
-    # Las dos secciones de campana van al final del menu: son paginas tematicas,
-    # no categorias del catalogo, y asi no compiten con las entradas de arriba
-    # por el espacio del nav en pantallas medianas.
-    ("PrimeDays/index.html", "Prime Days"),
 ]
 
 
@@ -83,14 +82,6 @@ PIE = """<footer class="pie">
         <a href="BlackFriday/faq.html">Preguntas frecuentes</a>
       </div>
       <div class="footer-links__grupo">
-        <strong>Prime Days 2026</strong>
-        <a href="PrimeDays/index.html">6 y 7 de octubre</a>
-        <a href="PrimeDays/fechas-amazon-prime-days.html">Fechas y calendario</a>
-        <a href="PrimeDays/ofertas-prime-days-2026.html">Ofertas por categoría</a>
-        <a href="PrimeDays/descuentos-reales-o-falsos.html">Descuentos reales o falsos</a>
-        <a href="PrimeDays/faq.html">Preguntas frecuentes</a>
-      </div>
-      <div class="footer-links__grupo">
         <strong>Guías</strong>
         <a href="guias.html">Todas las guías</a>
         <a href="ofertas-reales-vs-descuentos-falsos.html">Oferta real o descuento falso</a>
@@ -99,10 +90,6 @@ PIE = """<footer class="pie">
         <a href="cuando-comprar-en-amazon-espana.html">Cuándo comprar en Amazon</a>
         <a href="guia-completa-chollos-amazon.html">Guía completa de chollos</a>
         <a href="mejores-canales-telegram-ofertas.html">Canales de Telegram de ofertas</a>
-        <a href="chollos-de-amazon.html">Chollos de Amazon</a>
-        <a href="errores-de-precio-amazon.html">Errores de precio</a>
-        <a href="articulos-rebajados-amazon.html">Artículos rebajados</a>
-        <a href="chollos-amazon-telegram.html">Chollos en Telegram</a>
         <a href="BlackFriday/metodologia.html">Cómo trabajamos</a>
         <a href="BlackFriday/sobre-nosotros.html">Sobre nosotros</a>
       </div>
