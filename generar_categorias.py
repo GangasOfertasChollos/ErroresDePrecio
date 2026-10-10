@@ -34,7 +34,7 @@ from datetime import date
 from pathlib import Path
 
 from contenido_categoria import CONTENIDO
-from plantilla_comun import ICONO_TG, NAV, PIE, nav_html
+from plantilla_comun import ICONO_TG, ICONOS, NAV, PIE, nav_html
 
 RAIZ = Path(__file__).resolve().parent
 BASE = "https://gangasofertas.com"
@@ -400,7 +400,7 @@ PLANTILLA = """<!doctype html>
 <meta name="twitter:description" content="{descripcion}">
 <meta name="twitter:image" content="{img}">
 
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+{iconos}
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="assets/icono-tg.css">
 <meta name="google-site-verification" content="E4_nuunpXWLlV4jpR5qmBPKLhB2kFV_MTM6N_J9xRSc">
@@ -477,6 +477,7 @@ def main() -> None:
             h1_cabecera=h1_cabecera, subtitulo=subtitulo, icono_cat=icono_cat,
             nav=nav_html(f"{slug}.html"),
             icono=ICONO_TG.format(prefijo="", canal=CANAL),
+            iconos=ICONOS.format(p="assets/"),
             catalogo_cabecera=catalogo_cabecera(slug, h1_cabecera, len(ofertas)),
             editorial=bloque_editorial(slug),
             estado_bloque=estado_bloque, tarjetas=tarjetas,

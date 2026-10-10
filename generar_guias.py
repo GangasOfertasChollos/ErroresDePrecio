@@ -25,7 +25,7 @@ import re
 from pathlib import Path
 
 from guias import GUIAS
-from plantilla_comun import ICONO_TG, PIE, nav_html
+from plantilla_comun import ICONO_TG, ICONOS, PIE, nav_html
 
 RAIZ = Path(__file__).resolve().parent
 BASE = "https://gangasofertas.com"
@@ -106,7 +106,7 @@ PLANTILLA_ART = """<!doctype html>
 <meta name="twitter:description" content="{descripcion}">
 <meta name="twitter:image" content="{img}">
 
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+{iconos}
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="assets/icono-tg.css">
 <script type="application/ld+json">
@@ -229,7 +229,7 @@ PLANTILLA_HUB = """<!doctype html>
 <meta name="twitter:description" content="{descripcion}">
 <meta name="twitter:image" content="{img}">
 
-<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+{iconos}
 <link rel="stylesheet" href="assets/style.css">
 <link rel="stylesheet" href="assets/icono-tg.css">
 <script type="application/ld+json">
@@ -316,6 +316,7 @@ def main() -> None:
             icono_cat=icono_cat,
             nav=nav_html(f"{slug}.html"),
             icono=ICONO_TG.format(prefijo="", canal=CANAL),
+        iconos=ICONOS.format(p="assets/"),
             cuerpo=cuerpo_articulo(secciones),
             faq=bloque_faq(faq, slug),
             enlaces=enlaces_html,
@@ -369,6 +370,7 @@ def main() -> None:
         titulo=esc(HUB_TITULO), descripcion=esc(HUB_DESC), base=BASE, img=IMG,
         canal=CANAL, nav=nav_html("guias.html"),
         icono=ICONO_TG.format(prefijo="", canal=CANAL),
+        iconos=ICONOS.format(p="assets/"),
         tarjetas=tarjetas, enlaces_cat=enlaces_cat, schema=schema_hub, pie=PIE,
     )
     destino = RAIZ / "guias.html"

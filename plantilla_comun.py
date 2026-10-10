@@ -10,6 +10,25 @@ pero comparte la misma estructura de enlaces.
 
 CANAL = "https://t.me/GangasOfertasChollos"
 
+# Juego de iconos de la pagina. Se declara aqui para que los tres generadores
+# emitan lo mismo y no se desincronicen: antes cada plantilla tenia su propia
+# linea y bastaba cambiar una para que divergieran.
+#
+# Los PNG se generan con generar_favicon.ps1 desde icono.jpg. Se piden los
+# cuatro tamanos porque cada navegador elige el suyo: 16 y 32 para la pestana,
+# 192 para PWA y Windows, y 180 para apple-touch-icon (iOS exige PNG ahi; antes
+# BlackFriday declaraba un SVG en ese tag y no funcionaba en ningun Apple).
+#
+# El SVG va el ultimo como red de seguridad: los navegadores que soportan SVG lo
+# prefieren sobre el PNG, y los demas cogen el de 32.
+#
+# `prefijo` permite resolver desde BlackFriday/, donde hace falta "../assets/".
+ICONOS = """<link rel="icon" href="{p}favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="{p}favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="icon" href="{p}icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="{p}apple-touch-icon.png">
+<link rel="icon" href="{p}favicon.svg" type="image/svg+xml">"""
+
 AVISO_AFILIADOS = (
     "Este sitio utiliza enlaces de afiliado de Amazon. Al comprar a través de "
     "nuestros enlaces podemos recibir una pequeña comisión sin coste adicional para ti."

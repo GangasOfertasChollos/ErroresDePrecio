@@ -334,6 +334,7 @@ node tests/test_app.js              # render, escapado, whitelist de URLs, JSON-
 python tests/validar_sitio.py       # enlaces, JSON-LD, HTML, sitemap, afirmaciones
 python tests/auditar_seo.py         # titles, descriptions, H1, schema, enlazado, thin
 python tests/verificar_301.py       # enlaces rotos + genera reglas.txt
+python tests/verificar_iconos.py    # los <link rel=icon> resuelven y existen
 python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
 python tests/validar_orden.py       # orden ofertas→texto, clases y JSON-LD
 python tests/test_publicar_html.py  # el bot regenera y sube el HTML correcto
@@ -385,6 +386,49 @@ que el chequeo tiene que ser así:
 Además **genera `reglas.txt`** con los 301 que hay que crear en Cloudflare:
 GitHub Pages no sirve `.htaccess`, así que las redirecciones no se pueden
 declarar en el repositorio. Ese fichero se regenera, no se edita a mano.
+
+## Iconos de la página
+
+`generar_favicon.ps1` genera los PNG de `icono.jpg` y enlaza el juego completo
+en las 35 páginas:
+
+```bash
+powershell -ExecutionPolicy Bypass -File generar_favicon.ps1              # genera y enlaza
+powershell -ExecutionPolicy Bypass -File generar_favicon.ps1 -SoloGenerar  # solo genera
+```
+
+| Fichero | Tamaño | Para qué |
+|---|---|---|
+| `favicon-16x16.png` | 16 | pestaña, navegadores antiguos |
+| `favicon-32x32.png` | 32 | pestaña en escritorio y Chrome |
+| `favicon-48x48.png` | 48 | Windows |
+| `icon-192.png` | 192 | instalación de PWA |
+| `apple-touch-icon.png` | 180 | iOS, icono de inicio |
+| `favicon.svg` | vector | red de seguridad para navegadores con SVG |
+
+El bloque vive en `plantilla_comun.py` como constante `ICONOS`, así que los tres
+generadores emiten lo mismo. `prefijo` permite resolver desde `BlackFriday/`,
+donde hace falta `../assets/`.
+
+Tres cosas que costaron un rato y no volver a tropezar:
+
+- **PowerShell no distingue mayúsculas en los nombres de variable.** Escribir
+  `$bloque` donde la plantilla se llama `$Bloque` las convierte en la *misma*
+  variable: el placeholder `{p}` desaparecía en la primera página y todas las
+  siguientes heredaban `assets/` sin el `../` de BlackFriday.
+- **En `BlackFriday/` los dos `<link rel="stylesheet">` están en la misma
+  línea.** Un ancla de regex que exija salto de línea al final no encuentra
+  dónde insertar y la página se queda sin favicon en silencio.
+- **`googleXXXX.html` no es una página**, es el fichero de verificación de
+  Search Console: una línea de texto sin `<head>`. El script lo excluye.
+
+Sobre el 512: la especificación de PWA lo pide, pero pesa 501 KB y sin un
+`manifest` ningún navegador lo descarga. No se genera por eso.
+
+> **La ilustración se ve bien a 180 px y es indescifrable a 32 px.** Es un
+> favicon demasiado detallado para el tamaño real de una pestaña. Si algún día
+> molesta en la barra del navegador, la opción es un recorte más simple para
+> 16/32 y dejar la imagen entera solo para `apple-touch-icon`.
 
 ## Generar las páginas
 
