@@ -1,5 +1,20 @@
 [
     {
+        "id": 8913,
+        "date": "2026-10-10T20:02:04+00:00",
+        "title": "adidas Vibes Full Recharge – Eau de Parfum de 100 ml",
+        "price": "10.22 €",
+        "old_price": "19.99 €",
+        "discount": "-49%",
+        "amazon_url": "https://www.amazon.es/dp/B0D5RJH7TM?tag=gangas054-21",
+        "image": "https://cdn4.telesco.pe/file/K39o2VYtKt0qQrywB9wfkYp5bBf-t5oMMOHu4YH3d01w0EzL2nEYc8E-x6NySMgcGDC3cjk0xF1wQuJseFtnHv911dM7wIC7QhTTBK7GbG-_gqyB5K_O-7_ccnA2Aq3BEDQECQ2X9F6F55vzDzhTK5Hb7tYZ7kuAZmqF0NS6HFLeaiJ3yybBolsYKYKnxMHnRRWB8KUs-AGSF09QDf3Z9XwtEh0Yfqrr80dxkkbAmfsTtwc1N5XDU8iFlzwyGBv7SEDiWG7rjubJRIAlnCSMzw3TXI67ga7uZurEe5umeJ4iDDN9gF-nazyTb7pi0rkPcEjlkttmEIuXhrw3XvUEEQ.jpg",
+        "categoria": "general",
+        "description": "¡Un aroma fresco para cada día! 🌿💚🔥",
+        "brand": "adidas Vibes",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 8912,
         "date": "2026-10-10T20:00:03+00:00",
         "title": "efekol Gafas Eclipse Solar Homologadas - Certificación CE y EN ISO 12312-2",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "¡Organiza tu ropa fácilmente y aprovecha al máximo el espacio de tu habitación por menos de 10 €! 🛍️",
         "brand": "Perchero Burro",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 8811,
-        "date": "2026-10-10T11:01:10+00:00",
-        "title": "Funko Pop! Movies: Ghostface",
-        "price": "8.45 €",
-        "old_price": "16.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CND1KMSD?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/HDISu0FlggkbbLbiF4a6Ws6XAbIAIFBxXJ1B9VHGaXIis1Yd_kXj8gOJbcRKLkld58ODp9tSDo7sCSu7M1zsMG7vQYaZgGiQR7_kYJOl0Pw8tGDXU40Nc4a8e8IxI3e58ZosW73mUBjQbzpyeHuqhK9tkd4wuPh5Km52buU3m_bKKMSpOFpy9i3Cbjoih3w4aSyiDwRpeYkc5cPaC9Lsbcpxm_htxoFgynVuQymHf6OjIYOT5pGcUZzH5BayS6W9BfqHva_y5eV3N9dDUcNsysR7NE8o4U6rMKRbCBqAmOX6CQws3jDLykyON817Ir2V9YUZ1U2oOY8r8IcmPA9OtQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar.",
-        "brand": "Funko Pop",
         "gtin": "",
         "mpn": ""
     }
