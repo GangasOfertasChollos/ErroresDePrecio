@@ -1,5 +1,20 @@
 [
     {
+        "id": 9437,
+        "date": "2026-10-13T11:07:15+00:00",
+        "title": "EXPRIMIDOR ELÉCTRICO BESTRON 🥤",
+        "price": "25.99 €",
+        "old_price": "52.77 €",
+        "discount": "-51%",
+        "amazon_url": "https://www.amazon.es/dp/B0F6Y5KLQM?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/QSY16jiEwUXji6fPaOaVQFTWww4xpcqKn5uieu0mYx4wYsgf0ammb6j2dZabmWDYZXjsgg6C7MfzUrrjgGlwy-DZTJSKfgdOOq2ATJUEn5sCDGSiR3wlT1GvbtRNFKajpTKFSnWSLvbxMj6Q4oKqepA00kXdUHZUlUgn-2Jn76QZ08QsC_rznN9VlcTkFiTX9y3CJ6nSTMaHA6Qs3HaiLvwTDMXMLb3kWmWm7zuT7zqifprGlSm9IZSsa9elhi_6y7UPhu01BWPVG9oL-YXZNi3Ew6DYZxzeh6ll79zRmbLv4h0qPhhgZIzKHdbAOFNgIkap2jVIB1tCIh4KV1kL-A.jpg",
+        "categoria": "general",
+        "description": "¡Zumos frescos en segundos! 🍊✨ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "EXPRIMIDOR ELÉCTRICO",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 9436,
         "date": "2026-10-13T11:02:26+00:00",
         "title": "Xiaomi REDMI Buds 8 Active, Auriculares semiintraurales, 37 h, Negro",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "M&Ms Cacahuete",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 9337,
-        "date": "2026-10-12T19:31:54+00:00",
-        "title": "CREMA CON VENENO DE ABEJA GERUICEE 2x40 G 🐝💛",
-        "price": "5.99 €",
-        "old_price": "8.99 €",
-        "discount": "-33%",
-        "amazon_url": "https://www.amazon.es/dp/B0H41WT9HM?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/oU0f0mydFYd2d5nmYmjhXgav0lqNqJJAR6B5pwxrG_r81nHs6_CPUWq2ukT1kNihC9lE6BRqt2ECNHHOricC2oNMmkT7WnMlhTLfw8I2e98fMH4lO6LeX-N1kq6to_HshN24ygJjoi7DknUiyyta8J6p2wGu0z9Wn0rstM-eL1fWNw0fluE3c8jdS-kkMFvnm5D7PkA7YldHc8B0tOloePy6q7UypaGzrDFYHAVXJ-9KJiHKvqYD76OqA3mvRIv12gUnY1ZkwRvDCFadxhjTy7y17FDLPJTY_WdM87ZLAdgC4ZmX6GDwmUVuif6r6nVNOe9T-U8G2r2-mIfuKk1peg.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "¡Crema facial y de cuello hidratante y reafirmante para una piel suave! 💆‍♀️✨ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "",
         "gtin": "",
         "mpn": ""
     }
