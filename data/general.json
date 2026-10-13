@@ -1,5 +1,20 @@
 [
     {
+        "id": 9425,
+        "date": "2026-10-13T10:30:35+00:00",
+        "title": "adidas Unisex adulto Adi 23 Socks, White / Black, 45-48",
+        "price": "5.85 €",
+        "old_price": "15.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0B42FHYDC?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/dp-RCEraBXCY_GzoSAQ583UQBpgejA74DFAKvSexzBiPoNnCbx9qwrVhRkaOGUYyua-rTBJnOHhSL-7wzcLwXnelOVRngAPmhqL9KZs18a3WNBltQa9OkYG_oPyYYs6x8wVLJTJnwk9ivRoju8bgbuqg6f0OI-m2C-lqZYcvi--2KwLbPzPE9I5xNB2WpG0uuc0Z5k6FO9uGsunlBaTt7gSWmPOBJmLt3Oc6HYqjZvB-4OsyiTDs15w25MyujbTqIuKyB8oXr4QPpT5GhZ49ynu15wlLC_y4KzjxN4JMidot_ocP3oYNiaQLsnqabgrRJnggBS4QuUVxWtMztIgIIA.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "adidas Unisex",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 9424,
         "date": "2026-10-13T10:25:12+00:00",
         "title": "JP 1880 Hombre Tallas Grandes Tallas Grandes Menswear L-8XL JP1880 Sudadera, Negocios, Llama, Sudadera, Hasta 8 XL",
@@ -1483,20 +1498,5 @@
         "brand": "AOQEE 2.4 5",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 9319,
-        "date": "2026-10-12T18:00:42+00:00",
-        "title": "SONOFF Dongle USB Zigbee Más - ZBDongle-E 3.0 Interfaz Antena Externa SMA Gateway Universal, Preinstalado con Firmware Basado en EZNet 6.10.3 Coordinated Home Assistant o Zigbee2MQTT",
-        "price": "18.98 €",
-        "old_price": "25.32 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0B6P22YJC?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/CKq9Z_fIWQ_GHAvuoI8BL8fdHfpLukbVXthaN0YN7eYdVS2XU5MtO_I0Q9ZuP-Fu4MIPmZWKD9c6QO2q9xsDvXw-Z0q7SOgrtJ8-TNIQFIDu3Qpht2uwNhjcd1yUYvm_DA_YhlljJBey30058eFiw61ZQ6_3vx1Nq6tXkj3QSyJ9SZhQfYXUaOOHSmX9FVIoAWIx2a_JCT3OFslP3hYJGlehYbAz9u6sWM1BWY02u6OPVyp057sTpj_J0s4Ot3WxmDQDZXG45W3-vxkPYk-w4vvtIPRzP878dOyWm7V-8PTXQfhTK8icJWjbnkDJURwohdrCJGYCXV0SJeb9Jcr0DQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "SONOFF Dongle",
-        "gtin": "",
-        "mpn": "Zigbee2MQTT"
     }
 ]
