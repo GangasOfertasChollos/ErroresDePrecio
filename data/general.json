@@ -1,5 +1,20 @@
 [
     {
+        "id": 9424,
+        "date": "2026-10-13T10:25:12+00:00",
+        "title": "JP 1880 Hombre Tallas Grandes Tallas Grandes Menswear L-8XL JP1880 Sudadera, Negocios, Llama, Sudadera, Hasta 8 XL",
+        "price": "18.59 €",
+        "old_price": "59.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0GGVLS6QL?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/K7NlaQpjGE9QYDUsWcsqPQ_6eql3aHX2j_3Q4Fj0oZ9he8hVvEcBZD__yMnbWyECjGLfZBTq4bzXH2jLMKQzh7G9jLuScnCn6jY8N2t2loqagSXVcl3uvSwtUU7qsJ2gScBofrodtVrlw9p-sFPI1K-pRYFQA7I-qNyzsgiJvlwwugZrJK9x8yZMK-rlAIjFcT0seWBsUO9u0l8KP2VxYLQBrZ0g-fi73NFo4uIcnQkGlhVK1fik0So7Uct_cMZ7EhfH2t-fM1aPeD869sCBJrd0JMfn6MaWVw52Lr2sDV1dU83Nw_lRCiQKhSKNUQOV5qDyQ60yeRxQKdLXYq0Hlg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "JP 1880",
+        "gtin": "",
+        "mpn": "JP1880"
+    },
+    {
         "id": 9423,
         "date": "2026-10-13T10:23:30+00:00",
         "title": "Levi's 405 Standard Shorts Pantalones Cortos, First Name Basis SHO, 30W para Hombre",
@@ -1483,20 +1498,5 @@
         "brand": "SONOFF Dongle",
         "gtin": "",
         "mpn": "Zigbee2MQTT"
-    },
-    {
-        "id": 9318,
-        "date": "2026-10-12T17:49:19+00:00",
-        "title": "SKECHERS PISTA RIPKENT HOMBRE 🔥👟",
-        "price": "44.24 €",
-        "old_price": "69.95 €",
-        "discount": "-37%",
-        "amazon_url": "https://www.amazon.es/dp/B09PY34WLQ?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/SX8VTqasBRwPwd3ZaaT0peDFKc4ten_D6wV1eu_UR8x-QLOB6x7uTBZ8wyjIew1weD93aeTyEWtflcVJc3Gx1aHwHglUQq5wLYAcDLV-YPEHtGDfcDyPVPPyMqvqc4dGIWKwQpm-29AYQCrTIf1ieBVns9JjS2YcpFw3xzYk34LWX1YygeulSWwNkd0WiTeO7ae_OtyBYBgZyUPuLRskYQs0m6wEbvJ531oAof4WxepGnEu3GlEwsalekuu0AtRXYUrv5pZ4aSvDsnbYnCc-jJIKQj-U5j7CXGUhO1rJlmKq5sAZy60XDpvXgYpQlVFzlDQFNHrmrbrRKjqmIQ1GIg.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "¡Zapatillas cómodas, ligeras y perfectas para el día a día! 👟✨ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "SKECHERS PISTA",
-        "gtin": "",
-        "mpn": ""
     }
 ]
