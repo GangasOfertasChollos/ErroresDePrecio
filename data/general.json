@@ -1,5 +1,20 @@
 [
     {
+        "id": 9466,
+        "date": "2026-10-13T11:50:43+00:00",
+        "title": "Sony WF-C510 Truly Wireless Earbuds",
+        "price": "35.50 €",
+        "old_price": "59.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DBLN4C47?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/tdzZQx9oZdaYbFIrWj-v7nvrcM7NU3SdXU4J68T32Mn6DUkoPquOnxvvy_6twLZQElPhsRKUvEtegAs5J0oQDzo_wf5rJMYRjOunlkms81Jq4KsmyYApytEOuCWH1hZk6F00AROYX8sUMRs4t6dpxk4wNVib0e9QB5lD3yZPFLxBb8-l553qCngTSNVt2LkKIaRwOGOSCVS-Q28DdJot8HKUHTaeBkHvjKLn-VKB5VNlVANR7qNSoCAZaMKnUWV5BkdZtlqEOG2NIQQP171F2Wkcs6Y-N8k9-6CDSDzXvYXetP8f9wj3H_VexHs6rMjwnrEZ-PYgIKGhgnFSVvCfHA.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Sony WF",
+        "gtin": "",
+        "mpn": "WF-C510"
+    },
+    {
         "id": 9465,
         "date": "2026-10-13T11:46:51+00:00",
         "title": "‍♀️✨ PLANCHA DE PELO PROFESIONAL GHD GOLD 🖤🔥",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Beurer BF",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 9357,
-        "date": "2026-10-13T00:03:27+00:00",
-        "title": "Lindt Postres Tableta de Chocolate 51% Cacao, Chocolate para Postres, Chocolate negro suave, chocolate cremoso, 200g",
-        "price": "3.88 €",
-        "old_price": "6.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B091HRWTRC?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/sXdtiEHQ1KElYAtPEumtW1ksGLjKBbpZl-K4flicArJ4fv8f6Hn3ZDdLND3M4kuegnlUwCXxW_euLiaTfwsHZ7Ys7Zzx3RUdcztdC5TKh82WsiAfNUl0FoW7kfI0LE4OpASz20-DNvHGfmAwB6qAXxKb-OYUc3C_ucuP8O5-GGiLMMTM0rlnLqRgrf6ehAxhQstXQxkLJGL1sjbPuCReWbOWMFgni6kUwxTLJt78I3cdUaWEvhZXRa5V3av287Us-V9qG2a_zXlagMcFUBDkva8KOG8RfUd35-c4GnItGUkP6FUhGUma9_CJ6dJ7ZMyvCAl83VYLM1uD8_pj-ACGKw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Lindt Postres",
         "gtin": "",
         "mpn": ""
     }
