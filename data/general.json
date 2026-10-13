@@ -1,5 +1,20 @@
 [
     {
+        "id": 9474,
+        "date": "2026-10-13T12:05:14+00:00",
+        "title": "LIMPIADOR DE SUELOS EQM PARA ROBOTS FREGASUELOS 1L 🤖✨",
+        "price": "3.23 €",
+        "old_price": "7.98 €",
+        "discount": "-60%",
+        "amazon_url": "https://www.amazon.es/dp/B0CW1BBB5Q?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/u_liDeTODLTosESVRu5bG4a7vrdqVscJUjSl47igJAIJM-zfkbMdF294s4tOs7fe44RG0HeYrzbxM328INB28r1cTw36thE0N01GiKcNQK9LqGEYiaRaqtcMYr06kKHv3qUw7A75y4t-a1Q8snZ1Ze0SvM33Ibv7EcO1KtTVBAwFjslx6F-IKRBkryUyvq75ygBLs6j93veukdNVoJCZetK4FV7mqbvgztnur-Ft9_Eq5W-X0HT71o3ugmGbHxgk5oNC2EcuT6GmPvqxVGGqGIWxePeUoLaBdph28nwvBys45vR61twAs7dwbbFz0f-s164DFdrv4qleyGDMU75DTA.jpg",
+        "categoria": "general",
+        "description": "¡Suelos limpios y frescos con aroma floral! 🌸✨ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 9473,
         "date": "2026-10-13T12:03:11+00:00",
         "title": "AOC 27G4ZR Gaming Monitor 27 Pulgadas 260Hz Panel Fast IPS, 1ms GtG, HDR10, G-Sync Compatible, Altura Ajustable, (1920x1080 HDMI 2X 2.0 DP 1x 1.4) Negro",
@@ -1483,20 +1498,5 @@
         "brand": "Armani Exchange",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 9365,
-        "date": "2026-10-13T01:13:43+00:00",
-        "title": "SoBuy Librería Infantil 3 Estantes Soporta hasta 45kg 58x18x81cm",
-        "price": "29.95 €",
-        "old_price": "49.95 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0B28MV67K?tag=gangas054-21",
-        "image": "https://cdn4.telesco.pe/file/Y1a4RGrDfiHAD6NtIuWo19XYyD2gwg1gDrOjQnnYZ0fXWjgOeYb8UymIZOoqAjBKwXxGL_Mieu0B8Dy2JlyMq-a2IHV7kbv0au_pxdX50ceG1ZGjbUn-KjzvnMWvoMyMiXQmJMtBloqQwXjAMsy7z39g6oH8W8fTq4nWU9SOAjwTgsw2zRuIotbvhXJm0gWzilRZIeLq2KZ9bB-vMg5v2IlOspBbKS48Y0iJ7ZHewGu3Byvh8AfcaKkXgdAt03uY0QVD4JnZSREPXsZOOfeAQKz9p3H5Y5M1V-apdCUetNZazRrro5l6pCyhi3e232o-wmYFL-sXoMuaPH_ahCXenw.jpg",
-        "categoria": "juguetes-infantil",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "SoBuy Librería",
-        "gtin": "",
-        "mpn": "58x18x81cm"
     }
 ]
