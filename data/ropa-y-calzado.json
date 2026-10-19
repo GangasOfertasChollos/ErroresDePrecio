@@ -1,5 +1,20 @@
 [
     {
+        "id": 10617,
+        "date": "2026-10-19T16:00:48+00:00",
+        "title": "BOLSO BANDOLERA DKNY BRYANT AVE 🖤✨",
+        "price": "39.01 €",
+        "old_price": "99.00 €",
+        "discount": "-61%",
+        "amazon_url": "https://www.amazon.es/dp/B0F9B3BKZ4?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/Bv_ij1ZYCvmCihlIurjNL2JgS30WpG_OAsGE8on7otA6mFCMZRsXbpSsypGDaLXMdx1tcJ2wPW6gePFbH26S6cDqbz203rWj7h0hz_-bpnsyq-WtKFLlUc57-vNWCZIfoecN6JpIjK2t_S255saqzlT0Bxp9s9lBOJbiclKTwLaBCvlq4mPLZORxbs-U2cXW_bfGQq5AblXk7UBb_-Dg9ADrwgJi1CGg4CxFaI1MwETCccPyphCaeqL1HjmLkjzV4w71_8yRtx63CxPN-a-THh8HwCB91QVoC1Iw6JjQuJZuUWQbTKM11BzrNGW7MpmWMii0QeSCERu0T_tVOoIDPQ.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "¡Elegancia a precio increíble! Bolso DKNY negro con logotipo, diseño moderno y bandolera ajustable. ¡Aprovecha esta ofertaza! 🖤✨ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "BOLSO BANDOLERA",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 10613,
         "date": "2026-10-19T15:44:06+00:00",
         "title": "Zapatillas Mujer Casual Zapatillas Deportivas Mujer Tenis Running Sneakers Mujer con Banda Ajustable Correr Carretera Gimnasia Fitness",
@@ -433,20 +448,5 @@
         "brand": "G-Star Raw",
         "gtin": "",
         "mpn": "D16411-336-c199"
-    },
-    {
-        "id": 10495,
-        "date": "2026-10-19T05:45:57+00:00",
-        "title": "Anzarun Lite, Sneaker Unisex Adulto",
-        "price": "31.95 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B07S8PT36G/ref=nosim?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Kf8f6YG_eQebxTDR-gseMcpPQDl0oyE_7xPv_TowSLBKFO-5GqjfblMtM3ZO71BwbGU4Akb1MGX6urrUaY2j53B7Eze5w59QMTeIjBjHp2FVWHpZvO3Ebf3cvP3uQ4pB2AnvpgeaskUyEA3Ed0EXfwNUtCyQCuQMfHSd2w59mlaXdCbbnHEtHv32cdD9IVO45nD85m2PewJY40mPIX0dNbjr2VwmMoSBlJcqjsFMwHlCye03rEF9VZhT6cKMUnG7xHAbEDFYIo4RzZqiXOZUyEbaSa1YOCvjfhLHJCYU2O_fjusQSEeWj3Vqq1g_4SaP743id2Q3LUx-ctN5unn80Q.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Ropa y calzado Precio recomendado: 59,95€ 31,95€ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Anzarun Lite",
-        "gtin": "",
-        "mpn": ""
     }
 ]
