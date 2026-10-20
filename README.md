@@ -15,6 +15,7 @@ esos JSON y los muestra en un catálogo por categorías.
 
 ```
 bot.py                 Bot de Telethon
+publicar_x.py          Publica las ofertas del catálogo en X (API interna de X)
 categorias.json        Diccionario de palabras clave por categoría
 data/*.json            Ofertas (generados por el bot)
 assets/style.css       Estilos compartidos por todas las páginas
@@ -222,6 +223,131 @@ git add data/
 git commit -m "Actualizar ofertas"
 git push
 ```
+
+## Publicar en X (Twitter)
+
+`publicar_x.py` publica las ofertas del catálogo en X. **No usa la API de pago**
+de X: habla con la API interna de X —la misma que usa la web— con las cookies
+de una sesión del navegador. Por eso necesita la cookie `auth_token`, que se
+copia de las DevTools.
+
+```bash
+python3 publicar_x.py --simular       # ver cómo quedarían los posts, sin publicar
+python3 publicar_x.py --revisar       # comprobar la sesión y los ids de operación
+python3 publicar_x.py --limite 3      # publicar tres ofertas
+python3 publicar_x.py --verificar     # listar los últimos posts de la cuenta
+```
+
+### De dónde salen las ofertas
+
+Del catálogo que ya construye `bot.py`: `data/general.json` (feed global) o
+`data/<categoria>.json` con `--categoria`. El script no vuelve a rastrear
+nada, ni Telegram ni Amazon: solo formatea lo que ya está scraped y lo
+publica. Un post es el título, el precio, el descuento, el enlace con la
+query de afiliado, la descripción y los hashtags, recortado a los 280
+caracteres que cuenta X (las URLs valen 23, los emojis valen dos).
+
+### La sesión
+
+| Variable | Para qué |
+|---|---|
+| `X_AUTH_TOKEN` | La cookie `auth_token` de x.com. Es la credencial: trátala como una contraseña. |
+| `X_CT0` | El token CSRF. Opcional: si falta, el script se lo pide a X. |
+| `X_USUARIO` | El `@usuario` de la cuenta, para los enlaces y para `--verificar`. |
+
+La cookie se saca así: abre x.com con la cuenta que publica, F12 →
+Application → Cookies → `https://x.com`, y copia el valor de `auth_token`.
+
+### No se publica dos veces la misma oferta
+
+`estado_x.json` guarda el id de Telegram de cada oferta ya publicada junto al
+id de su post. En la siguiente ejecución se las salta. Si el fichero se borra,
+el script vuelve a publicar desde el principio del catálogo: para eso está
+`X_SOLO_ID_MIN`, que solo deja pasar ofertas con id mayor que el que se le
+indique.
+
+### X cambia sus internos cada pocas semanas
+
+Los identificadores de las operaciones de GraphQL caducan, y en 2025 X cambió
+el frontend entero: las operaciones ya no se llaman con un id numérico sino con
+ids de Relay (`ewPB3lRszYIJIpDvJ8dLCQ`) y se piden a `api.x.com/graphql`. Por
+eso el script **busca esos ids en el propio JavaScript de x.com** en lugar de
+tenerlos escritos, los cachea una semana en `cache_x.json` y los vuelve a
+buscar cuando X responde que no conoce la operación. Si alguna vez deja de
+funcionar por esto, `X_QUERY_IDS` permite ponerlos a mano.
+
+### Lo que X exige hoy para publicar
+
+Tres cosas, y si falta alguna la petición no sale:
+
+1. **Cabeceras de navegador.** El gateway de la API de escritura devuelve un
+   `403` sin cuerpo si la petición no lleva `sec-fetch-*`, `sec-ch-ua` y
+   `x-client-transaction-id`. El script las manda todas.
+2. **Cookies de sesión.** No basta con `auth_token` y `ct0`: el gateway
+   espera también `twid` y `guest_id`, que X pone en la web. El script pide
+   la portada de x.com al empezar y las guarda.
+3. **Variables de *feature flags*.** La mutación `createTweetMutation` ya no
+   acepta solo el texto: pide una variable por cada flag que la web activa,
+   con nombres del tipo
+   `__relay_internal__pv__xclientsfeatures<nombre>relayprovider`. Si falta
+   alguna, X responde con un `422` que dice cuál. Están en `FLAGS_OPERACION`,
+   en el principio del script.
+
+### El cupo diario de la cuenta
+
+X lleva la cuenta por separado: tweets y mensajes comparten un cupo por día.
+Cuando se llena, la respuesta es el error `344` (*"You have reached your daily
+limit for sending Tweets and messages"*). No es un fallo del script, así que
+el script **espera y reintenta la misma oferta**: `X_ESPERA_CUOTA` (1800 s
+por defecto) y `X_REINTENTOS_CUOTA` (48) marcan cada cuánto y cuántas veces.
+
+Este cupo es mucho más bajo en cuentas nuevas o sin verificar el email y el
+teléfono. Si aparece el 344 por las mañanas, la solución es verificar la
+cuenta en *Configuración → Seguridad y acceso a la cuenta → Seguridad*, no
+esperar.
+
+> **Pendiente (octubre de 2026).** La API da 344 (cupo diario) pero la misma
+> cuenta publica sin problema a mano desde el navegador, así que el bloqueo
+> es del camino de la API y no de la cuenta. Falta comparar la petición real
+> del navegador con la que manda el script: en el navegador, *Network →
+> createTweetMutation → Copy as cURL*, y guardar el resultado como
+> `peticion_manual.txt` (está en el `.gitignore` porque trae cookies). Lo que
+> se ha descartado ya: el id de la operación, las variables de flags, las
+> cabeceras, las cookies y el token CSRF son correctos.
+
+### Las imágenes
+
+Si la oferta tiene imagen, se sube a `upload.x.com` y se adjunta al post. Si
+la subida falla, el post sale igual sin imagen: es un fallo degradado, no un
+error. Se puede desactivar con `X_CON_IMAGEN=0` o `--sin-imagen`.
+
+> Ojo: las imágenes del catálogo vienen del CDN de Telegram (`cdn4.telesco.pe`)
+> y caducan. En octubre de 2026 las 100 URLs de `data/general.json` devolvían
+> 404, así que los posts salían sin foto. Con `X_CON_IMAGEN=0` el script no
+> pierde tiempo intentándolo.
+
+### En Ubuntu, dentro de proot
+
+El script **solo usa la biblioteca estándar de Python**: no hay `pip install`,
+ni Chromium, ni root, ni navegador. En un proot-distro de Termux:
+
+```bash
+pkg install python   # si no está
+cp ~/ErroresDePrecio/.env ~/ErroresDePrecio/.env   # con las cookies de X
+cd ~/ErroresDePrecio
+python3 publicar_x.py --simular
+```
+
+Cada ejecución de `--revisar` o de publicación puede descargar el JavaScript
+de x.com para buscar los ids de las operaciones: son unos 6 segundos y un
+par de megabytes, y se cachean una semana. En una conexión de móvil, mejor
+tener la cache ya hecha.
+
+> **Nota sobre las condiciones de X.** Publicar por la API interna va contra
+> los términos de servicio de X, que prohíben el acceso automatizado a su web
+> sin permiso. Con una cuenta propia y un volumen bajo el riesgo es que te
+> limiten o suspendan la cuenta; con la API oficial de pago no hay ese
+> problema, pero cuesta unos 200 €/mes.
 
 ## Regenerar el HTML
 

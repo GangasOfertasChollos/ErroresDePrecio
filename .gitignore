@@ -9,6 +9,13 @@ __pycache__/
 # Logs del bot (se generan en la raiz del proyecto)
 *.log
 
+# Estado y cache de la publicacion en X (son de la maquina, no del sitio)
+cache_x.json
+estado_x.json
+
+# Peticiones copiadas del navegador para comparar con el script (traen cookies)
+peticion_manual*.txt
+
 # Temporales de escritura atomica
 *.json.tmp
 
