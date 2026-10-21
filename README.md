@@ -270,15 +270,26 @@ indique.
 
 Los identificadores de las operaciones de GraphQL caducan, y en 2025 X cambió
 el frontend entero: las operaciones ya no se llaman con un id numérico sino con
-ids de Relay (`ewPB3lRszYIJIpDvJ8dLCQ`) y se piden a `api.x.com/graphql`. Por
+ids de Relay (`wR5Z_lEibLvkew3tF9w-Sg`) y se piden a `api.x.com/graphql`. Por
 eso el script **busca esos ids en el propio JavaScript de x.com** en lugar de
 tenerlos escritos, los cachea una semana en `cache_x.json` y los vuelve a
 buscar cuando X responde que no conoce la operación. Si alguna vez deja de
 funcionar por esto, `X_QUERY_IDS` permite ponerlos a mano.
 
+En el JavaScript de ahora cada operación se declara así:
+
+```js
+e.exports={queryId:"wR5Z_lEibLvkew3tF9w-Sg",operationName:"CreateTweet",
+           operationType:"mutation",
+           metadata:{featureSwitches:["..."],fieldToggles:["..."]}}
+```
+
+El script lee de ahí las tres cosas que hacen falta: el `queryId`, el nombre de
+la operación y la lista de *feature flags* que esa operación pide.
+
 ### Lo que X exige hoy para publicar
 
-Tres cosas, y si falta alguna la petición no sale:
+Cuatro cosas, y si falta alguna la petición no sale:
 
 1. **Cabeceras de navegador.** El gateway de la API de escritura devuelve un
    `403` sin cuerpo si la petición no lleva `sec-fetch-*`, `sec-ch-ua` y
@@ -286,12 +297,39 @@ Tres cosas, y si falta alguna la petición no sale:
 2. **Cookies de sesión.** No basta con `auth_token` y `ct0`: el gateway
    espera también `twid` y `guest_id`, que X pone en la web. El script pide
    la portada de x.com al empezar y las guarda.
-3. **Variables de *feature flags*.** La mutación `createTweetMutation` ya no
-   acepta solo el texto: pide una variable por cada flag que la web activa,
-   con nombres del tipo
-   `__relay_internal__pv__xclientsfeatures<nombre>relayprovider`. Si falta
-   alguna, X responde con un `422` que dice cuál. Están en `FLAGS_OPERACION`,
-   en el principio del script.
+3. **El cuerpo según la operación.** La web de ahora manda las variables como
+   un objeto normal (`tweet_text`, `media`, `semantic_annotation_ids`,
+   `disallowed_reply_options`) y las banderas aparte, en los parámetros
+   `features` y `fieldToggles` del cuerpo. La mutación vieja
+   (`createTweetMutation`) en cambio quiere las banderas dentro de las
+   variables, con el nombre largo
+   `__relay_internal__pv__xclientsfeatures<nombre>relayprovider`. El script
+   monta cada formato según la operación que usa.
+4. **La operación correcta.** El script busca en el JavaScript de x.com las
+   tres operaciones que necesita: `CreateTweet` (publicar), `UserTweets` (leer
+   el perfil) y `UserByScreenName` (sacar el id numérico de la cuenta, que es
+   lo que pide la operación de leer).
+
+### Cuando X dice que la petición parece automática
+
+Es el error `226` (*"This request looks like it might be automated"*) y es el
+que más aparece. No depende del texto, ni de las cabeceras, ni de las cookies:
+es X decidiendo que la petición no viene de su web. Cambia solo, con el
+estado de la cuenta y el rato que hace.
+
+Por eso el script **prueba las dos mutaciones**: la de ahora (`CreateTweet`) y
+la vieja (`createTweetMutation`), que es la del camino antiguo de la API. X no
+aplica las mismas reglas a las dos, así que cuando una responde con el `226`
+se prueba la otra. En octubre de 2026 la vieja era la que entraba y la nueva
+decía que la petición era automática.
+
+Además el script **acuerda qué mutación es la buena**: guarda en
+`estado_x.json` la que funcionó por última vez y la prueba primero la
+siguiente vez, porque gastar un intento con la que no entra también se nota.
+
+Si las dos fallan, no conviene reintentar seguido: en el `226` y en el `344`
+lo que se agota es la paciencia de X con la cuenta. Publicar a mano un post
+desde el navegador y esperar es lo que funciona.
 
 ### El cupo diario de la cuenta
 
@@ -306,14 +344,21 @@ teléfono. Si aparece el 344 por las mañanas, la solución es verificar la
 cuenta en *Configuración → Seguridad y acceso a la cuenta → Seguridad*, no
 esperar.
 
-> **Pendiente (octubre de 2026).** La API da 344 (cupo diario) pero la misma
-> cuenta publica sin problema a mano desde el navegador, así que el bloqueo
-> es del camino de la API y no de la cuenta. Falta comparar la petición real
-> del navegador con la que manda el script: en el navegador, *Network →
-> createTweetMutation → Copy as cURL*, y guardar el resultado como
-> `peticion_manual.txt` (está en el `.gitignore` porque trae cookies). Lo que
-> se ha descartado ya: el id de la operación, las variables de flags, las
-> cabeceras, las cookies y el token CSRF son correctos.
+El cupo parece ser **de los posts que hace el script**, no de los que se
+escriben a mano en el navegador: el 21 de octubre de 2026 la cuenta seguía
+publicando a mano sin problemas mientras la API ya estaba bloqueada.
+
+> **Cómo estaba esto en octubre de 2026.** Durante unos días la API devolvió
+> `344` (cupo diario) mientras la misma cuenta publicaba sin problema a mano
+> desde el navegador, y no se encontraba la diferencia. Comparando el
+> JavaScript de x.com con lo que mandaba el script se vio que el script
+> usaba la mutación vieja con el cuerpo viejo, y que la web de ahora usa
+> `CreateTweet` con `features` y `fieldToggles`. Con las dos mutaciones a
+> prueba y el cuerpo de cada una, se publica: el 21 de octubre de 2026
+> salieron los posts `2112918253248876709` y `2112926399275090143`. Al día
+> siguiente el cupo de la API se llenó. Del ritmo se sabe esto: con 90 s de
+> pausa entre posts, el segundo ya salía con el `226`, y con 10 min de espera
+> el que respondía era el `344`.
 
 ### Las imágenes
 

@@ -23,10 +23,16 @@ Lo que se rompe con el tiempo
 -----------------------------
 X rota cada pocas semanas los identificadores de sus operaciones GraphQL.
 Ademas, en 2025 cambio el frontend por completo: las operaciones ya no se
-llaman con un id numerico sino con ids de Relay (`ewPB3lRszYIJIpDvJ8dLCQ`) y
+llaman con un id numerico sino con ids de Relay (`wR5Z_lEibLvkew3tF9w-Sg`) y
 se piden a `api.x.com/graphql/<id>/<operacion>`. Por eso el script busca los
 ids en el propio JavaScript de x.com, los guarda en cache y los vuelve a
 buscar cuando X responde que no conoce la operacion.
+
+De la publicacion hay dos mutaciones: la que usa la web de ahora
+(`CreateTweet`) y la del camino antiguo de la API (`createTweetMutation`).
+Cada una tiene sus propias reglas y X no las aplica igual: una puede
+responder que la peticion parece automatica (226) mientras la otra va bien.
+Por eso el script prueba las dos antes de rendirse.
 
 Uso
 ----
@@ -132,14 +138,27 @@ USUARIO    = os.getenv('X_USUARIO', '').strip().lstrip('@')
 # JavaScript de x.com (ver descubrir_operaciones).
 BEARER = os.getenv('X_BEARER', '').strip()
 
+# La ultima operacion con la que X dejo pasar un post. Se guarda en el estado
+# para probar esa primero la proxima vez: X no aplica las mismas reglas a las
+# dos mutaciones y cambia segun la cuenta y el dia.
+ULTIMA_OPERACION = ''
+
 # Ids de las operaciones, si se ponen a mano: "nombre=id,nombre=id". Tiene
 # prioridad sobre el descubrimiento automatico.
 QUERY_IDS_MANUALES = os.getenv('X_QUERY_IDS', '').strip()
 
 LIMITE_TWEETS   = _leer_int('X_MAX_TWEETS', 5)      # por ejecucion
-PAUSA_SEGUNDOS  = _leer_int('X_PAUSA_SEGUNDOS', 90)  # entre un post y el siguiente
+# Entre un post y el siguiente. X no deja publicar dos seguidos: con 90 s de
+# pausa la segunda salia con el error 226 ("parece automatica"). El ritmo que
+# aguanta es de minutos.
+PAUSA_SEGUNDOS  = _leer_int('X_PAUSA_SEGUNDOS', 600)
 ESPERA_CUOTA    = _leer_int('X_ESPERA_CUOTA', 1800)   # cuando la cuenta se pasa de tweets
 REINTENTOS_CUOTA = _leer_int('X_REINTENTOS_CUOTA', 8)  # veces que se reintenta tras la espera
+# Cuando X dice que la peticion parece automatica (226). Suele ser que se ha
+# publicado hace poco: esperando un rato entra. Se reintenta menos veces que
+# la cuota, porque repetir mucho tambien se ve mal.
+ESPERA_AUTOMATIZACION = _leer_int('X_ESPERA_AUTOMATIZACION', 900)
+REINTENTOS_AUTOMATIZACION = _leer_int('X_REINTENTOS_AUTOMATIZACION', 3)
 TIMEOUT         = _leer_int('X_TIMEOUT', 30)
 CON_IMAGEN      = _leer_bool('X_CON_IMAGEN', True)
 SOLO_ID_MIN     = _leer_int('X_SOLO_ID_MIN', 0)      # solo ofertas con id > este
@@ -171,8 +190,24 @@ HASHTAGS_CATEGORIA = {
 }
 
 # Operacion de GraphQL que publica un post y operacion que lee los ultimos.
-OPERACION_PUBLICAR = 'createTweetMutation'
+#
+# La web de X (la de 2025 en adelante) llama a las operaciones por su nombre de
+# Relay: CreateTweet para publicar, UserTweets para leer el perfil y
+# UserByScreenName para buscar la cuenta. La mutacion antigua
+# (createTweetMutation) sigue viva, pero es la que usa el camino viejo de la
+# API: cuando la cuenta se pasa de tweets por el dia, esa es la que responde con
+# el error 344 de "limite diario". Por eso se usa la de ahora, y la vieja solo
+# como recurso si la nueva no aparece en el JavaScript de X.
+OPERACION_PUBLICAR = 'CreateTweet'
 OPERACION_LEER = 'UserTweets'
+OPERACION_USUARIO = 'UserByScreenName'
+# La mutacion vieja, por si la nueva no se encuentra.
+OPERACION_PUBLICAR_VIEJA = 'createTweetMutation'
+# El id de la mutacion vieja. Ya no sale del JavaScript de x.com (la web usa la
+# de ahora), pero el camino sigue vivo: es el que responde con el error 344 de
+# limite diario en vez de quejarse de la automatizacion. Si X lo rota, se
+# sustituye aqui o en el .env con X_QUERY_IDS=createTweetMutation=<id>.
+ID_PUBLICAR_VIEJA = 'ewPB3lRszYIJIpDvJ8dLCQ'
 
 # Los ids de operacion caducan. Se reintentan cada DIAS_CACHE dias, y antes si
 # X responde que no conoce la operacion.
@@ -193,8 +228,12 @@ USER_AGENT = (
 # X ya no acepta solo el texto: la mutacion de publicar exige ademas una
 # variable por cada "feature flag" que la web activa. Se llaman
 # `__relay_internal__pv__xclientsfeatures<nombre>relayprovider` y, si falta
-# alguna, X responde con un 422 diciendo cual falta. Esta es la lista que
-# pide hoy la operacion createTweetMutation.
+# alguna, X responde con un 422 diciendo cual falta.
+#
+# Esto es solo para la mutacion vieja (createTweetMutation): la de ahora
+# (CreateTweet) lleva las banderas en el parametro `features` del cuerpo, y
+# el script las saca del propio JavaScript de x.com, asi que no hay que
+# mantener una lista a mano.
 FLAGS_OPERACION = {
     '__relay_internal__pv__xclientsfeaturesappviewerisloggedinrelayprovider': True,
     '__relay_internal__pv__xclientsfeaturestranslationnoteautotranslationenabledrelayprovider': True,
@@ -573,6 +612,60 @@ def _id_de_operacion(texto, operacion):
     return ''
 
 
+def _operacion_de_x(texto, operacion):
+    """Saca una operacion del JavaScript de x.com en el formato de ahora.
+
+    La web de 2025 en adelante declara cada operacion asi:
+        e.exports={queryId:"wR5Z_lEibLvkew3tF9w-Sg",operationName:"CreateTweet",
+                   operationType:"mutation",
+                   metadata:{featureSwitches:["flag1","flag2"],fieldToggles:["withAlgo"]}}
+
+    Los feature switches son la lista de banderas que la web activa para esa
+    operacion: hay que mandarlas en la peticion (van en el parametro `features`
+    del cuerpo) o X responde con un 422 diciendo cual falta.
+
+    Devuelve {queryId, operationName, operationType, featureSwitches,
+    fieldToggles} o None si la operacion no aparece.
+    """
+    patron = re.compile(
+        r'queryId:"([^"]+)",operationName:"' + re.escape(operacion) + r'",operationType:"(\w+)"'
+        r'(?:,metadata:\{featureSwitches:\[([^\]]*)\],fieldToggles:\[([^\]]*)\]\})?')
+    coincidencia = patron.search(texto)
+    if not coincidencia:
+        return None
+
+    def _lista(bruto):
+        return [x.strip().strip('"') for x in (bruto or '').split(',') if x.strip()]
+
+    return {
+        'queryId': coincidencia.group(1),
+        'operationName': operacion,
+        'operationType': coincidencia.group(2),
+        'featureSwitches': _lista(coincidencia.group(3)),
+        'fieldToggles': _lista(coincidencia.group(4)),
+    }
+
+
+def _normalizar_operacion(nombre, dato):
+    """Normaliza una operacion a dict, venga como dict o como id suelto.
+
+    Las caches viejas guardaban solo el id: ese formato se sigue aceptando.
+    """
+    if isinstance(dato, dict):
+        base = {
+            'queryId': dato.get('queryId', ''),
+            'operationName': dato.get('operationName', nombre),
+            'operationType': dato.get('operationType', ''),
+            'featureSwitches': list(dato.get('featureSwitches') or []),
+            'fieldToggles': list(dato.get('fieldToggles') or []),
+        }
+        return base if base['queryId'] else None
+    if isinstance(dato, str) and dato:
+        return {'queryId': dato, 'operationName': nombre, 'operationType': '',
+                'featureSwitches': [], 'fieldToggles': []}
+    return None
+
+
 def _bearer_de(texto):
     """El bearer token va dentro del propio JavaScript de X."""
     coincidencia = re.search(r'Bearer\s+([A-Za-z0-9%\-_=]{40,})', texto)
@@ -580,7 +673,7 @@ def _bearer_de(texto):
 
 
 def descubrir_operaciones(forzar=False):
-    """Devuelve {operacion: queryId} para publicar y para leer.
+    """Devuelve {operacion: {queryId, operationName, ...}} para publicar y para leer.
 
     Se cachean DIAS_CACHE dias. Si ya estan en el .env, no se busca nada.
     """
@@ -594,7 +687,7 @@ def descubrir_operaciones(forzar=False):
                 manual[nombre.strip()] = identificador.strip()
         if manual:
             log.info(f"Usando los ids de operacion del .env: {manual}")
-            return manual
+            return {n: _normalizar_operacion(n, d) for n, d in manual.items()}
 
     cache = _leer_cache()
     fecha = cache.get('fecha', 0)
@@ -603,7 +696,7 @@ def descubrir_operaciones(forzar=False):
         vence = time.strftime('%Y-%m-%d', time.localtime(fecha + DIAS_CACHE * 86400))
         log.info(f"Operaciones de la cache (vigente hasta {vence})")
         BEARER = BEARER or cache.get('bearer', '')
-        return cache['operaciones']
+        return {n: _normalizar_operacion(n, d) for n, d in cache['operaciones'].items()}
 
     log.info("Buscando los ids de operacion en el JavaScript de x.com")
 
@@ -612,7 +705,7 @@ def descubrir_operaciones(forzar=False):
     #    son los que llevan la lista de assets y el token.
     entradas = _scripts_de_x()
     if not entradas:
-        return cache.get('operaciones', {})
+        return {n: _normalizar_operacion(n, d) for n, d in cache.get('operaciones', {}).items()}
 
     todos = {}
     vistos = set()
@@ -632,7 +725,7 @@ def descubrir_operaciones(forzar=False):
 
     if not todos:
         log.error("No se pudo leer ningun JavaScript de x.com")
-        return cache.get('operaciones', {})
+        return {n: _normalizar_operacion(n, d) for n, d in cache.get('operaciones', {}).items()}
 
     if not BEARER:
         for texto in todos.values():
@@ -649,12 +742,25 @@ def descubrir_operaciones(forzar=False):
     log.info(f"  x.com tiene {len(assets)} assets")
 
     operaciones = {}
-    for operacion in (OPERACION_PUBLICAR, OPERACION_LEER):
-        identificador = _id_de_operacion('\n'.join(todos.values()), operacion)
-        if identificador:
-            operaciones[operacion] = identificador
+    juntos = '\n'.join(todos.values())
+    nombres = (OPERACION_PUBLICAR, OPERACION_LEER, OPERACION_USUARIO,
+               OPERACION_PUBLICAR_VIEJA)
 
-    faltan = [o for o in (OPERACION_PUBLICAR, OPERACION_LEER) if o not in operaciones]
+    # Primero el formato de ahora: queryId + operationName + feature switches.
+    for nombre in nombres:
+        encontrada = _operacion_de_x(juntos, nombre)
+        if encontrada:
+            operaciones[nombre] = encontrada
+
+    # Y si no aparece, el formato viejo (params:{id:...}).
+    for nombre in nombres:
+        if nombre in operaciones:
+            continue
+        identificador = _id_de_operacion(juntos, nombre)
+        if identificador:
+            operaciones[nombre] = _normalizar_operacion(nombre, identificador)
+
+    faltan = [o for o in nombres if o not in operaciones]
     if faltan:
         # 3. Se descargan los assets con nombre suspeito (los del compositor, los
         #    de publicacion, los de contenido) y se busca dentro.
@@ -669,17 +775,21 @@ def descubrir_operaciones(forzar=False):
                 for operacion in faltan:
                     if operacion in operaciones:
                         continue
+                    encontrada = _operacion_de_x(texto, operacion)
+                    if encontrada:
+                        operaciones[operacion] = encontrada
+                        continue
                     identificador = _id_de_operacion(texto, operacion)
                     if identificador:
-                        operaciones[operacion] = identificador
+                        operaciones[operacion] = _normalizar_operacion(operacion, identificador)
             if not [o for o in faltan if o not in operaciones]:
                 break
 
-    for operacion, identificador in operaciones.items():
-        log.info(f"  {operacion} -> {identificador}")
-    for operacion in (OPERACION_PUBLICAR, OPERACION_LEER):
-        if operacion not in operaciones:
-            log.warning(f"  {operacion}: no aparece en los JavaScript de x.com")
+    for nombre, operacion in operaciones.items():
+        log.info(f"  {nombre} -> {operacion['queryId']}")
+    for nombre in (OPERACION_PUBLICAR, OPERACION_LEER):
+        if nombre not in operaciones:
+            log.warning(f"  {nombre}: no aparece en los JavaScript de x.com")
 
     if not BEARER:
         log.error("  No se ha podido leer el bearer token de x.com")
@@ -765,7 +875,7 @@ def subir_imagen(url_imagen):
     return media_id
 
 
-def _url_operacion(operacion, query_id):
+def _url_operacion(nombre, query_id):
     """URL de la operacion.
 
     La web nueva usa api.x.com/graphql con ids de Relay. La antigua usaba
@@ -773,8 +883,8 @@ def _url_operacion(operacion, query_id):
     la ruta antigua, que sigue viva.
     """
     if query_id.isdigit():
-        return f'https://x.com/i/api/graphql/{query_id}/{operacion}'
-    return f'{HOSTO_GRAPHQL}/{query_id}/{operacion}'
+        return f'https://x.com/i/api/graphql/{query_id}/{nombre}'
+    return f'{HOSTO_GRAPHQL}/{query_id}/{nombre}'
 
 
 def _extraer_id_post(datos):
@@ -845,24 +955,76 @@ def _errores_de_x(datos):
     return ''
 
 
-def publicar(texto, media_ids=None, operaciones=None):
-    """Publica un post en X y devuelve (id_del_post, error)."""
-    global CT0
-    operaciones = operaciones or {}
-    query_id = operaciones.get(OPERACION_PUBLICAR)
-    if not query_id:
-        return '', f"no se conoce la operacion {OPERACION_PUBLICAR}"
+def _variables_publicar(texto, media_ids):
+    """Las variables que la web manda al publicar.
 
-    variables = {'tweet_text': texto}
-    variables.update(FLAGS_OPERACION)
-    if media_ids:
-        variables['media'] = {
-            'media_entities': [{'media_id': str(m)} for m in media_ids],
+    La web de ahora construye el post asi: el texto, las imagenes que se
+    adjuntan y un par de campos que siempre van (aunque valgan vacio).
+    """
+    return {
+        'tweet_text': texto,
+        'media': {
+            'media_entities': [{'media_id': str(m)} for m in (media_ids or [])],
             'possibly_sensitive': False,
-        }
+        },
+        'semantic_annotation_ids': [],
+        'disallowed_reply_options': None,
+    }
 
-    cuerpo = {'queryId': query_id, 'variables': variables}
-    url = _url_operacion(OPERACION_PUBLICAR, query_id)
+
+def _cuerpo_publicar(operacion, variables):
+    """El cuerpo de la peticion, segun el formato de la operacion.
+
+    La web de ahora manda las variables como un objeto normal y las banderas
+    (los feature switches) aparte, en `features` y `fieldToggles`. La mutacion
+    vieja las queria dentro de las variables, con el nombre largo.
+    """
+    cuerpo = {'variables': dict(variables), 'queryId': operacion['queryId']}
+    if operacion.get('featureSwitches'):
+        cuerpo['features'] = {f: True for f in operacion['featureSwitches']}
+    if operacion.get('fieldToggles'):
+        cuerpo['fieldToggles'] = {t: True for t in operacion['fieldToggles']}
+    if not operacion.get('featureSwitches'):
+        # Mutacion vieja: las banderas van dentro de las variables.
+        cuerpo['variables'].update(FLAGS_OPERACION)
+    return cuerpo
+
+
+def _operaciones_publicar(operaciones, preferida=''):
+    """Las operaciones con las que se puede publicar, en orden de preferencia.
+
+    La de ahora (CreateTweet) es la que usa la web, pero X la marca como
+    "automatica" a veces. La vieja (createTweetMutation) es la del camino
+    antiguo de la API: responde con el error 344 de limite diario, pero no se
+    queja de la automatizacion. Por eso se prueban las dos: cada una tiene sus
+    propias reglas y X no las aplica igual.
+
+    La que funciono la ultima vez va la primera: X cambia de reglas segun la
+    cuenta y el dia, y no conviene gastar un intento en la que no entra.
+    """
+    lista = []
+    moderna = _normalizar_operacion(OPERACION_PUBLICAR, operaciones.get(OPERACION_PUBLICAR))
+    if moderna:
+        lista.append(moderna)
+    vieja = _normalizar_operacion(OPERACION_PUBLICAR_VIEJA,
+                                  operaciones.get(OPERACION_PUBLICAR_VIEJA))
+    if not vieja:
+        # La mutacion vieja no sale del JavaScript de ahora (la web ya no la
+        # usa), pero sigue viva: se guarda su id aqui y se puede reponer con
+        # X_QUERY_IDS=createTweetMutation=<id> en el .env.
+        vieja = _normalizar_operacion(OPERACION_PUBLICAR_VIEJA, ID_PUBLICAR_VIEJA)
+    if vieja:
+        lista.append(vieja)
+    if preferida:
+        lista.sort(key=lambda o: 0 if o['operationName'] == preferida else 1)
+    return lista
+
+
+def _publicar_con(operacion, variables):
+    """Manda el post con una operacion concreta. Devuelve (id_del_post, error)."""
+    global CT0
+    cuerpo = _cuerpo_publicar(operacion, variables)
+    url = _url_operacion(operacion['operationName'], operacion['queryId'])
 
     for intento in (1, 2):
         try:
@@ -898,10 +1060,12 @@ def publicar(texto, media_ids=None, operaciones=None):
                 return '', ('CUOTA: X dice que la cuenta ha llegado al limite diario de '
                             'tweets y mensajes. Se espera y se reintenta.')
             if 'automated' in mensaje_error or '(226)' in mensaje_error:
-                return '', ('X ha bloqueado la publicacion por sospecha de automatizacion '
-                            '(226). Suele pasar con cuentas nuevas, sin verificar o con '
-                            'pocas publicaciones: publica a mano un tweet desde el navegador '
-                            'y espera unos minutos antes de reintentar.')
+                return '', ('AUTOMATIZACION: X dice que la peticion parece automatica '
+                            '(226).')
+            if '(186)' in mensaje_error or 'shorter' in mensaje_error:
+                return '', 'X dice que el texto es demasiado largo (186).'
+            if '(170)' in mensaje_error:
+                return '', 'X no ha recibido bien el texto o la imagen (170).'
             return '', mensaje_error
 
         identificador = _extraer_id_post(datos)
@@ -910,6 +1074,35 @@ def publicar(texto, media_ids=None, operaciones=None):
         return '', f'la respuesta no traia id de post: {respuesta.texto[:300]}'
 
     return '', 'X devolvio 403 y no renovo el token CSRF'
+
+
+def publicar(texto, media_ids=None, operaciones=None, preferida=''):
+    """Publica un post en X y devuelve (id_del_post, error)."""
+    global ULTIMA_OPERACION
+    candidatas = _operaciones_publicar(operaciones or {}, preferida)
+    if not candidatas:
+        return '', f"no se conoce la operacion {OPERACION_PUBLICAR}"
+
+    variables = _variables_publicar(texto, media_ids)
+    error = ''
+    for indice, operacion in enumerate(candidatas):
+        identificador, error = _publicar_con(operacion, variables)
+        if identificador:
+            ULTIMA_OPERACION = operacion['operationName']
+            return identificador, ''
+
+        # Si X dice que la peticion parece automatica, se prueba con la otra
+        # operacion: X no aplica las mismas reglas a las dos.
+        if error.startswith('AUTOMATIZACION') and indice + 1 < len(candidatas):
+            log.warning(f"  {operacion['operationName']}: {error}")
+            log.info(f"  Se prueba con {candidatas[indice + 1]['operationName']}")
+            continue
+        break
+
+    if error.startswith('AUTOMATIZACION'):
+        error += (' No conviene reintentar seguido: publica a mano un tweet desde '
+                  'el navegador y espera unos minutos.')
+    return '', error
 
 
 # ─────────────────────────────────────────────
@@ -1121,18 +1314,69 @@ def cargar_ofertas(archivo=None, categoria=None):
 # ─────────────────────────────────────────────
 # MODO VERIFICAR: LEER LOS ULTIMOS POSTS
 # ─────────────────────────────────────────────
+def _id_de_usuario(operaciones, usuario):
+    """El id numerico de la cuenta (lo que la web llama userId).
+
+    La operacion de leer el perfil (UserTweets) de ahora pide el id numerico
+    de la cuenta, no el @usuario. El id se saca con UserByScreenName.
+    """
+    operacion = _normalizar_operacion(OPERACION_USUARIO, operaciones.get(OPERACION_USUARIO))
+    if not operacion:
+        return ''
+    cuerpo = {
+        'queryId': operacion['queryId'],
+        'variables': {'screen_name': usuario, 'withSafetyModeUserFields': True},
+    }
+    url = _url_operacion(operacion['operationName'], operacion['queryId'])
+    try:
+        respuesta = _peticion(url, datos=json.dumps(cuerpo).encode('utf-8'), metodo='POST',
+                               cabeceras=_cabeceras_x())
+    except ConnectionError as error:
+        log.error(f"No se pudo buscar la cuenta {usuario}: {error}")
+        return ''
+    if not respuesta.ok():
+        log.error(f"X devolvio HTTP {respuesta.estado} al buscar la cuenta {usuario}")
+        return ''
+    datos = respuesta.json() or {}
+    resultado = ((datos.get('data') or {}).get('user') or {}).get('result') or {}
+    return str(resultado.get('rest_id') or '') if isinstance(resultado, dict) else ''
+
+
 def ultimos_posts(operaciones, usuario, cantidad=20):
     """Lee los ultimos posts de la cuenta. Devuelve [(id, texto)]."""
     if not usuario:
         return []
-    query_id = operaciones.get(OPERACION_LEER)
-    if not query_id:
+    operacion = _normalizar_operacion(OPERACION_LEER, operaciones.get(OPERACION_LEER))
+    if not operacion:
         log.warning(f"No se conoce la operacion {OPERACION_LEER}: no se pueden leer los posts")
         return []
 
     variables = {'screenName': usuario, 'count': cantidad}
-    url = (f'{_url_operacion(OPERACION_LEER, query_id)}?variables='
-           + urllib.parse.quote(json.dumps(variables, separators=(',', ':'))))
+    if operacion.get('featureSwitches'):
+        # La operacion de ahora pide el id numerico de la cuenta y manda las
+        # banderas aparte, como parametros de la URL.
+        id_usuario = _id_de_usuario(operaciones, usuario)
+        if not id_usuario:
+            log.warning(f"No se pudo saber el id de {usuario}: no se leen los posts")
+            return []
+        variables = {
+            'userId': id_usuario,
+            'count': cantidad,
+            'includePromotedContent': True,
+            'withQuickPromoteEligibilityTweetFields': True,
+            'withCommunity': False,
+            'withVoice': False,
+        }
+
+    parametros = {'variables': json.dumps(variables, separators=(',', ':'))}
+    if operacion.get('featureSwitches'):
+        parametros['features'] = json.dumps({f: True for f in operacion['featureSwitches']},
+                                            separators=(',', ':'))
+    if operacion.get('fieldToggles'):
+        parametros['fieldToggles'] = json.dumps({t: True for t in operacion['fieldToggles']},
+                                                separators=(',', ':'))
+    url = (_url_operacion(operacion['operationName'], operacion['queryId'])
+           + '?' + urllib.parse.urlencode(parametros))
     try:
         respuesta = _peticion(url, cabeceras=_cabeceras_x(json_body=False))
     except ConnectionError as error:
@@ -1153,6 +1397,26 @@ def ultimos_posts(operaciones, usuario, cantidad=20):
     return encontrados
 
 
+def _buscar_instrucciones(dato, profundidad=0):
+    """Busca la lista 'instructions' del timeline dentro de la respuesta.
+
+    La forma depende de la operacion: la vieja laponia en
+    `profile_with_timeline_v2.timeline.timeline` y la de ahora en
+    `timeline.timeline`. Se busca por los dos caminos.
+    """
+    if profundidad > 6 or not isinstance(dato, dict):
+        return []
+    instrucciones = dato.get('instructions')
+    if isinstance(instrucciones, list) and instrucciones:
+        return instrucciones
+    for clave in ('timeline', 'timeline_v2', 'profile_with_timeline_v2',
+                  'profile_with_replies_timeline_v2'):
+        encontradas = _buscar_instrucciones(dato.get(clave), profundidad + 1)
+        if encontradas:
+            return encontradas
+    return []
+
+
 def _instrucciones(datos):
     """Saca la lista de instrucciones del timeline, sea del formato viejo o nuevo."""
     if not isinstance(datos, dict):
@@ -1169,14 +1433,9 @@ def _instrucciones(datos):
         resultado = candidato.get('result', candidato)
         if not isinstance(resultado, dict):
             continue
-        for clave in ('profile_with_replies_timeline_v2', 'profile_with_timeline_v2', 'timeline_v2'):
-            linea = resultado.get(clave)
-            if isinstance(linea, dict):
-                linea = linea.get('timeline')
-            if isinstance(linea, dict):
-                linea = linea.get('timeline')
-            if isinstance(linea, dict) and linea.get('instructions'):
-                return linea['instructions']
+        instrucciones = _buscar_instrucciones(resultado)
+        if instrucciones:
+            return instrucciones
     return []
 
 
@@ -1219,9 +1478,11 @@ def revisar_sesion(operaciones):
     if not operaciones:
         print('  No se pudo descubrir ninguna operacion.')
         print('  X cambio el JavaScript: revisa https://x.com y copia el id a mano')
-        print('  en el .env como X_QUERY_IDS=createTweetMutation=<id>.')
-    for operacion, identificador in operaciones.items():
-        print(f'  {operacion:22} {identificador}')
+        print('  en el .env como X_QUERY_IDS=CreateTweet=<id>.')
+    for nombre, operacion in operaciones.items():
+        operacion = _normalizar_operacion(nombre, operacion) or {}
+        banderas = len(operacion.get('featureSwitches') or [])
+        print(f'  {nombre:22} {operacion.get("queryId", "?")}  ({banderas} banderas)')
 
     if not USUARIO:
         print('\n  Pon X_USUARIO en el .env para poder leer los ultimos posts.')
@@ -1326,6 +1587,9 @@ def main():
 
     estado = leer_estado()
     publicados = estado.get('publicados', {})
+    preferida = estado.get('operacion', '')
+    if preferida:
+        log.info(f"Primero se prueba {preferida}, que fue la que funciono la ultima vez")
     pendientes = seleccionar_pendientes(ofertas, publicados, argumentos.limite)
     log.info(f"{len(pendientes)} ofertas pendientes de publicar (de {len(ofertas)} en el catalogo)")
 
@@ -1350,20 +1614,36 @@ def main():
 
         id_post = ''
         error = ''
-        for intento_cuota in range(REINTENTOS_CUOTA + 1):
-            id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones)
+        intentos_cuota = 0
+        intentos_automatizacion = 0
+        while True:
+            id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones,
+                                     preferida=preferida)
             if id_post:
                 break
 
             # X dice que la cuenta se ha pasado de tweets y mensajes por hoy.
             # No es un fallo del script: se espera y se reintenta la misma.
             if error.startswith('CUOTA'):
-                if intento_cuota >= REINTENTOS_CUOTA:
+                if intentos_cuota >= REINTENTOS_CUOTA:
                     log.error(f"  Se agotaron los reintentos de cuota: {error}")
                     break
+                intentos_cuota += 1
                 log.warning(f"  {error}")
                 log.warning(f"  Se espera {ESPERA_CUOTA}s y se reintenta la misma oferta")
                 time.sleep(ESPERA_CUOTA)
+                continue
+
+            # X dice que la peticion parece automatica. Suele ser que se ha
+            # publicado hace poco: se espera y se reintenta la misma.
+            if error.startswith('AUTOMATIZACION'):
+                if intentos_automatizacion >= REINTENTOS_AUTOMATIZACION:
+                    log.error(f"  Se agotaron los reintentos: {error}")
+                    break
+                intentos_automatizacion += 1
+                log.warning(f"  {error}")
+                log.warning(f"  Se espera {ESPERA_AUTOMATIZACION}s y se reintenta la misma oferta")
+                time.sleep(ESPERA_AUTOMATIZACION)
                 continue
 
             log.error(f"  No se pudo publicar la oferta {identificador}: {error}")
@@ -1388,6 +1668,8 @@ def main():
         }
         estado['publicados'] = publicados
         estado['ultimo'] = time.strftime('%Y-%m-%dT%H:%M:%S')
+        if ULTIMA_OPERACION:
+            estado['operacion'] = ULTIMA_OPERACION
         guardar_estado(estado)
         log.info(f"  Publicado: https://x.com/{USUARIO or 'i'}/status/{id_post}")
 

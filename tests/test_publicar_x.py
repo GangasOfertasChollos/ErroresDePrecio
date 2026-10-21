@@ -163,6 +163,77 @@ try:
 finally:
     shutil.rmtree(tmp, ignore_errors=True)
 
+print("\n== 11. Las operaciones de X se leen del JavaScript ==")
+JS = ('e.exports={queryId:"wR5Z_lEibLvkew3tF9w-Sg",operationName:"CreateTweet",'
+      'operationType:"mutation",metadata:{featureSwitches:["flag_uno","flag_dos"],'
+      'fieldToggles:["withAlgo"]}}')
+operacion = px._operacion_de_x(JS, "CreateTweet")
+check("sale el id de la operacion", operacion and operacion["queryId"] == "wR5Z_lEibLvkew3tF9w-Sg", operacion)
+check("sale el nombre", operacion and operacion["operationName"] == "CreateTweet", operacion)
+check("salen las banderas", operacion and operacion["featureSwitches"] == ["flag_uno", "flag_dos"], operacion)
+check("salen los field toggles", operacion and operacion["fieldToggles"] == ["withAlgo"], operacion)
+check("una operacion que no esta devuelve None", px._operacion_de_x(JS, "CreateNota") is None)
+check("el formato viejo tambien se entiende",
+      px._id_de_operacion('params:{id:`ABC123`,metadata:{},name:`createTweetMutation`,'
+                          'operationKind:`mutation`}', "createTweetMutation") == "ABC123")
+
+print("\n== 12. El cuerpo de la peticion: como lo manda la web ==")
+operacion = {"queryId": "ABC", "operationName": "CreateTweet", "operationType": "mutation",
+             "featureSwitches": ["flag_uno"], "fieldToggles": ["withAlgo"]}
+cuerpo = px._cuerpo_publicar(operacion, px._variables_publicar("hola", []))
+check("las variables van como objeto", isinstance(cuerpo["variables"], dict), cuerpo)
+check("lleva el texto", cuerpo["variables"]["tweet_text"] == "hola", cuerpo)
+check("lleva las imagenes vacias", cuerpo["variables"]["media"]["media_entities"] == [], cuerpo)
+check("las banderas van aparte", cuerpo["features"] == {"flag_uno": True}, cuerpo)
+check("los field toggles van aparte", cuerpo["fieldToggles"] == {"withAlgo": True}, cuerpo)
+check("lleva el id de la operacion", cuerpo["queryId"] == "ABC", cuerpo)
+
+vieja = {"queryId": "XYZ", "operationName": "createTweetMutation", "operationType": "mutation",
+         "featureSwitches": [], "fieldToggles": []}
+cuerpo_viejo = px._cuerpo_publicar(vieja, px._variables_publicar("hola", []))
+check("la mutacion vieja lleva las banderas en las variables",
+      "__relay_internal__pv__xclientsfeaturesappviewerisloggedinrelayprovider"
+      in cuerpo_viejo["variables"], cuerpo_viejo)
+check("la mutacion vieja no lleva features", "features" not in cuerpo_viejo, cuerpo_viejo)
+
+print("\n== 13. Si una operacion no va, se prueba la otra ==")
+candidatas = px._operaciones_publicar({"CreateTweet": operacion})
+check("se prueban las dos", len(candidatas) == 2, [c["operationName"] for c in candidatas])
+check("la de ahora va la primera", candidatas[0]["operationName"] == "CreateTweet", candidatas)
+check("la vieja va la segunda", candidatas[1]["operationName"] == "createTweetMutation", candidatas)
+sin_operaciones = px._operaciones_publicar({})
+check("sin operaciones se usa la mutacion vieja guardada",
+      [c["operationName"] for c in sin_operaciones] == ["createTweetMutation"], sin_operaciones)
+con_preferencia = px._operaciones_publicar({"CreateTweet": operacion},
+                                            preferida="createTweetMutation")
+check("la que funciono la ultima vez va la primera",
+      [c["operationName"] for c in con_preferencia] == ["createTweetMutation", "CreateTweet"],
+      [c["operationName"] for c in con_preferencia])
+
+print("\n== 14. Las respuestas de X se entienden ==")
+check("el error de cuota se reconoce",
+      px._errores_de_x({"errors": [{"message": "Authorization: You have reached your daily "
+                                          "limit for sending Tweets and messages. (344)"}]})
+      .find("(344)") > 0)
+check("el error de automatizacion se reconoce",
+      "automated" in px._errores_de_x({"errors": [{"message": "This request looks like it might "
+                                                     "be automated. (226)"}]}))
+check("el id del post se saca del formato nuevo",
+      px._extraer_id_post({"data": {"create_tweet": {"tweet_results": {"result": {
+          "rest_id": "12345"}}}}}) == "12345")
+check("el id del post se saca del formato viejo",
+      px._extraer_id_post({"data": {"create_tweet": {"results": [{"result": {
+          "legacy": {"id_str": "67890"}}}]}}}) == "67890")
+
+print("\n== 15. Las instrucciones del timeline se buscan donde esten ==")
+nuevo = {"data": {"user": {"result": {"timeline": {"timeline": {"instructions": [
+    {"type": "TimelineClearCache"}, {"entries": []}]}}}}}}
+check("la forma nueva", len(px._instrucciones(nuevo)) == 2, px._instrucciones(nuevo))
+viejo_forma = {"data": {"user_result_by_screen_name": {"result": {
+    "profile_with_timeline_v2": {"timeline": {"timeline": {"instructions": [{"type": "x"}]}}}}}}}
+check("la forma vieja", len(px._instrucciones(viejo_forma)) == 1, px._instrucciones(viejo_forma))
+check("sin timeline no hay instrucciones", px._instrucciones({"data": {}}) == [])
+
 print("\n" + "=" * 56)
 print("TODO CORRECTO" if fallos == 0 else f"{fallos} FALLOS")
 sys.exit(1 if fallos else 0)
