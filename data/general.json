@@ -1,5 +1,20 @@
 [
     {
+        "id": 12153,
+        "date": "2026-10-24T09:08:24+00:00",
+        "title": "Xiaomi REDMI Buds 8 Pro, Auriculares inalámbricos, ANC, Negro",
+        "price": "54.00 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0G5N98LBK/ref=nosim?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/vomXHHDe6320aA1Ob_SJYoa2l2UCs7y3kgCuX3msDvbbYfQlov8febrQ986rHw9IWZOjQ5QY11_ScAFJx382dDT5qDzCVxcAL1EW77G13Nw3YKhQd5MM3BCkQWksFTtzf0Xz31qQm9CVfEUeDzYBoauFxB8mJ_Q6GjzPIM4aV8r3l1PWGaYcm_xovvCwbGmRboavYJfaH99HSsXevxCxFFD3dAvo7AlzDMhiDuElVaoVosx3Ee9KvEB57a3BdNs7EYh_YwchYxRTlNMV4amJSUsbvp5oc-1VKUztgAPOTbYvlOqZQi60cEW3jVGNzs9MIgKRWqGSALlOGtlzXueatA.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Móviles y electrónica Precio recomendado: 75,99€ 54,00€ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Xiaomi REDMI",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 12151,
         "date": "2026-10-24T09:04:26+00:00",
         "title": "Barbie DreamCamper Set de Juego y Accesorios de Acampada",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Ropa y calzado Precio recomendado: 110,00€ 73,95€ Canal: https://t.me/GangasOfertasChollos",
         "brand": "Massana 8620128",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 12046,
-        "date": "2026-10-23T19:38:08+00:00",
-        "title": "VRPEFIT - Smartwatch Hombre/Mujer, notificaciones Whatsapp, Pantalla táctil 1.8\" HD, Llamadas Bluetooth, Ritmo cardíaco, SpO2, sueño, 100+ Modos Deportivos, IP68, Android/iOS",
-        "price": "49.99 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0HFWKSS8S/ref=nosim?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Z9aikAxN1Sd4R7fgRY2DdgAqNTOvtETCBE2spcaxDVhQBxjOI46z5_xmDrxzXgH-DRLdJKvPsm47dTRUoMoVdpGerjH7RJba9IUcG3VUfM-1mp8-oyvSAClMmEdPeSiMTtiaVNMKYcqJAFZ6SCHwVoFqeiqKToIBYiQo7GLnHbYEE1UUlTjmI9VDAaLsGffb4IIUWxVZwF82HN3CKoyjq1OyHb6wyUdbnInaehQCdwam9ZwSRgOR-DsW4YtaGKIP-9sFqLHetLbzFrNPfh8y_jYEX1lmZ8O4xJ5sZndf7fVESUee1xG9AA97SY29UQZ-7phs6g_Bk8Relc_0PmSRdw.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Móviles y electrónica Precio recomendado: 129,99€ 49,99€ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "VRPEFIT",
         "gtin": "",
         "mpn": ""
     }
