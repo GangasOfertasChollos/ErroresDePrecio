@@ -232,20 +232,90 @@ de una sesión del navegador. Por eso necesita la cookie `auth_token`, que se
 copia de las DevTools.
 
 ```bash
+python3 publicar_x.py                 # 4 ofertas al día, una por franja
 python3 publicar_x.py --simular       # ver cómo quedarían los posts, sin publicar
+python3 publicar_x.py --ahora         # publicar ya las pendientes
 python3 publicar_x.py --revisar       # comprobar la sesión y los ids de operación
-python3 publicar_x.py --limite 3      # publicar tres ofertas
+python3 publicar_x.py --limite 3      # publicar tres ofertas y parar
 python3 publicar_x.py --verificar     # listar los últimos posts de la cuenta
 ```
+
+### El horario
+
+Por defecto el script se queda corriendo y publica una oferta en cada franja:
+
+| Franja | Hora |
+|---|---|
+| Mañana | 08:00 |
+| Mediodía | 12:00 |
+| Tarde | 17:00 |
+| Noche | 21:00 |
+
+Las horas se interpretan en la zona `X_ZONA` (por defecto `Europe/Madrid`).
+En Termux el reloj del sistema suele estar en UTC, así que conviene instalar
+`tzdata` (`pkg install tzdata`) para que las 08:00 sean las 08:00 en España.
+
+Se cambian con `X_HORAS` en el `.env` o con `--horas`:
+
+```bash
+python3 publicar_x.py --horas 09:00,13:00,18:00,21:30
+```
+
+El catálogo y el estado se releen en cada franja, así que las ofertas que
+`bot.py` añada mientras el script espera entran solas. Si no hay ninguna
+pendiente, esa franja se salta. Si el script arranca después de la hora de una
+franja, también la salta: no publica dos seguidas para recuperarla. Con
+`--limite N` se para después de N ofertas (cada una con su respuesta de enlace;
+0 o vacío = sin límite).
+
+Con `--ahora` vuelve el comportamiento anterior: publica las pendientes de
+golpe, con `X_PAUSA_SEGUNDOS` de espera entre una y otra.
+
+El proceso tiene que quedarse corriendo. En Termux se ignora `SIGHUP`, así que
+cerrar la terminal no lo para; en otros sistemas puede pararlo. En un servidor,
+lánzalo con `nohup` o dentro de `tmux`; en Windows, con el Programador de tareas
+al iniciar sesión.
+
+### Cómo es el post
+
+El orden es fijo: primero el precio actual, el anterior y el descuento; luego
+una pregunta aleatoria (`¿Qué te parece?`, `¿Lo vas a dejar pasar?`,
+`¿Te atreves?` y unas cuantas más); después el título con la descripción; y al
+final los hashtags. Un post se recorta a los 280 caracteres que cuenta X (las
+URLs valen 23, los emojis valen dos). Si la descripción no cabe, se recorta
+antes de quitarla; si aun así no cabe, se acorta el título.
+
+**Los enlaces no van en el post principal: van en una respuesta al propio
+post.** X resta alcance a los posts que llevan enlaces, así que el enlace de
+Amazon (y el de `X_ENLACE_EXTRA`) se publica aparte, unos segundos después.
+La respuesta es visible al abrir el post y el post principal queda limpio.
+
+Para volver al comportamiento antiguo, con los enlaces dentro del post:
+
+```bash
+python3 publicar_x.py --enlace-en-post
+```
+
+o en el `.env`:
+
+```env
+X_ENLACE_RESPUESTA=0
+```
+
+`X_ENLACE_EXTRA` añade un enlace fijo a la respuesta con los enlaces (por
+ejemplo, la web). Sin esa variable solo va el enlace de la oferta.
+`X_PAUSA_RESPUESTA` controla los segundos entre el post y la respuesta (30 por
+defecto).
+
+> Ojo: la respuesta cuenta como otro post para el límite diario de X. Cada
+> oferta gasta dos publicaciones (el post y la respuesta), no una.
 
 ### De dónde salen las ofertas
 
 Del catálogo que ya construye `bot.py`: `data/general.json` (feed global) o
 `data/<categoria>.json` con `--categoria`. El script no vuelve a rastrear
 nada, ni Telegram ni Amazon: solo formatea lo que ya está scraped y lo
-publica. Un post es el título, el precio, el descuento, el enlace con la
-query de afiliado, la descripción y los hashtags, recortado a los 280
-caracteres que cuenta X (las URLs valen 23, los emojis valen dos).
+publica.
 
 ### La sesión
 
@@ -337,7 +407,7 @@ X lleva la cuenta por separado: tweets y mensajes comparten un cupo por día.
 Cuando se llena, la respuesta es el error `344` (*"You have reached your daily
 limit for sending Tweets and messages"*). No es un fallo del script, así que
 el script **espera y reintenta la misma oferta**: `X_ESPERA_CUOTA` (1800 s
-por defecto) y `X_REINTENTOS_CUOTA` (48) marcan cada cuánto y cuántas veces.
+por defecto) y `X_REINTENTOS_CUOTA` (8) marcan cada cuánto y cuántas veces.
 
 Este cupo es mucho más bajo en cuentas nuevas o sin verificar el email y el
 teléfono. Si aparece el 344 por las mañanas, la solución es verificar la
@@ -371,17 +441,48 @@ error. Se puede desactivar con `X_CON_IMAGEN=0` o `--sin-imagen`.
 > 404, así que los posts salían sin foto. Con `X_CON_IMAGEN=0` el script no
 > pierde tiempo intentándolo.
 
-### En Ubuntu, dentro de proot
+### En Termux (Android)
 
 El script **solo usa la biblioteca estándar de Python**: no hay `pip install`,
-ni Chromium, ni root, ni navegador. En un proot-distro de Termux:
+ni Chromium, ni root, ni navegador. En Termux:
 
 ```bash
-pkg install python   # si no está
-cp ~/ErroresDePrecio/.env ~/ErroresDePrecio/.env   # con las cookies de X
+pkg install python tzdata tmux   # si no están
 cd ~/ErroresDePrecio
+cp .env.example .env             # si aún no existe; rellena X_AUTH_TOKEN
 python3 publicar_x.py --simular
 ```
+
+Para dejarlo publicando en segundo plano:
+
+```bash
+termux-wake-lock
+tmux new -s x
+python3 publicar_x.py
+# Ctrl+B, luego D: sales de tmux sin parar el script
+```
+
+Sin tmux, con `nohup`:
+
+```bash
+termux-wake-lock
+nohup python3 publicar_x.py >> salida_x.log 2>&1 &
+```
+
+Para pararlo:
+
+```bash
+tmux kill-session -t x     # si se lanzó con tmux
+pkill -f publicar_x.py     # si se lanzó con nohup
+termux-wake-unlock
+```
+
+El script ignora `SIGHUP`, así que cerrar la terminal no lo para. Se para con
+Ctrl+C, `kill <pid>` o `pkill`. Android puede matar procesos en segundo plano:
+`termux-wake-lock` y quitar Termux de la optimización de batería reducen el
+riesgo. Las horas se leen en `X_ZONA` (por defecto `Europe/Madrid`), no en la
+hora del sistema: así las 08:00 son las 08:00 en España aunque Termux esté en
+UTC.
 
 Cada ejecución de `--revisar` o de publicación puede descargar el JavaScript
 de x.com para buscar los ids de las operaciones: son unos 6 segundos y un

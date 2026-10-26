@@ -15,6 +15,7 @@ import os
 import shutil
 import sys
 import tempfile
+from datetime import datetime
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -69,6 +70,15 @@ check("los miles se separan con punto", px._precio_es("1299.00 \u20ac") == "1.29
 check("un precio de dos cifras no cambia", px._precio_es("16.17 \u20ac") == "16,17 \u20ac",
       px._precio_es("16.17 \u20ac"))
 check("sin precio devuelve vacio", px._precio_es("") == "", px._precio_es(""))
+check("el simbolo del euro queda separado", px._precio_es("9.99\u20ac") == "9,99 \u20ac",
+      px._precio_es("9.99\u20ac"))
+check("el precio anterior y el actual se sacan de la descripcion",
+      px._precios_de_descripcion("Ropa y calzado Precio recomendado: 59,95 \u20ac 31,95 \u20ac")
+      == ("59,95 \u20ac", "31,95 \u20ac"),
+      px._precios_de_descripcion("Ropa y calzado Precio recomendado: 59,95 \u20ac 31,95 \u20ac"))
+check("una descripcion sin precios no devuelve nada",
+      px._precios_de_descripcion("Solo una descripcion cualquiera") == ("", ""),
+      px._precios_de_descripcion("Solo una descripcion cualquiera"))
 
 print("\n== 3. La descripcion: se quita el final de Telegram ==")
 limpia = px._limpiar_descripcion(OFERTA["description"])
@@ -78,6 +88,15 @@ check("conserva el texto de verdad", limpia.startswith("\u00a1Elegancia"), limpi
 check("un aviso de publicidad no cuenta como descripcion",
       px._limpiar_descripcion("Publicidad/Enlace afiliado El precio puede cambiar.") == "",
       px._limpiar_descripcion("Publicidad/Enlace afiliado El precio puede cambiar."))
+check("la categoria y los precios no cuentan como descripcion",
+      px._limpiar_descripcion("Ropa y calzado Precio recomendado: 59,95 \u20ac 31,95 \u20ac "
+                              "Canal: https://t.me/GangasOfertasChollos") == "",
+      px._limpiar_descripcion("Ropa y calzado Precio recomendado: 59,95 \u20ac 31,95 \u20ac "
+                              "Canal: https://t.me/GangasOfertasChollos"))
+check("una descripcion de verdad se conserva",
+      px._limpiar_descripcion("Zapatillas comodas. Precio recomendado: 59,95 \u20ac 31,95 \u20ac")
+      .startswith("Zapatillas"),
+      px._limpiar_descripcion("Zapatillas comodas. Precio recomendado: 59,95 \u20ac 31,95 \u20ac"))
 check("sin descripcion devuelve vacio", px._limpiar_descripcion("") == "", px._limpiar_descripcion(""))
 
 print("\n== 4. El post que se arma ==")
@@ -93,6 +112,63 @@ check("lleva la descripcion", "Elegancia" in texto, texto)
 check("no arrastra el final de Telegram", "t.me" not in texto, texto)
 check("lleva hashtags", "#Amazon" in texto, texto)
 check("el hashtag de la categoria", "#Moda" in texto, texto)
+preguntas_en_texto = [p for p in px.PREGUNTAS if p in texto]
+check("lleva una pregunta de la lista", len(preguntas_en_texto) == 1, preguntas_en_texto)
+if preguntas_en_texto:
+    pregunta = preguntas_en_texto[0]
+    check("el precio actual va primero", texto.index("Ahora:") < texto.index(pregunta), texto)
+    check("el precio anterior va en el bloque de precios",
+          texto.index("Antes:") < texto.index(pregunta), texto)
+    check("el descuento va en el bloque de precios",
+          texto.index("-61%") < texto.index(pregunta), texto)
+    check("la pregunta va antes del titulo", texto.index(pregunta) < texto.index("DKNY"), texto)
+    check("la descripcion va despues de la pregunta",
+          texto.index("Elegancia") > texto.index(pregunta), texto)
+    check("el enlace queda al final", texto.rstrip().endswith("gangas029-21"), texto)
+check("dos preguntas seguidas no se repiten",
+      px.pregunta_aleatoria() != px.pregunta_aleatoria())
+check("los enlaces no se repiten",
+      px._enlaces_de(dict(OFERTA, enlaces=[OFERTA["amazon_url"], "https://ejemplo.com/x"]))
+      == [OFERTA["amazon_url"], "https://ejemplo.com/x"],
+      px._enlaces_de(dict(OFERTA, enlaces=[OFERTA["amazon_url"], "https://ejemplo.com/x"])))
+sin_antes = dict(OFERTA, old_price="", description="Ropa y calzado Precio recomendado: "
+                                                     "99,00 \u20ac 39,01 \u20ac")
+check("si falta el precio anterior se toma de la descripcion",
+      "Antes: 99,00 \u20ac" in px.componer_post(sin_antes), px.componer_post(sin_antes))
+otra_oferta = dict(OFERTA, old_price="", description="Ropa y calzado Precio recomendado: "
+                                                     "9,99 \u20ac 7,45 \u20ac")
+check("no se mezcla el precio de otra oferta",
+      "Antes: 9,99 \u20ac" not in px.componer_post(otra_oferta), px.componer_post(otra_oferta))
+
+print("\n== 4b. El enlace va en una respuesta, no en el post principal ==")
+sin_enlace = px.componer_post(OFERTA, incluir_enlaces=False)
+check("el post principal no lleva el enlace", "amazon.es" not in sin_enlace, sin_enlace)
+check("tampoco lleva la URL del canal", "t.me" not in sin_enlace, sin_enlace)
+check("el post principal sigue llevando el titulo", "DKNY" in sin_enlace, sin_enlace)
+respuesta = px.componer_respuesta(OFERTA)
+check("la respuesta lleva el enlace", OFERTA["amazon_url"] in respuesta, respuesta)
+check("la respuesta cabe en 280", px.longitud_post(respuesta) <= 280, px.longitud_post(respuesta))
+check("la respuesta tiene una introduccion", "enlace" in respuesta.lower(), respuesta)
+check("una oferta sin enlaces no genera respuesta",
+      px.componer_respuesta({"id": 1, "title": "x"}) == "",
+      px.componer_respuesta({"id": 1, "title": "x"}))
+con_url = dict(OFERTA, description="Mira esto https://ejemplo.com/x antes de comprar")
+check("no queda una URL suelta en la descripcion",
+      "ejemplo.com" not in px.componer_post(con_url, incluir_enlaces=False),
+      px.componer_post(con_url, incluir_enlaces=False))
+con_dominio = dict(OFERTA, description="Mira amazon.es/dp/B0F9B3BKZ4 antes de comprar")
+check("no queda un dominio suelto en la descripcion",
+      "amazon.es" not in px.componer_post(con_dominio, incluir_enlaces=False),
+      px.componer_post(con_dominio, incluir_enlaces=False))
+varios = dict(OFERTA, enlaces=[OFERTA["amazon_url"], "https://ejemplo.com/x"])
+respuesta_varios = px.componer_respuesta(varios)
+check("la respuesta lleva todos los enlaces",
+      "amazon.es" in respuesta_varios and "ejemplo.com" in respuesta_varios, respuesta_varios)
+variables = px._variables_publicar("hola", [], reply_to="123")
+check("la respuesta lleva el id del post original",
+      variables.get("reply", {}).get("in_reply_to_tweet_id") == "123", variables)
+check("el post normal no lleva reply", "reply" not in px._variables_publicar("hola", []),
+      px._variables_publicar("hola", []))
 
 print("\n== 5. Titulos largos: se recortan, no se desbordan ==")
 larga = dict(OFERTA)
@@ -130,6 +206,14 @@ if catalogo.exists():
     ofertas = json.loads(catalogo.read_text(encoding="utf-8"))
     desbordadas = [o for o in ofertas if px.longitud_post(px.componer_post(o)) > 280]
     check(f"las {len(ofertas)} ofertas de general.json caben en 280", not desbordadas, desbordadas[:2])
+    sin_enlaces = [o for o in ofertas
+                   if px.longitud_post(px.componer_post(o, incluir_enlaces=False)) > 280]
+    check(f"las {len(ofertas)} ofertas caben sin los enlaces", not sin_enlaces, sin_enlaces[:2])
+    respuestas_largas = [o for o in ofertas
+                         if px.componer_respuesta(o)
+                         and px.longitud_post(px.componer_respuesta(o)) > 280]
+    check(f"las respuestas de las {len(ofertas)} ofertas caben en 280",
+          not respuestas_largas, respuestas_largas[:2])
 else:
     print("  (sin data/general.json, se salta)")
 
@@ -145,6 +229,12 @@ try:
     releido = px.leer_estado()
     check("guarda y vuelve a leer", "10617" in releido["publicados"], releido)
     check("guarda el id del post", releido["publicados"]["10617"]["tweet_id"] == "123", releido)
+    px.registrar_publicacion(releido, {"id": 7, "title": "x"}, "999", "CreateTweet",
+                             franja=datetime(2026, 10, 26, 8, 0))
+    releido = px.leer_estado()
+    check("guarda la franja ya publicada",
+          releido.get("ultima_franja") == "2026-10-26T08:00", releido)
+    check("guarda la oferta publicada en la franja", "7" in releido["publicados"], releido)
 finally:
     px.ESTADO_PATH = estado_original
     shutil.rmtree(tmp, ignore_errors=True)
@@ -206,8 +296,8 @@ check("sin operaciones se usa la mutacion vieja guardada",
       [c["operationName"] for c in sin_operaciones] == ["createTweetMutation"], sin_operaciones)
 con_preferencia = px._operaciones_publicar({"CreateTweet": operacion},
                                             preferida="createTweetMutation")
-check("la que funciono la ultima vez va la primera",
-      [c["operationName"] for c in con_preferencia] == ["createTweetMutation", "CreateTweet"],
+check("la mutacion vieja nunca se pone delante",
+      [c["operationName"] for c in con_preferencia] == ["CreateTweet", "createTweetMutation"],
       [c["operationName"] for c in con_preferencia])
 
 print("\n== 14. Las respuestas de X se entienden ==")
@@ -233,6 +323,32 @@ viejo_forma = {"data": {"user_result_by_screen_name": {"result": {
     "profile_with_timeline_v2": {"timeline": {"timeline": {"instructions": [{"type": "x"}]}}}}}}}
 check("la forma vieja", len(px._instrucciones(viejo_forma)) == 1, px._instrucciones(viejo_forma))
 check("sin timeline no hay instrucciones", px._instrucciones({"data": {}}) == [])
+
+print("\n== 16. Franjas horarias: una oferta en cada una ==")
+HORAS = [8 * 60, 12 * 60, 17 * 60, 21 * 60]
+check("por la manana va a la de las 08:00",
+      px.proxima_franja(datetime(2026, 10, 26, 7, 0), HORAS) == datetime(2026, 10, 26, 8, 0))
+check("a las 09:00 la siguiente es la de las 12:00",
+      px.proxima_franja(datetime(2026, 10, 26, 9, 0), HORAS) == datetime(2026, 10, 26, 12, 0))
+check("a las 22:00 la siguiente es manana a las 08:00",
+      px.proxima_franja(datetime(2026, 10, 26, 22, 0), HORAS) == datetime(2026, 10, 27, 8, 0))
+check("el margen deja llegar a una franja recien pasada",
+      px.proxima_franja(datetime(2026, 10, 26, 8, 1), HORAS, margen=120)
+      == datetime(2026, 10, 26, 8, 0))
+check("sin margen, una franja pasada se salta",
+      px.proxima_franja(datetime(2026, 10, 26, 8, 1), HORAS)
+      == datetime(2026, 10, 26, 12, 0))
+check("tras publicar no se repite la franja actual",
+      px.proxima_franja(datetime(2026, 10, 26, 8, 0), HORAS, estricta=True)
+      == datetime(2026, 10, 26, 12, 0))
+check("las horas se leen y se ordenan",
+      px._parsear_horas("17:00, 08:00, 12:00, 21:00") == HORAS,
+      px._parsear_horas("17:00, 08:00, 12:00, 21:00"))
+check("una hora invalida se ignora",
+      px._parsear_horas("08:00, 25:00, 12:00") == [8 * 60, 12 * 60],
+      px._parsear_horas("08:00, 25:00, 12:00"))
+check("sin horas validas se usan las de por defecto",
+      px._parsear_horas("nada") == HORAS, px._parsear_horas("nada"))
 
 print("\n" + "=" * 56)
 print("TODO CORRECTO" if fallos == 0 else f"{fallos} FALLOS")

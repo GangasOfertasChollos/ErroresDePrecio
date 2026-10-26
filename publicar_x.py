@@ -36,12 +36,29 @@ Por eso el script prueba las dos antes de rendirse.
 
 Uso
 ----
-    python3 publicar_x.py                 # publica las ofertas nuevas
+    python3 publicar_x.py                 # una oferta en cada franja, todos los dias
+    python3 publicar_x.py --ahora         # publica ya las pendientes, sin esperar
     python3 publicar_x.py --simular       # ensaya sin publicar nada
     python3 publicar_x.py --limite 3      # como mucho 3 esta vez
+    python3 publicar_x.py --horas 09:00,13:00,18:00,21:30
     python3 publicar_x.py --categoria gaming-consolas
     python3 publicar_x.py --revisar       # comprueba la sesion y los ids
     python3 publicar_x.py --verificar     # lista los ultimos posts y sincroniza
+
+Por defecto el script se queda corriendo y publica una oferta en cada franja
+(08:00, 12:00, 17:00 y 21:00, configurable con X_HORAS). Si arranca cuando una
+franja ya ha pasado, la salta y sigue con la siguiente. Con --ahora vuelve al
+comportamiento de antes: publica las pendientes seguidas, con la pausa de
+seguridad entre una y otra.
+
+El post principal va sin enlaces: se publican en una respuesta al propio post,
+porque X resta alcance a los posts que llevan enlaces. Con --enlace-en-post
+vuelven al post principal.
+
+Las franjas se leen en la zona X_ZONA (Europe/Madrid por defecto), no en la
+hora del sistema: en Termux el reloj suele estar en UTC. Para dejarlo corriendo
+en Android: termux-wake-lock y tmux o nohup. El proceso ignora SIGHUP, asi que
+cerrar la terminal no lo para; se para con Ctrl+C o kill.
 """
 
 import argparse
@@ -50,14 +67,22 @@ import hashlib
 import json
 import logging
 import os
+import random
 import re
+import signal
 import sys
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 import uuid
+from datetime import datetime, timedelta
 from pathlib import Path
+
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:  # Python < 3.9
+    ZoneInfo = None
 
 # ─────────────────────────────────────────────
 # CONFIGURACIÓN DE LOGGING
@@ -119,6 +144,34 @@ def _leer_bool(nombre, por_defecto):
     return bruto not in ('0', 'false', 'no', 'off')
 
 
+def _parsear_horas(bruto, por_defecto=(8 * 60, 12 * 60, 17 * 60, 21 * 60)):
+    """Convierte '08:00,12:00,17:00,21:00' en minutos desde medianoche.
+
+    Se ignoran los trozos que no tengan forma HH:MM o que se salgan de rango.
+    Si no queda ninguna hora valida se usan las de por defecto.
+    """
+    minutos = []
+    for trozo in str(bruto or '').split(','):
+        trozo = trozo.strip()
+        if not trozo:
+            continue
+        coincidencia = re.fullmatch(r'(\d{1,2}):(\d{2})', trozo)
+        if not coincidencia:
+            log.warning(f"Franja horaria no valida: {trozo!r} (se ignora)")
+            continue
+        hora, minuto = int(coincidencia.group(1)), int(coincidencia.group(2))
+        if hora > 23 or minuto > 59:
+            log.warning(f"Franja horaria fuera de rango: {trozo!r} (se ignora)")
+            continue
+        total = hora * 60 + minuto
+        if total not in minutos:
+            minutos.append(total)
+    if not minutos:
+        log.warning("No hay franjas horarias validas: se usan las de por defecto")
+        minutos = list(por_defecto)
+    return sorted(minutos)
+
+
 # ─────────────────────────────────────────────
 # CREDENCIALES Y CONFIGURACIÓN
 # ─────────────────────────────────────────────
@@ -147,13 +200,16 @@ ULTIMA_OPERACION = ''
 # prioridad sobre el descubrimiento automatico.
 QUERY_IDS_MANUALES = os.getenv('X_QUERY_IDS', '').strip()
 
-LIMITE_TWEETS   = _leer_int('X_MAX_TWEETS', 5)      # por ejecucion
+LIMITE_TWEETS   = _leer_int('X_MAX_TWEETS', 5)      # por ejecucion inmediata
 # Entre un post y el siguiente. X no deja publicar dos seguidos: con 90 s de
 # pausa la segunda salia con el error 226 ("parece automatica"). El ritmo que
 # aguanta es de minutos.
 PAUSA_SEGUNDOS  = _leer_int('X_PAUSA_SEGUNDOS', 600)
 ESPERA_CUOTA    = _leer_int('X_ESPERA_CUOTA', 1800)   # cuando la cuenta se pasa de tweets
 REINTENTOS_CUOTA = _leer_int('X_REINTENTOS_CUOTA', 8)  # veces que se reintenta tras la espera
+# La respuesta con el enlace se reintenta menos: si la cuota esta agotada, el
+# post principal ya salio y no conviene bloquear la siguiente franja 4 horas.
+REINTENTOS_CUOTA_RESPUESTA = _leer_int('X_REINTENTOS_CUOTA_RESPUESTA', 1)
 # Cuando X dice que la peticion parece automatica (226). Suele ser que se ha
 # publicado hace poco: esperando un rato entra. Se reintenta menos veces que
 # la cuota, porque repetir mucho tambien se ve mal.
@@ -163,19 +219,73 @@ TIMEOUT         = _leer_int('X_TIMEOUT', 30)
 CON_IMAGEN      = _leer_bool('X_CON_IMAGEN', True)
 SOLO_ID_MIN     = _leer_int('X_SOLO_ID_MIN', 0)      # solo ofertas con id > este
 
+# Franjas horarias de la publicacion programada: una oferta en cada una.
+# Se pueden cambiar en el .env con X_HORAS="08:00,12:00,17:00,21:00".
+_horas_env = str(os.getenv('X_HORAS', '') or '').strip()
+HORAS = _parsear_horas(_horas_env) if _horas_env else [8 * 60, 12 * 60, 17 * 60, 21 * 60]
+# Si el script arranca justo despues de una franja, se considera que todavia
+# llega a ella durante estos segundos. Pasado ese margen, la franja se salta.
+MARGEN_FRANJA = _leer_int('X_MARGEN_FRANJA', 120)
+
+# Zona horaria de las franjas. En Termux el reloj del sistema suele estar en
+# UTC, asi que sin esto las 08:00 serian las 10:00 en Espana en verano. Se
+# puede cambiar con X_ZONA. Si falta la base de datos de zonas (tzdata), se
+# usa la hora del sistema y se avisa en el log.
+ZONA = str(os.getenv('X_ZONA', 'Europe/Madrid') or '').strip()
+_ZONA = None
+if ZONA:
+    if ZoneInfo is None:
+        log.warning("zoneinfo no esta disponible: se usa la hora del sistema")
+    else:
+        try:
+            _ZONA = ZoneInfo(ZONA)
+        except Exception:
+            log.warning(f"No se pudo cargar la zona horaria {ZONA!r}: se usa la hora "
+                        "del sistema. En Termux, instala tzdata: pkg install tzdata")
+
+
+def ahora_local():
+    """La hora de pared en la zona configurada, sin informacion de zona.
+
+    Se quita el tzinfo para que las comparaciones con las franjas (que son
+    horas locales) sean directas.
+    """
+    if _ZONA is not None:
+        return datetime.now(_ZONA).replace(tzinfo=None)
+    return datetime.now()
+
 # El texto que se publica. Se puede cambiar entero por el .env; los campos
-# disponibles son {titulo} {precio} {precio_antes} {descuento} {url}
-# {descripcion} {categoria} {hashtags}.
-PLANTILLA = os.getenv('X_PLANTILLA', '') or (
-    "{titulo}\n"
-    "\n"
+# disponibles son {titulo} {precio} {precio_antes} {descuento} {precios}
+# {pregunta} {url} {enlaces} {descripcion} {categoria} {hashtags}.
+#
+# El orden es el que se pidio: primero los precios, luego la pregunta, luego
+# el titulo con la descripcion y al final los enlaces (o nada, si los enlaces
+# van en la respuesta). Los hashtags van con la descripcion.
+PLANTILLA = (os.getenv('X_PLANTILLA', '') or '').replace('\\n', '\n') or (
     "{precios}\n"
     "\n"
-    "{url}\n"
+    "{pregunta}\n"
+    "\n"
+    "{titulo}\n"
     "\n"
     "{descripcion}\n"
     "\n"
-    "{hashtags}"
+    "{hashtags}\n"
+    "\n"
+    "{enlaces}"
+)
+
+# Los enlaces van en una respuesta al post, no en el post principal: X resta
+# alcance a los posts que llevan enlaces. Con X_ENLACE_RESPUESTA=0 vuelven al
+# post principal (comportamiento antiguo).
+ENLACE_EN_RESPUESTA = _leer_bool('X_ENLACE_RESPUESTA', True)
+# Segundos entre el post principal y la respuesta con el enlace. Dos posts
+# seguidos pueden disparar el 226 ("parece automatico").
+PAUSA_RESPUESTA = _leer_int('X_PAUSA_RESPUESTA', 30)
+# Texto de la respuesta. Campos: {intro} {enlaces} {url} {titulo} {precio}.
+PLANTILLA_RESPUESTA = (
+    (os.getenv('X_PLANTILLA_RESPUESTA', '') or '').replace('\\n', '\n')
+    or "\U0001f517 {intro}\n\n{enlaces}"
 )
 
 HASHTAGS_BASE = os.getenv('X_HASHTAGS', '#Amazon #Chollos').strip()
@@ -727,12 +837,15 @@ def descubrir_operaciones(forzar=False):
         log.error("No se pudo leer ningun JavaScript de x.com")
         return {n: _normalizar_operacion(n, d) for n, d in cache.get('operaciones', {}).items()}
 
-    if not BEARER:
+    if not BEARER or forzar or caducada:
+        encontrado = ''
         for texto in todos.values():
-            BEARER = _bearer_de(texto)
-            if BEARER:
+            encontrado = _bearer_de(texto)
+            if encontrado:
                 log.info("  bearer token leido del JavaScript de x.com")
                 break
+        if encontrado:
+            BEARER = encontrado
 
     # 2. La lista de assets la lleva el bundle grande: de ahi se sacan los
     #    nombres de los ficheros que pueden tener la mutacion de publicar.
@@ -955,13 +1068,14 @@ def _errores_de_x(datos):
     return ''
 
 
-def _variables_publicar(texto, media_ids):
+def _variables_publicar(texto, media_ids, reply_to=''):
     """Las variables que la web manda al publicar.
 
     La web de ahora construye el post asi: el texto, las imagenes que se
-    adjuntan y un par de campos que siempre van (aunque valgan vacio).
+    adjuntan y un par de campos que siempre van (aunque valgan vacio). Para
+    responder a otro post se anade `reply` con el id del original.
     """
-    return {
+    variables = {
         'tweet_text': texto,
         'media': {
             'media_entities': [{'media_id': str(m)} for m in (media_ids or [])],
@@ -970,6 +1084,12 @@ def _variables_publicar(texto, media_ids):
         'semantic_annotation_ids': [],
         'disallowed_reply_options': None,
     }
+    if reply_to:
+        variables['reply'] = {
+            'in_reply_to_tweet_id': str(reply_to),
+            'exclude_reply_user_ids': [],
+        }
+    return variables
 
 
 def _cuerpo_publicar(operacion, variables):
@@ -999,8 +1119,9 @@ def _operaciones_publicar(operaciones, preferida=''):
     queja de la automatizacion. Por eso se prueban las dos: cada una tiene sus
     propias reglas y X no las aplica igual.
 
-    La que funciono la ultima vez va la primera: X cambia de reglas segun la
-    cuenta y el dia, y no conviene gastar un intento en la que no entra.
+    La de ahora va siempre primera. La vieja queda de reserva si la nueva falla
+    con 226/344, pero no se pone delante aunque fuese la ultima que funciono:
+    en octubre de 2026 devolvio un id de un post que X luego no mostraba.
     """
     lista = []
     moderna = _normalizar_operacion(OPERACION_PUBLICAR, operaciones.get(OPERACION_PUBLICAR))
@@ -1015,8 +1136,9 @@ def _operaciones_publicar(operaciones, preferida=''):
         vieja = _normalizar_operacion(OPERACION_PUBLICAR_VIEJA, ID_PUBLICAR_VIEJA)
     if vieja:
         lista.append(vieja)
-    if preferida:
-        lista.sort(key=lambda o: 0 if o['operationName'] == preferida else 1)
+    if preferida == OPERACION_PUBLICAR_VIEJA:
+        log.warning("La mutacion vieja fue la ultima que funciono, pero se prueba "
+                    "primero CreateTweet: la vieja puede publicar un post no visible.")
     return lista
 
 
@@ -1076,14 +1198,17 @@ def _publicar_con(operacion, variables):
     return '', 'X devolvio 403 y no renovo el token CSRF'
 
 
-def publicar(texto, media_ids=None, operaciones=None, preferida=''):
-    """Publica un post en X y devuelve (id_del_post, error)."""
+def publicar(texto, media_ids=None, operaciones=None, preferida='', reply_to=''):
+    """Publica un post en X y devuelve (id_del_post, error).
+
+    Si `reply_to` lleva el id de otro post, se publica como respuesta a ese.
+    """
     global ULTIMA_OPERACION
     candidatas = _operaciones_publicar(operaciones or {}, preferida)
     if not candidatas:
         return '', f"no se conoce la operacion {OPERACION_PUBLICAR}"
 
-    variables = _variables_publicar(texto, media_ids)
+    variables = _variables_publicar(texto, media_ids, reply_to=reply_to)
     error = ''
     for indice, operacion in enumerate(candidatas):
         identificador, error = _publicar_con(operacion, variables)
@@ -1160,7 +1285,10 @@ def _precio_es(precio):
         entero = '{:,}'.format(int(correspondencia.group(1))).replace(',', '.')
         return entero + correspondencia.group(2)
 
-    return re.sub(r'(?<!\d)(\d{4,})(,\d{2})', _miles, texto)
+    texto = re.sub(r'(?<!\d)(\d{4,})(,\d{2})', _miles, texto)
+    # "9,99€" -> "9,99 €": el simbolo siempre separado, para que todos los
+    # precios se lean igual.
+    return re.sub(r'\s*\u20ac', ' \u20ac', texto).strip()
 
 
 def _limpiar_descripcion(descripcion):
@@ -1171,6 +1299,15 @@ def _limpiar_descripcion(descripcion):
     texto = re.sub(r'^(Publicidad/Enlace afiliado\s*)+', '', texto).strip()
     if 'El precio puede cambiar' in texto:
         texto = texto.split('El precio puede cambiar')[0].strip()
+    # "Ropa y calzado Precio recomendado: 59,95 € 31,95 €" no es una
+    # descripcion: es la categoria y los precios, que ya van en el bloque de
+    # arriba. Se descarta para no repetirlos.
+    if re.fullmatch(
+        r'(?:[^:\n.!?]{0,40}\s+)?precio\s+'
+        r'(?:recomendado|m[aá]s\s+bajo|mediano|habitual|anterior)\s*:.*',
+        texto, re.I | re.S,
+    ):
+        return ''
     if len(texto) < 15:
         return ''
     return texto
@@ -1199,49 +1336,171 @@ def _hashtags_de(oferta):
     return ' '.join(etiquetas)
 
 
-def componer_post(oferta):
-    """Arma el texto del post a partir de una oferta del catalogo."""
+# Preguntas que se intercalan entre los precios y la descripcion. Son las que
+# pidio el usuario y unas cuantas mas del mismo tono. Se elige una al azar por
+# post, evitando repetir la anterior.
+PREGUNTAS = [
+    '🤔 ¿Qué te parece?',
+    '👀 ¿Lo vas a dejar pasar?',
+    '🔥 ¿Te atreves?',
+    '🛒 ¿Se viene a casa?',
+    '💭 ¿Lo comprarías?',
+    '⏳ ¿Aprovechas o lo dejas?',
+    '😱 ¿Precio real o error?',
+    '🙋 ¿Quién se lo lleva?',
+]
+_ULTIMA_PREGUNTA = ''
+
+
+def pregunta_aleatoria():
+    """Una pregunta distinta de la anterior, para no repetir en posts seguidos."""
+    global _ULTIMA_PREGUNTA
+    opciones = [p for p in PREGUNTAS if p != _ULTIMA_PREGUNTA] or list(PREGUNTAS)
+    elegida = random.choice(opciones)
+    _ULTIMA_PREGUNTA = elegida
+    return elegida
+
+
+def _enlaces_de(oferta):
+    """Las URLs del post, sin repetir.
+
+    El catalogo trae `amazon_url`; si alguna oferta trae ademas `url`,
+    `enlace`, `links` o `enlaces`, se anaden detras. `X_ENLACE_EXTRA` permite
+    sumar un enlace fijo (por ejemplo, la web) sin tocar el catalogo.
+    """
+    urls = []
+    for clave in ('amazon_url', 'url', 'enlace', 'links', 'enlaces'):
+        valor = oferta.get(clave)
+        if isinstance(valor, str):
+            candidatos = [valor]
+        elif isinstance(valor, (list, tuple, set)):
+            candidatos = list(valor)
+        else:
+            continue
+        for candidato in candidatos:
+            candidato = str(candidato or '').strip()
+            if candidato and candidato not in urls:
+                urls.append(candidato)
+    extra = str(os.getenv('X_ENLACE_EXTRA', '') or '').strip()
+    if extra and extra not in urls:
+        urls.append(extra)
+    return urls
+
+
+def _precios_de_descripcion(descripcion):
+    """Saca (precio anterior, precio actual) del texto de Telegram.
+
+    Los mensajes del canal muchas veces traen "Precio recomendado: 9,99 €
+    7,45 €" aunque el catalogo se haya quedado sin `old_price`. El primer
+    importe es el anterior y el segundo el actual.
+    """
+    coincidencia = re.search(
+        r'precio\s+(?:recomendado|m[aá]s\s+bajo|mediano|habitual|anterior)\s*:\s*'
+        r'([\d.,]+\s*\u20ac)\s+([\d.,]+\s*\u20ac)',
+        descripcion or '', re.I,
+    )
+    if not coincidencia:
+        return '', ''
+    return coincidencia.group(1).strip(), coincidencia.group(2).strip()
+
+
+def _mismo_precio(uno, otro):
+    """Compara dos precios salvando los espacios ('9,99 €' y '9,99€')."""
+    return _precio_es(uno).replace(' ', '') == _precio_es(otro).replace(' ', '')
+
+
+def _sin_urls(texto):
+    """Quita URLs y dominios sueltos (el post principal no debe llevar ninguno)."""
+    texto = re.sub(r'(?:https?://|www\.)\S+', '', texto or '')
+    # Tambien "amazon.es/dp/..." o "amzn.to/..." sin el https:// delante: X
+    # los detecta igual como enlace.
+    texto = re.sub(
+        r'\b(?:[a-z0-9-]+\.)+(?:com|es|net|org|io|co|ly|to|me|tv|app|shop|store|'
+        r'info|biz)\b(?:/\S*)?',
+        '', texto, flags=re.I,
+    )
+    return texto.strip()
+
+
+def componer_post(oferta, incluir_enlaces=True):
+    """Arma el texto del post a partir de una oferta del catalogo.
+
+    Orden: precios (actual, anterior y descuento), pregunta aleatoria, titulo
+    con la descripcion y enlaces al final. Con `incluir_enlaces=False` no se
+    pone ningun enlace: van aparte, en una respuesta al post.
+    """
     titulo = (oferta.get('title') or '').strip()
-    precio = _precio_es((oferta.get('price') or '').strip())
-    precio_antes = _precio_es((oferta.get('old_price') or '').strip())
+    descripcion_bruta = oferta.get('description') or ''
+    desc_antes, desc_actual = _precios_de_descripcion(descripcion_bruta)
+    precio_bruto = (oferta.get('price') or '').strip()
+    precio_antes_bruto = (oferta.get('old_price') or '').strip()
+    if not precio_bruto and desc_actual:
+        precio_bruto = desc_actual
+    if not precio_antes_bruto and desc_antes:
+        # El precio anterior de la descripcion solo se usa si el actual
+        # coincide: asi no se mezcla el precio de otra oferta.
+        if not oferta.get('price') or _mismo_precio(desc_actual, oferta.get('price')):
+            precio_antes_bruto = desc_antes
+    precio = _precio_es(precio_bruto)
+    precio_antes = _precio_es(precio_antes_bruto)
     descuento = (oferta.get('discount') or '').strip()
-    url = (oferta.get('amazon_url') or '').strip()
-    descripcion = _limpiar_descripcion(oferta.get('description'))
+    descripcion = _limpiar_descripcion(descripcion_bruta)
     hashtags = _hashtags_de(oferta)
+    pregunta = pregunta_aleatoria()
+    enlaces_lista = _enlaces_de(oferta)
+    if incluir_enlaces:
+        enlaces = '\n'.join(enlaces_lista)
+        url = enlaces_lista[0] if enlaces_lista else ''
+    else:
+        # Ni los enlaces ni una URL suelta en el titulo o la descripcion.
+        enlaces = ''
+        url = ''
+        descripcion = _sin_urls(descripcion)
+        titulo = _sin_urls(titulo)
 
     # La linea de precios se arma con lo que haya: no todos los precios traen
     # descuento y algunos no traen precio anterior.
     precios = []
     if precio:
-        precios.append(f'\U0001f4b8 {precio}')
+        precios.append(f'\U0001f4b8 Ahora: {precio}')
     if precio_antes and precio_antes != precio:
-        precios.append(f'(antes {precio_antes})')
+        precios.append(f'Antes: {precio_antes}')
     if descuento:
         precios.append(f'\U0001f4c9 {descuento}')
     linea_precios = ' | '.join(precios)
 
-    def texto(descripcion_texto, titulo_texto):
-        return PLANTILLA.format(
+    def texto(descripcion_texto, titulo_texto, precios_texto=None):
+        candidato = PLANTILLA.format(
             titulo=titulo_texto,
-            precios=linea_precios,
+            precios=linea_precios if precios_texto is None else precios_texto,
             precio=precio,
             precio_antes=precio_antes,
             descuento=descuento,
+            pregunta=pregunta,
             url=url,
+            enlaces=enlaces,
             descripcion=descripcion_texto,
             categoria=oferta.get('categoria', ''),
             hashtags=hashtags,
         )
+        # Si la descripcion va vacia quedan tres saltos seguidos: se dejan dos.
+        return re.sub(r'\n{3,}', '\n\n', candidato).strip()
 
-    # El orden de recortes: primero la descripcion, que es lo mas prescindible,
-    # luego el titulo, y los hashtags se conservan hasta el final.
+    # El orden de recortes: primero se recorta la descripcion, luego se quita,
+    # despues se acorta el titulo y, al final, se quita el precio anterior.
     candidato = texto(descripcion, titulo)
     if longitud_post(candidato) <= LIMITE_POST:
         return candidato
 
-    candidato = texto('', titulo)
-    if longitud_post(candidato) <= LIMITE_POST:
-        return candidato
+    base = texto('', titulo)
+    hueco = LIMITE_POST - longitud_post(base) - 4
+    if descripcion and hueco >= 30:
+        candidato = texto(_recortar(descripcion, hueco), titulo)
+        if longitud_post(candidato) <= LIMITE_POST:
+            return candidato
+
+    if longitud_post(base) <= LIMITE_POST:
+        return base
 
     titulo_corto = _recortar(titulo, max(60, LIMITE_POST - longitud_post(texto('', '')) - 10))
     candidato = texto('', titulo_corto)
@@ -1249,13 +1508,49 @@ def componer_post(oferta):
         return candidato
 
     # Ultimo recurso: quitar el precio anterior y acortar otra vez.
-    precios_sin_antes = [p for p in precios if not p.startswith('(antes')]
-    linea_precios = ' | '.join(precios_sin_antes)
-    candidato = texto('', _recortar(titulo, 80))
+    precios_sin_antes = [p for p in precios if not p.startswith('Antes:')]
+    candidato = texto('', _recortar(titulo, 80), ' | '.join(precios_sin_antes))
     if longitud_post(candidato) <= LIMITE_POST:
         return candidato
 
     return _recortar(candidato, LIMITE_POST)
+
+
+def componer_respuesta(oferta):
+    """Arma la respuesta con los enlaces de la oferta.
+
+    El post principal va sin enlaces para no perder alcance; esta respuesta es
+    la que lleva el enlace de Amazon (y los extra, si los hay). Devuelve '' si
+    la oferta no tiene ningun enlace.
+    """
+    enlaces = _enlaces_de(oferta)
+    if not enlaces:
+        return ''
+    intro = ('Aquí tienes el enlace:' if len(enlaces) == 1
+             else 'Aquí tienes los enlaces:')
+    campos = {
+        'intro': intro,
+        'enlaces': '\n'.join(enlaces),
+        'url': enlaces[0],
+        'titulo': (oferta.get('title') or '').strip(),
+        'precio': _precio_es((oferta.get('price') or '').strip()),
+    }
+    texto = re.sub(r'\n{3,}', '\n\n', PLANTILLA_RESPUESTA.format(**campos)).strip()
+    if longitud_post(texto) <= LIMITE_POST:
+        return texto
+
+    # Si no cabe, se quitan adornos antes que enlaces. Nunca se parte una URL:
+    # un enlace cortado no lleva a ninguna parte.
+    texto = '\n'.join(enlaces)
+    if longitud_post(texto) <= LIMITE_POST:
+        return texto
+    elegidos = []
+    for enlace in enlaces:
+        prueba = '\n'.join(elegidos + [enlace])
+        if longitud_post(prueba) > LIMITE_POST:
+            break
+        elegidos.append(enlace)
+    return '\n'.join(elegidos) if elegidos else _recortar(enlaces[0], LIMITE_POST)
 
 
 # ─────────────────────────────────────────────
@@ -1473,6 +1768,11 @@ def revisar_sesion(operaciones):
     print(f'  ct0         : {"presente" if CT0 else "se pedira a X"}')
     print(f'  usuario     : {("@" + USUARIO) if USUARIO else "(sin definir)"}')
     print(f'  bearer      : {"presente" if BEARER else "no se ha podido leer"}')
+    zona = ZONA if _ZONA is not None else f'{ZONA or "sistema"} no disponible (hora del sistema)'
+    print(f'  hora local  : {ahora_local():%Y-%m-%d %H:%M:%S}  ({zona})')
+    print(f'  franjas     : {_formatear_horas(HORAS)}')
+    print(f'  enlaces     : {"en una respuesta al post" if ENLACE_EN_RESPUESTA else "en el post"}'
+          f' (pausa {PAUSA_RESPUESTA}s)')
 
     print('\n== Operaciones ==')
     if not operaciones:
@@ -1497,7 +1797,10 @@ def revisar_sesion(operaciones):
 
 
 def seleccionar_pendientes(ofertas, publicados, limite):
-    """Ofertas todavia no publicadas, de la mas reciente a la mas antigua."""
+    """Ofertas todavia no publicadas, de la mas reciente a la mas antigua.
+
+    `limite` 0 o negativo devuelve todas.
+    """
     pendientes = []
     for oferta in ofertas:
         identificador = str(oferta.get('id', ''))
@@ -1508,9 +1811,53 @@ def seleccionar_pendientes(ofertas, publicados, limite):
         if SOLO_ID_MIN and oferta.get('id', 0) <= SOLO_ID_MIN:
             continue
         pendientes.append(oferta)
-        if len(pendientes) >= limite:
+        if limite and len(pendientes) >= limite:
             break
     return pendientes
+
+
+def _formatear_horas(horas):
+    return ', '.join(f'{minutos // 60:02d}:{minutos % 60:02d}' for minutos in horas)
+
+
+def proxima_franja(ahora, horas, margen=0, estricta=False):
+    """Primera franja publicable a partir de `ahora`.
+
+    Con `estricta=False`, una franja que acaba de pasar sigue contando durante
+    `margen` segundos (para cuando el script arranca justo despues). Con
+    `estricta=True` solo se devuelven franjas posteriores a `ahora`, que es lo
+    que hace falta despues de publicar para no repetir la misma franja.
+    """
+    if not horas:
+        horas = HORAS
+    horas = sorted(horas)
+
+    for dias in (0, 1):
+        dia = (ahora + timedelta(days=dias)).date()
+        for minutos in horas:
+            momento = datetime.combine(dia, datetime.min.time()) + timedelta(minutes=minutos)
+            if estricta:
+                if momento > ahora:
+                    return momento
+            elif momento >= ahora - timedelta(seconds=max(0, margen)):
+                return momento
+
+    # Inalcanzable con una lista no vacia; deja la funcion cerrada.
+    dia = ahora.date() + timedelta(days=1)
+    return datetime.combine(dia, datetime.min.time()) + timedelta(minutes=horas[0])
+
+
+def esperar_hasta(momento):
+    """Duerme hasta `momento` en tramos de un minuto.
+
+    Los tramos cortos hacen que Ctrl+C responda y que un cambio de hora no
+    deje el proceso dormido una hora de mas.
+    """
+    while True:
+        restante = (momento - ahora_local()).total_seconds()
+        if restante <= 0:
+            return
+        time.sleep(min(restante, 60))
 
 
 def simular(argumentos):
@@ -1519,29 +1866,320 @@ def simular(argumentos):
     if not ofertas:
         return 1
 
+    limite = argumentos.limite if argumentos.limite is not None else len(argumentos.horas)
     estado = leer_estado()
     publicados = estado.get('publicados', {})
-    pendientes = seleccionar_pendientes(ofertas, publicados, argumentos.limite)
+    pendientes = seleccionar_pendientes(ofertas, publicados, limite)
     log.info(f"{len(pendientes)} ofertas pendientes (de {len(ofertas)} en el catalogo)")
 
+    enlace_en_respuesta = ENLACE_EN_RESPUESTA and not argumentos.enlace_en_post
     for oferta in pendientes:
-        texto = componer_post(oferta)
+        texto = componer_post(oferta, incluir_enlaces=not enlace_en_respuesta)
         print('\n' + '-' * 56)
         print(texto)
         print(f"[longitud: {longitud_post(texto)}/280]")
+        if enlace_en_respuesta:
+            respuesta = componer_respuesta(oferta)
+            if respuesta:
+                print('\n  Respuesta con el enlace:')
+                print(respuesta)
+                print(f"  [longitud: {longitud_post(respuesta)}/280]")
     return 0
+
+
+def _publicar_texto(texto, operaciones, preferida='', media_ids=None,
+                    reply_to='', etiqueta='post', reintentos_cuota=None):
+    """Publica un texto con los reintentos de cuota y automatizacion.
+
+    Devuelve (id_post, error, operaciones, preferida). Se usa tanto para el
+    post principal como para la respuesta con el enlace.
+    """
+    if reintentos_cuota is None:
+        reintentos_cuota = REINTENTOS_CUOTA
+    id_post = ''
+    error = ''
+    intentos_cuota = 0
+    intentos_automatizacion = 0
+    while True:
+        id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones,
+                                  preferida=preferida, reply_to=reply_to)
+        if id_post:
+            return id_post, '', operaciones, ULTIMA_OPERACION or preferida
+
+        # X dice que la cuenta se ha pasado de tweets y mensajes por hoy.
+        # No es un fallo del script: se espera y se reintenta el mismo texto.
+        if error.startswith('CUOTA'):
+            if intentos_cuota >= reintentos_cuota:
+                log.error(f"  Se agotaron los reintentos de cuota ({etiqueta}): {error}")
+                return '', error, operaciones, preferida
+            intentos_cuota += 1
+            log.warning(f"  {error}")
+            log.warning(f"  Se espera {ESPERA_CUOTA}s y se reintenta el {etiqueta}")
+            time.sleep(ESPERA_CUOTA)
+            continue
+
+        # X dice que la peticion parece automatica. Suele ser que se ha
+        # publicado hace poco: se espera y se reintenta el mismo texto.
+        if error.startswith('AUTOMATIZACION'):
+            if intentos_automatizacion >= REINTENTOS_AUTOMATIZACION:
+                log.error(f"  Se agotaron los reintentos ({etiqueta}): {error}")
+                return '', error, operaciones, preferida
+            intentos_automatizacion += 1
+            log.warning(f"  {error}")
+            log.warning(f"  Se espera {ESPERA_AUTOMATIZACION}s y se reintenta el {etiqueta}")
+            time.sleep(ESPERA_AUTOMATIZACION)
+            continue
+
+        log.error(f"  No se pudo publicar el {etiqueta}: {error}")
+        # Si X no reconoce la operacion o responde con un create_tweet vacio,
+        # los ids o las banderas estan caducados: se buscan otra vez y se
+        # reintenta una vez.
+        if ('Unknown' in error or 'not found' in error.lower()
+                or 'no se conoce' in error or 'no traia id de post' in error):
+            log.warning("  Los ids de operacion pueden estar caducados: se buscan otra vez")
+            operaciones = descubrir_operaciones(forzar=True)
+            id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones,
+                                      preferida=preferida, reply_to=reply_to)
+            if id_post:
+                return id_post, '', operaciones, ULTIMA_OPERACION or preferida
+            log.error(f"  Sigue sin publicarse el {etiqueta}: {error}")
+        return '', error, operaciones, preferida
+
+
+def publicar_una(oferta, operaciones, preferida='', con_imagen=True,
+                 enlace_en_respuesta=None):
+    """Publica una sola oferta.
+
+    Devuelve (id_post, error, operaciones, preferida, id_respuesta,
+    error_respuesta). Si el post principal sale bien pero la respuesta con el
+    enlace falla, `error` va vacio (la oferta ya esta publicada) y el fallo de
+    la respuesta se devuelve aparte.
+    """
+    if enlace_en_respuesta is None:
+        enlace_en_respuesta = ENLACE_EN_RESPUESTA
+
+    identificador = str(oferta.get('id', ''))
+    texto = componer_post(oferta, incluir_enlaces=not enlace_en_respuesta)
+    log.info(f"Oferta {identificador}: {oferta.get('title', '')[:60]!r}")
+    log.info(f"  Texto ({longitud_post(texto)}/280): {texto[:120]!r}")
+
+    media_ids = []
+    if con_imagen and oferta.get('image'):
+        media_id = subir_imagen(oferta['image'])
+        if media_id:
+            media_ids.append(media_id)
+
+    id_post, error, operaciones, preferida = _publicar_texto(
+        texto, operaciones, preferida, media_ids=media_ids, etiqueta='post')
+    if not id_post:
+        return '', error, operaciones, preferida, '', ''
+
+    id_respuesta = ''
+    error_respuesta = ''
+    if enlace_en_respuesta:
+        respuesta = componer_respuesta(oferta)
+        if respuesta:
+            log.info(f"  Respuesta con el enlace ({longitud_post(respuesta)}/280): "
+                     f"{respuesta[:80]!r}")
+            if PAUSA_RESPUESTA > 0:
+                log.info(f"  Pausa de {PAUSA_RESPUESTA}s antes de la respuesta")
+                time.sleep(PAUSA_RESPUESTA)
+            id_respuesta, error_respuesta, operaciones, preferida = _publicar_texto(
+                respuesta, operaciones, preferida, reply_to=id_post,
+                etiqueta='respuesta',
+                reintentos_cuota=REINTENTOS_CUOTA_RESPUESTA)
+            if id_respuesta:
+                log.info(f"  Respuesta publicada: "
+                         f"https://x.com/{USUARIO or 'i'}/status/{id_respuesta}")
+            else:
+                log.error(f"  No se pudo publicar la respuesta con el enlace: "
+                          f"{error_respuesta}")
+        else:
+            log.warning("  La oferta no tiene enlaces: no hay respuesta que publicar")
+
+    return id_post, '', operaciones, preferida, id_respuesta, error_respuesta
+
+
+def registrar_publicacion(estado, oferta, id_post, operacion='', franja=None,
+                          respuesta_id='', respuesta_error=''):
+    """Anota una oferta ya publicada en el estado y guarda el fichero.
+
+    `franja` es el momento de la franja programada. Se guarda para que, si el
+    proceso se reinicia justo despues de publicar, no vuelva a publicar otra
+    oferta en la misma franja. Si la respuesta con el enlace fallo, se guarda
+    el motivo para poder revisarlo.
+    """
+    identificador = str(oferta.get('id', ''))
+    publicados = estado.setdefault('publicados', {})
+    registro = {
+        'tweet_id': id_post,
+        'fecha': ahora_local().strftime('%Y-%m-%dT%H:%M:%S'),
+        'titulo': oferta.get('title', ''),
+    }
+    if respuesta_id:
+        registro['respuesta_id'] = respuesta_id
+    if respuesta_error:
+        registro['respuesta_error'] = respuesta_error
+    publicados[identificador] = registro
+    estado['ultimo'] = ahora_local().strftime('%Y-%m-%dT%H:%M:%S')
+    operacion = operacion or ULTIMA_OPERACION
+    if operacion:
+        estado['operacion'] = operacion
+    if franja:
+        estado['ultima_franja'] = franja.strftime('%Y-%m-%dT%H:%M')
+    guardar_estado(estado)
+
+
+def publicar_ahora(argumentos, operaciones):
+    """Publica las pendientes de golpe, con la pausa de seguridad entre posts."""
+    limite = argumentos.limite if argumentos.limite is not None else LIMITE_TWEETS
+    if limite <= 0:
+        limite = LIMITE_TWEETS
+
+    ofertas = cargar_ofertas(archivo=argumentos.archivo, categoria=argumentos.categoria)
+    if not ofertas:
+        return 1
+
+    estado = leer_estado()
+    publicados = estado.get('publicados', {})
+    preferida = estado.get('operacion', '')
+    if preferida:
+        log.info(f"Primero se prueba {preferida}, que fue la que funciono la ultima vez")
+    pendientes = seleccionar_pendientes(ofertas, publicados, limite)
+    log.info(f"{len(pendientes)} ofertas pendientes de publicar (de {len(ofertas)} en el catalogo)")
+
+    if not pendientes:
+        print("No hay ofertas nuevas que publicar.")
+        return 0
+
+    con_imagen = CON_IMAGEN and not argumentos.sin_imagen
+    enlace_en_respuesta = ENLACE_EN_RESPUESTA and not argumentos.enlace_en_post
+    publicados_ahora = 0
+
+    for indice, oferta in enumerate(pendientes, 1):
+        log.info(f"[{indice}/{len(pendientes)}]")
+        id_post, error, operaciones, preferida, id_respuesta, error_respuesta = publicar_una(
+            oferta, operaciones, preferida, con_imagen,
+            enlace_en_respuesta=enlace_en_respuesta)
+        if not id_post:
+            break
+
+        publicados_ahora += 1
+        registrar_publicacion(estado, oferta, id_post, preferida,
+                              respuesta_id=id_respuesta, respuesta_error=error_respuesta)
+        log.info(f"  Publicado: https://x.com/{USUARIO or 'i'}/status/{id_post}")
+        if error_respuesta:
+            log.warning(f"  El post salio sin el enlace en la respuesta: {error_respuesta}")
+
+        if indice < len(pendientes):
+            log.info(f"  Pausa de {PAUSA_SEGUNDOS}s antes del siguiente post")
+            time.sleep(PAUSA_SEGUNDOS)
+
+    print(f"\nPublicados {publicados_ahora} de {len(pendientes)} pendientes.")
+    return 0 if publicados_ahora else 1
+
+
+def publicar_programado(argumentos, operaciones):
+    """Una oferta en cada franja horaria, todos los dias, hasta que se pare.
+
+    El catalogo y el estado se releen en cada franja: mientras el script
+    espera, bot.py puede haber anadido ofertas nuevas. Si no hay ninguna
+    pendiente, la franja se salta y se sigue con la siguiente.
+    """
+    horas = argumentos.horas or HORAS
+    total = argumentos.limite if argumentos.limite is not None else 0
+    if total < 0:
+        total = 0
+    con_imagen = CON_IMAGEN and not argumentos.sin_imagen
+    enlace_en_respuesta = ENLACE_EN_RESPUESTA and not argumentos.enlace_en_post
+
+    estado = leer_estado()
+    franja = proxima_franja(ahora_local(), horas, margen=MARGEN_FRANJA)
+    ultima_franja = estado.get('ultima_franja', '')
+    if ultima_franja and franja.strftime('%Y-%m-%dT%H:%M') == ultima_franja:
+        # El proceso se reinicio dentro del margen de una franja que ya se
+        # publico: no se publica otra oferta en la misma franja.
+        log.info(f"La franja {ultima_franja} ya se publico: se salta")
+        franja = proxima_franja(franja + timedelta(seconds=1), horas, estricta=True)
+    publicados_total = 0
+    log.info(f"Publicacion programada: {_formatear_horas(horas)}"
+             f" ({'sin limite' if not total else f'hasta {total} posts'})")
+
+    while True:
+        restante = (franja - ahora_local()).total_seconds()
+        if restante > 0:
+            log.info(f"Proxima oferta: {franja:%Y-%m-%d %H:%M} "
+                     f"(faltan {max(1, round(restante / 60))} min)")
+        else:
+            log.info(f"Franja actual: {franja:%Y-%m-%d %H:%M}")
+        esperar_hasta(franja)
+
+        try:
+            # Se releen catalogo y estado en cada franja: el bot puede haber
+            # anadido ofertas nuevas mientras el script esperaba.
+            ofertas = cargar_ofertas(archivo=argumentos.archivo, categoria=argumentos.categoria)
+            estado = leer_estado()
+            publicados = estado.get('publicados', {})
+            preferida = estado.get('operacion', '')
+            pendientes = seleccionar_pendientes(ofertas, publicados, 1)
+
+            if not pendientes:
+                log.warning(f"[{franja:%Y-%m-%d %H:%M}] No hay ofertas nuevas: se salta la franja")
+            else:
+                oferta = pendientes[0]
+                log.info(f"[{franja:%Y-%m-%d %H:%M}] Oferta {oferta.get('id')}")
+                refrescar_cookies_web()
+                # Si la cache de ids ha caducado, se renueva aqui: el proceso
+                # puede llevar dias corriendo y X rota las operaciones.
+                operaciones = descubrir_operaciones()
+                (id_post, error, operaciones, preferida,
+                 id_respuesta, error_respuesta) = publicar_una(
+                    oferta, operaciones, preferida, con_imagen,
+                    enlace_en_respuesta=enlace_en_respuesta)
+                if id_post:
+                    registrar_publicacion(estado, oferta, id_post, preferida,
+                                          franja=franja, respuesta_id=id_respuesta,
+                                          respuesta_error=error_respuesta)
+                    publicados_total += 1
+                    log.info(f"  Publicado ({publicados_total} en esta ejecucion): "
+                             f"https://x.com/{USUARIO or 'i'}/status/{id_post}")
+                    if error_respuesta:
+                        log.warning(f"  El post salio sin el enlace en la respuesta: "
+                                    f"{error_respuesta}")
+                else:
+                    log.error(f"  La oferta {oferta.get('id')} no se publico: {error}")
+        except Exception as error:
+            # Un fallo inesperado no debe parar el proceso: se apunta y se
+            # sigue con la siguiente franja.
+            log.exception(f"Error inesperado en la franja {franja:%Y-%m-%d %H:%M}: {error}")
+
+        if total and publicados_total >= total:
+            break
+        franja = proxima_franja(ahora_local(), horas, estricta=True)
+
+    print(f"\nPublicados {publicados_total} posts. Fin de la publicacion programada.")
+    return 0 if publicados_total else 1
 
 
 def main():
     analizador = argparse.ArgumentParser(
         description='Publica las ofertas del catalogo en X (Twitter).')
-    analizador.add_argument('--limite', type=int, default=LIMITE_TWEETS,
-                            help=f'cuantas ofertas publicar como maximo (por defecto {LIMITE_TWEETS})')
+    analizador.add_argument('--limite', type=int, default=None,
+                            help='cuantas ofertas publicar en total (programado: 0 o vacio = '
+                                 f'sin limite; --ahora: por defecto {LIMITE_TWEETS})')
     analizador.add_argument('--categoria', help='publicar solo una categoria (data/<categoria>.json)')
     analizador.add_argument('--archivo', help='publicar las ofertas de un archivo JSON concreto')
     analizador.add_argument('--simular', action='store_true',
                             help='enseñar como quedarian los posts sin publicar nada')
     analizador.add_argument('--sin-imagen', action='store_true', help='publicar sin imagen')
+    analizador.add_argument('--enlace-en-post', action='store_true',
+                            help='poner los enlaces en el post principal en vez de en una '
+                                 'respuesta (por defecto van en una respuesta)')
+    analizador.add_argument('--ahora', action='store_true',
+                            help='publicar ya las pendientes en vez de esperar a las franjas')
+    analizador.add_argument('--horas', default='',
+                            help='franjas horarias separadas por comas '
+                                 '(por defecto X_HORAS o 08:00,12:00,17:00,21:00)')
     analizador.add_argument('--revisar', action='store_true',
                             help='comprobar la sesion y los ids de operacion, sin publicar')
     analizador.add_argument('--verificar', action='store_true',
@@ -1549,6 +2187,7 @@ def main():
     analizador.add_argument('--refrescar-cache', action='store_true',
                             help='buscar otra vez los ids de operacion en el JavaScript de X')
     argumentos = analizador.parse_args()
+    argumentos.horas = _parsear_horas(argumentos.horas) if argumentos.horas.strip() else list(HORAS)
 
     if argumentos.simular:
         # El simulador no necesita sesion ni red: solo compone los textos.
@@ -1581,107 +2220,30 @@ def main():
             print(f"    {(texto or '').replace(chr(10), ' ')}\n")
         return 0
 
-    ofertas = cargar_ofertas(archivo=argumentos.archivo, categoria=argumentos.categoria)
-    if not ofertas:
-        return 1
+    if argumentos.ahora:
+        return publicar_ahora(argumentos, operaciones)
+    return publicar_programado(argumentos, operaciones)
 
-    estado = leer_estado()
-    publicados = estado.get('publicados', {})
-    preferida = estado.get('operacion', '')
-    if preferida:
-        log.info(f"Primero se prueba {preferida}, que fue la que funciono la ultima vez")
-    pendientes = seleccionar_pendientes(ofertas, publicados, argumentos.limite)
-    log.info(f"{len(pendientes)} ofertas pendientes de publicar (de {len(ofertas)} en el catalogo)")
 
-    if not pendientes:
-        print("No hay ofertas nuevas que publicar.")
-        return 0
-
-    con_imagen = CON_IMAGEN and not argumentos.sin_imagen
-    publicados_ahora = 0
-
-    for indice, oferta in enumerate(pendientes, 1):
-        identificador = str(oferta.get('id', ''))
-        texto = componer_post(oferta)
-        log.info(f"[{indice}/{len(pendientes)}] Oferta {identificador}: {oferta.get('title', '')[:60]!r}")
-        log.info(f"  Texto ({longitud_post(texto)}/280): {texto[:90]!r}")
-
-        media_ids = []
-        if con_imagen and oferta.get('image'):
-            media_id = subir_imagen(oferta['image'])
-            if media_id:
-                media_ids.append(media_id)
-
-        id_post = ''
-        error = ''
-        intentos_cuota = 0
-        intentos_automatizacion = 0
-        while True:
-            id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones,
-                                     preferida=preferida)
-            if id_post:
-                break
-
-            # X dice que la cuenta se ha pasado de tweets y mensajes por hoy.
-            # No es un fallo del script: se espera y se reintenta la misma.
-            if error.startswith('CUOTA'):
-                if intentos_cuota >= REINTENTOS_CUOTA:
-                    log.error(f"  Se agotaron los reintentos de cuota: {error}")
-                    break
-                intentos_cuota += 1
-                log.warning(f"  {error}")
-                log.warning(f"  Se espera {ESPERA_CUOTA}s y se reintenta la misma oferta")
-                time.sleep(ESPERA_CUOTA)
-                continue
-
-            # X dice que la peticion parece automatica. Suele ser que se ha
-            # publicado hace poco: se espera y se reintenta la misma.
-            if error.startswith('AUTOMATIZACION'):
-                if intentos_automatizacion >= REINTENTOS_AUTOMATIZACION:
-                    log.error(f"  Se agotaron los reintentos: {error}")
-                    break
-                intentos_automatizacion += 1
-                log.warning(f"  {error}")
-                log.warning(f"  Se espera {ESPERA_AUTOMATIZACION}s y se reintenta la misma oferta")
-                time.sleep(ESPERA_AUTOMATIZACION)
-                continue
-
-            log.error(f"  No se pudo publicar la oferta {identificador}: {error}")
-            # Si X no reconoce la operacion, los ids estan caducados: se buscan
-            # otra vez y se reintenta una vez.
-            if 'Unknown' in error or 'not found' in error.lower() or 'no se conoce' in error:
-                log.warning("  Los ids de operacion pueden estar caducados: se buscan otra vez")
-                operaciones = descubrir_operaciones(forzar=True)
-                id_post, error = publicar(texto, media_ids=media_ids, operaciones=operaciones)
-                if not id_post:
-                    log.error(f"  Sigue sin publicarse: {error}")
-            break
-
-        if not id_post:
-            break
-
-        publicados_ahora += 1
-        publicados[identificador] = {
-            'tweet_id': id_post,
-            'fecha': time.strftime('%Y-%m-%dT%H:%M:%S'),
-            'titulo': oferta.get('title', ''),
-        }
-        estado['publicados'] = publicados
-        estado['ultimo'] = time.strftime('%Y-%m-%dT%H:%M:%S')
-        if ULTIMA_OPERACION:
-            estado['operacion'] = ULTIMA_OPERACION
-        guardar_estado(estado)
-        log.info(f"  Publicado: https://x.com/{USUARIO or 'i'}/status/{id_post}")
-
-        if indice < len(pendientes):
-            log.info(f"  Pausa de {PAUSA_SEGUNDOS}s antes del siguiente post")
-            time.sleep(PAUSA_SEGUNDOS)
-
-    print(f"\nPublicados {publicados_ahora} de {len(pendientes)} pendientes.")
-    return 0 if publicados_ahora else 1
+def _al_parar(signum, _frame):
+    """Parada limpia con SIGTERM (kill, tmux kill-session...)."""
+    log.warning(f"Senal {signum} recibida: se para la publicacion")
+    raise KeyboardInterrupt
 
 
 if __name__ == '__main__':
+    # En Termux, cerrar la terminal manda SIGHUP. Si no se ignora, el proceso
+    # se muere aunque el usuario no lo haya parado. Para pararlo de verdad:
+    # Ctrl+C, `kill <pid>` o `pkill -f publicar_x.py`.
+    if hasattr(signal, 'SIGHUP'):
+        try:
+            signal.signal(signal.SIGHUP, signal.SIG_IGN)
+        except (ValueError, OSError):
+            pass
+    try:
+        signal.signal(signal.SIGTERM, _al_parar)
+    except (AttributeError, ValueError, OSError):
+        pass
     try:
         sys.exit(main())
     except KeyboardInterrupt:
