@@ -282,10 +282,24 @@ ENLACE_EN_RESPUESTA = _leer_bool('X_ENLACE_RESPUESTA', True)
 # Segundos entre el post principal y la respuesta con el enlace. Dos posts
 # seguidos pueden disparar el 226 ("parece automatico").
 PAUSA_RESPUESTA = _leer_int('X_PAUSA_RESPUESTA', 30)
-# Texto de la respuesta. Campos: {intro} {enlaces} {url} {titulo} {precio}.
+
+# El canal de Telegram que se anuncia en la respuesta con la oferta. Se toma
+# de X_CANAL_TELEGRAM o, si no esta, del mismo TELEGRAM_CHANNEL que usa bot.py.
+# Vale tanto "@usuario" como la URL entera.
+CANAL_TELEGRAM = (
+    str(os.getenv('X_CANAL_TELEGRAM', '') or '').strip()
+    or str(os.getenv('TELEGRAM_CHANNEL', '') or '').strip()
+    or '@GangasOfertasChollos'
+)
+if not CANAL_TELEGRAM.startswith(('http://', 'https://')):
+    CANAL_TELEGRAM = 'https://t.me/' + CANAL_TELEGRAM.lstrip('@')
+
+# Texto de la respuesta: el enlace de afiliado de Amazon y, debajo, el canal
+# de Telegram. Campos: {enlaces} {enlace} {canal} {intro} {url} {titulo}
+# {precio}. {enlaces} lleva todos los enlaces y {enlace} solo el primero.
 PLANTILLA_RESPUESTA = (
     (os.getenv('X_PLANTILLA_RESPUESTA', '') or '').replace('\\n', '\n')
-    or "\U0001f517 {intro}\n\n{enlaces}"
+    or "Enlace: {enlaces}\n\nNo te pierdas nada {canal}"
 )
 
 HASHTAGS_BASE = os.getenv('X_HASHTAGS', '#Amazon #Chollos').strip()
@@ -1520,7 +1534,7 @@ def componer_respuesta(oferta):
     """Arma la respuesta con los enlaces de la oferta.
 
     El post principal va sin enlaces para no perder alcance; esta respuesta es
-    la que lleva el enlace de Amazon (y los extra, si los hay). Devuelve '' si
+    la que lleva el enlace de Amazon y el del canal de Telegram. Devuelve '' si
     la oferta no tiene ningun enlace.
     """
     enlaces = _enlaces_de(oferta)
@@ -1531,6 +1545,8 @@ def componer_respuesta(oferta):
     campos = {
         'intro': intro,
         'enlaces': '\n'.join(enlaces),
+        'enlace': enlaces[0],
+        'canal': CANAL_TELEGRAM,
         'url': enlaces[0],
         'titulo': (oferta.get('title') or '').strip(),
         'precio': _precio_es((oferta.get('price') or '').strip()),

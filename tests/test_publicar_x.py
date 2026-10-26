@@ -149,6 +149,9 @@ respuesta = px.componer_respuesta(OFERTA)
 check("la respuesta lleva el enlace", OFERTA["amazon_url"] in respuesta, respuesta)
 check("la respuesta cabe en 280", px.longitud_post(respuesta) <= 280, px.longitud_post(respuesta))
 check("la respuesta tiene una introduccion", "enlace" in respuesta.lower(), respuesta)
+check("la respuesta empieza por 'Enlace:'", respuesta.startswith("Enlace:"), respuesta)
+check("la respuesta anuncia el canal de Telegram",
+      "No te pierdas nada" in respuesta and "https://t.me/" in respuesta, respuesta)
 check("una oferta sin enlaces no genera respuesta",
       px.componer_respuesta({"id": 1, "title": "x"}) == "",
       px.componer_respuesta({"id": 1, "title": "x"}))
