@@ -1,5 +1,20 @@
 [
     {
+        "id": 13013,
+        "date": "2026-10-27T11:32:45+00:00",
+        "title": "LEBENGOOD Albornoz Unisex con Capucha – 100 % Algodón OEKO-TEX",
+        "price": "21.43 €",
+        "old_price": "35.90 €",
+        "discount": "-40%",
+        "amazon_url": "https://www.amazon.es/dp/B0CZTVX6C7?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/wAC8l_Wm7pvdyHYhvsD_KHY3yEDGbifhl-Z5J35Gca5RHISCoRTB4bjYjLBW12SN3feApD_8o4DEbJHCpef-xXP5EYX42esZUNH5D_IgKdXWt0-5MUJV3v_RNJlBH7xzz_Uvcl1nHIgB4DPx2EP2rb4t_JSDHQpf1igXzmKcJTItQPb6ztthlV0YPncpL-e4saDCn4JArnq5YPgN4x3TLrTGwYpqQrzRvRNa8gJRS1WMnhMR5uzli--nDroZpQIG1cGGnTioQ8Tt8TlX_DhOURZuiZr2wVb_gNHMYdazIXyirwNhY5Z60Wzn5VA1TaqVqR5HBfJ1X7CoXwfRzvu3zQ.jpg",
+        "categoria": "general",
+        "description": "¡Suave, absorbente y con capucha! 🛁💖 Canal: https://t.me/GangasOfertasChollos",
+        "brand": "LEBENGOOD Albornoz",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 13012,
         "date": "2026-10-27T11:30:43+00:00",
         "title": "Blink Outdoor 4 con Blink Videotimbre 2K+ con pilas (última generación), Negro, módulo de sincronización básico Incluido",
@@ -1483,20 +1498,5 @@
         "brand": "moonster Cuaderno",
         "gtin": "",
         "mpn": "20x15cm"
-    },
-    {
-        "id": 12904,
-        "date": "2026-10-27T02:15:43+00:00",
-        "title": "adidas Unisex bebé ESSENTIALS BIG LOGOJOGGER, pure ruby/black, 6-9 Months",
-        "price": "22.69 €",
-        "old_price": "38.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CZXYJ2RZ?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/PcEvhdvG5GJNibCTXjdY32W_Y6Y7kqdGbBdR_MqFizlSfNtHoPnrJ0PQvM_e3ZA5HUMqZ9pvFOrVW3xgN4GCHFXNcjY7RWATJGFEqmRNxxDQR9N5AfqC265e0o5XcWjkTD_Bf0hWvIWU_sIHr4ErSsjzZo243dluuPLSj6xSwpSqD7rbf_PPlCEbwQTUzeEINup0gGpquiG-KKJxJYoX5604Pmj3qU9UHXmyB_w2FT8KKGkwW_YKtL35WWzOboesPwqOn9SzeMJXz3d7HOKLMP9_fgo_-jquIertAHyP2KWPidb1wK2dOKwJqhDNoqPF99sPE1BMJPT7-DcH8p8c2w.jpg",
-        "categoria": "juguetes-infantil",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "adidas Unisex",
-        "gtin": "",
-        "mpn": ""
     }
 ]
