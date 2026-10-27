@@ -1,5 +1,20 @@
 [
     {
+        "id": 13017,
+        "date": "2026-10-27T11:40:23+00:00",
+        "title": "NIKE Court Borough Low Recraft (GS) Sneaker, White, 3 UK",
+        "price": "31.95 €",
+        "old_price": "64.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0C4PJH8XH?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/nfCFNkvnLwuab47-aimYBPRGt7n1N_j2YXlRnmhXl11CwljuHivKqnvf8DnxEVIgzaPrqwyurTugTA0TEGH45zOzROr1C7eqnoEaKY2xuaouPd-DvWpeivfE4DdM7WAqmqaxWIjQM5pYvJJ1esISlHouWeV_Crj_tfyNBZrhcpetTphfL2oxINEWLJSurqbVfVWL5B8SKBBP3WSCXEbyuHvlvEgvTwAA7CYcA22_uf7zEVjMf-b8z_Fz9rJmvp0kPV6ETpSdZJ50Y3UV7ExPBJ3fNOkKdi_tWJe1i-h2a6rSdDbkOLiWodUw7bVYyhbXeijZ4W7JvmqdQX2EVa7t2g.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "NIKE Court",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 13016,
         "date": "2026-10-27T11:39:14+00:00",
         "title": "PURITO Crema con Pantenol 10% para Piel Sensible, 100 ml",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "IA Auriculares",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 12909,
-        "date": "2026-10-27T05:10:43+00:00",
-        "title": "HUIKUANGEU Lámpara Fantasma,Bonita Lámpara de Lectura de Fantasma,Decoración de Halloween",
-        "price": "5.99 €",
-        "old_price": "15.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FSRCNCNW?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/gDpL9szMCc9gw74xBWUXezRQgNg8luggsXiNydkcwf--tE-lF54kml_R6m-9uBxsL4RnkQJzYE9vHhAGlMEdTiqQp0szwt9kVBRGn0xgB1JFo95nh5NIDTcFiNKFQ5tJZUre3sWkqe9BjnSYoh6OuTOND69dIiVn0FXTDnLdDA3MJmycTDeI8AOGEXeCoA4xO-6DL0pH6hoU30vkuz05w645vdQaFhMvXWyLpKxIBmwJCICRjkxWhgznMBc6_sZvySchyQUO2O4E2G-IcLIvIP4cEGmuPuEpB0-_g3Dj-mr_mFEU9-pUpjDfNce-FA4xyg6t6buhKrKMBAVTF7lPBQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "HUIKUANGEU Lámpara",
         "gtin": "",
         "mpn": ""
     }
