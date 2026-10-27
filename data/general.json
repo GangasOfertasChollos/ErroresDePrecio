@@ -1,5 +1,20 @@
 [
     {
+        "id": 13014,
+        "date": "2026-10-27T11:38:34+00:00",
+        "title": "KENTON COURT M",
+        "price": "27.96 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09QLG3QWH/ref=nosim?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/KO6UjVsGiYzzq0Aq_SyLT_8_vVn-kViqboUrG0Lxu1qlgrYMexiHnW_-gMkhdqtrGxY1TanqauIxSj9Zk8AlaX_Dl16BDSfLb-KvU1EkkD161v8B5slKSk63eEhEi9Mmi3w_LPAg5pLt00VQwwgAsuiUPWtJrSiqDT6yMueQSRj6SJhn7wD8U-NiF0JCSzxOREn3xEBp0TwJ0t2RJxCmZO6BHjG8uchgB8eVjdtyAb-M4GP7Zh4_FAQ6FaR4B8YxzKI6EPswC9Z0oE-uuxbAKOSOK7H2h2KQto1ZOq8U6TKuYH-CZb9fYn7U4tGUCzpMo8qnPTExf-rbDyeLMQL41g.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Ropa y calzado Precio recomendado: 68,00€ 27,96€ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "KENTON COURT",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 13013,
         "date": "2026-10-27T11:32:45+00:00",
         "title": "LEBENGOOD Albornoz Unisex con Capucha – 100 % Algodón OEKO-TEX",
@@ -1483,20 +1498,5 @@
         "brand": "Russell Hobbs",
         "gtin": "",
         "mpn": "21391-56"
-    },
-    {
-        "id": 12905,
-        "date": "2026-10-27T03:05:56+00:00",
-        "title": "moonster® Cuaderno Cuero, 240 Páginas de Papel de Algodón sin Madera con Bordes Irregulares – Cuaderno de Notas – Diario Vintage Hecho a Mano – Diario Personal Estilo Antiguo 20x15cm",
-        "price": "31.99 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09XBGDB34/ref=nosim?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/rSJs6uFy5pSEslaEncM7cmZPOFqRslaHegCiQfApot6ZR0OLa5d5ca0Koi6r2_6QMKT2wUIc0Uh-9JbBw3vNwBDa8drR5g5EdhtD3FeLMbJTDtrbypmFgl3DDlaIhOUbts7YRbXSxO_ZVbHPHAwi3y_SU99jN6eMquv7eI1jyotAxQceJGCfvPhrlFLdTKGUmhjrXKytnzdEapWNE8_Wq7QDEMAUWP5rhvXjGqFoAMvHvdwl7hAi5nPn71AgCO03H-0DVclu-xnBDOpiO9KKYJvlbeWJV8RZLos1GSHYNF4ashgWolYisN1Pd540rNv-XiAQ5iHBswkS7Ul9HFizyw.jpg",
-        "categoria": "papeleria-oficina",
-        "description": "Papelería y oficina Precio recomendado: 47,54€ 31,99€ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "moonster Cuaderno",
-        "gtin": "",
-        "mpn": "20x15cm"
     }
 ]
