@@ -1,5 +1,20 @@
 [
     {
+        "id": 14159,
+        "date": "2026-10-29T10:35:19+00:00",
+        "title": "by Amazon Jabón de mano higiénico, 4 x 500 ml",
+        "price": "6.17 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0CS66CFB8/ref=nosim?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/S_FJXWi-ipiQWJ-ooYiveTVSIb-yuvjTQtdo_3464HSzqcG0il2qfsT3riiwnaZfnL5PzNmu2e_USuoJ5Swn6sDTXdPNpTsp0TkenBKVmx2xZEM9sLkWyjs3a_xXqsuvqdYRAaeQAYHkUDWcTd8NH6kl0dIb1er5AqMPzDxHUgCF9VnxS9n40GF2yBG2XK-2FVNTqb82-ZBIpDUwzlY1x12Bbux4Qrc4ByXg6153WNAXSHueO6fB34HdXXo3wEJGsph4druh19QxITxuraRrhl7obZyijpASfwzZ8UPwDkUBZHXet80p8yOBAfQJirjC3cG0WwR9IySjEczcEddXDQ.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "Higiene y cuidado personal Precio mediano: 7,83€ 6,17€ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "by Amazon",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 14158,
         "date": "2026-10-29T10:34:59+00:00",
         "title": "Colhogar Ultra Suave XXL x36 - Equivalente a 72 rollos - 2 Capas - Blanco - Paquete de 36 Rollos Extra Grandes (3x12)",
@@ -1481,21 +1496,6 @@
         "categoria": "juguetes-infantil",
         "description": "Juguetes e infantil Precio recomendado: 210,00€ 124,80€ Canal: https://t.me/GangasOfertasChollos",
         "brand": "Samsonite Airea",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 14054,
-        "date": "2026-10-29T07:03:17+00:00",
-        "title": "Colgate Max White Ultra – Pasta de Dientes (Pack 2)",
-        "price": "5.98 €",
-        "old_price": "11.98 €",
-        "discount": "-50%",
-        "amazon_url": "https://www.amazon.es/dp/B0H4GWSQQK?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/F3XONb4F14Yj6Hhr6PWdGQZVksSBXc-ANs4Np1Tl2O1LZDuP-yREHcPSRU0Jw8Xt4Q56Cycd-zAibrMlCvrJCVvaz17mytdgV_BXkcpQIHRL98HY3nNoG48rTpUHGXo1u4h-FL7MVektfEUsmV340Et1lkD45qH8fenFNVmxb16lV69WYigQmEYwdTnpkhbedU2WJ7ApVvCU9bfL8pZUW3DFnyEK0zcTQsQQWsL2oYAM8avM71mO3xTpJQhXBVgOZfVI1lWrtTTuY1AdXOGJVwi4QeJ90iJEv2IlrMThOfmlvLJoLgNwpQbI10gxff_CoisRZqddRjuVk7v2QDd5lQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "¡Una sonrisa más blanca y brillante! 💖 Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Colgate Max",
         "gtin": "",
         "mpn": ""
     }
