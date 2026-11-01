@@ -10,8 +10,8 @@ __pycache__/
 *.log
 
 # Estado y cache de la publicacion en X (son de la maquina, no del sitio)
-cache_x.json
-estado_x.json
+publicacion_x/cache_x.json
+publicacion_x/estado_x.json
 
 # Peticiones copiadas del navegador para comparar con el script (traen cookies)
 peticion_manual*.txt

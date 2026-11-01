@@ -18,7 +18,7 @@ TMP = Path(tempfile.mkdtemp(prefix="gangas_e2e_"))
 print(f"  (directorio de trabajo: {TMP})")
 
 # Copia del proyecto con data/ vacio, para no tocar los datos reales
-for f in ["bot.py", "categorias.json"]:
+for f in ["bot.py", "categorias.json", "clasificador.py"]:
     shutil.copy(RAIZ / f, TMP / f)
 (TMP / "data").mkdir()
 for j in (ORIGEN := (RAIZ / "data")).glob("*.json"):

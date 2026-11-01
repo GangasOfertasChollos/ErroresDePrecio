@@ -16,7 +16,7 @@ este script solo formatea lo que ya esta scraped y lo publica.
 Porque no hay dependencias
 --------------------------
 Solo la biblioteca estandar de Python. En un Ubuntu de proot (Termux) no hace
-falta `pip install` ni Chromium ni root: `python3 publicar_x.py` y listo. Todas
+falta `pip install` ni Chromium ni root: `python3 publicacion_x/publicar_x.py` y listo. Todas
 las peticiones HTTP van con `urllib`, que ya viene con Python.
 
 Lo que se rompe con el tiempo
@@ -36,14 +36,14 @@ Por eso el script prueba las dos antes de rendirse.
 
 Uso
 ----
-    python3 publicar_x.py                 # una oferta en cada franja, todos los dias
-    python3 publicar_x.py --ahora         # publica ya las pendientes, sin esperar
-    python3 publicar_x.py --simular       # ensaya sin publicar nada
-    python3 publicar_x.py --limite 3      # como mucho 3 esta vez
-    python3 publicar_x.py --horas 09:00,13:00,18:00,21:30
-    python3 publicar_x.py --categoria gaming-consolas
-    python3 publicar_x.py --revisar       # comprueba la sesion y los ids
-    python3 publicar_x.py --verificar     # lista los ultimos posts y sincroniza
+    python3 publicacion_x/publicar_x.py                 # una oferta en cada franja
+    python3 publicacion_x/publicar_x.py --ahora         # publica ya las pendientes
+    python3 publicacion_x/publicar_x.py --simular       # ensaya sin publicar nada
+    python3 publicacion_x/publicar_x.py --limite 3      # como mucho 3 esta vez
+    python3 publicacion_x/publicar_x.py --horas 09:00,13:00,18:00,21:30
+    python3 publicacion_x/publicar_x.py --categoria gaming-consolas
+    python3 publicacion_x/publicar_x.py --revisar       # comprueba la sesion y los ids
+    python3 publicacion_x/publicar_x.py --verificar     # lista los ultimos posts
 
 Por defecto el script se queda corriendo y publica una oferta en cada franja
 (08:00, 12:00, 17:00 y 21:00, configurable con X_HORAS). Si arranca cuando una
@@ -64,6 +64,7 @@ cerrar la terminal no lo para; se para con Ctrl+C o kill.
 import argparse
 import concurrent.futures
 import hashlib
+import html
 import json
 import logging
 import os
@@ -111,7 +112,8 @@ if hasattr(sys.stdout, 'reconfigure'):
 # ─────────────────────────────────────────────
 # CARGAR .env SI EXISTE
 # ─────────────────────────────────────────────
-_env_path = Path(__file__).resolve().parent / '.env'
+# El .env vive en la raiz del repositorio, comun a bot.py y a este script.
+_env_path = Path(__file__).resolve().parent.parent / '.env'
 if _env_path.exists():
     log.info(f"Cargando variables de entorno desde {_env_path}")
     with open(_env_path, encoding='utf-8') as _f:
@@ -175,10 +177,11 @@ def _parsear_horas(bruto, por_defecto=(8 * 60, 12 * 60, 17 * 60, 21 * 60)):
 # ─────────────────────────────────────────────
 # CREDENCIALES Y CONFIGURACIÓN
 # ─────────────────────────────────────────────
-REPO_PATH   = Path(__file__).resolve().parent
+RUTA_X      = Path(__file__).resolve().parent   # publicacion_x/
+REPO_PATH   = RUTA_X.parent                    # raiz del repositorio
 DATA_PATH   = REPO_PATH / 'data'
-CACHE_PATH  = REPO_PATH / 'cache_x.json'   # ids de operacion y bearer token
-ESTADO_PATH = REPO_PATH / 'estado_x.json'   # ofertas ya publicadas
+CACHE_PATH  = RUTA_X / 'cache_x.json'          # ids de operacion y bearer token
+ESTADO_PATH = RUTA_X / 'estado_x.json'         # ofertas ya publicadas
 
 # Cookies de la sesion de x.com (DevTools > Application > Cookies > x.com).
 AUTH_TOKEN = os.getenv('X_AUTH_TOKEN', '').strip()
@@ -380,6 +383,13 @@ MAX_IMAGEN = 5 * 1024 * 1024
 # Cada segmento de la subida va en 4 MB, por debajo del limite de X.
 SEGMENTO = 4 * 1024 * 1024
 
+# La pagina publica de un mensaje de Telegram expone su miniatura en
+# og:image. Es la misma via que usa bot.py al guardar la oferta.
+RE_OG_IMAGE = re.compile(
+    r'property=["\']og:image["\'][^>]*content=["\']([^"\']+)', re.I)
+RE_OG_IMAGE_ALT = re.compile(
+    r'content=["\']([^"\']+)["\'][^>]*property=["\']og:image', re.I)
+
 
 # ─────────────────────────────────────────────
 # PETICIONES HTTP (solo biblioteca estandar)
@@ -462,19 +472,26 @@ def _descargar_binario(url, limite=MAX_IMAGEN):
 
 
 def _multipart(campos, archivos):
-    """Arma un cuerpo multipart/form-data. `archivos` es [(nombre, nombre_archivo, bytes)]."""
+    """Arma un cuerpo multipart/form-data.
+
+    `archivos` es [(nombre, nombre_archivo, bytes)] o
+    [(nombre, nombre_archivo, bytes, tipo_mime)]. El tipo MIME importa: X
+    revisa que los bytes de la imagen coincidan con lo que se declara.
+    """
     borde = '----PublicarX' + hashlib.md5(str(time.time()).encode()).hexdigest()
     partes = []
     for nombre, valor in campos.items():
         partes.append(f'--{borde}\r\n'.encode())
         partes.append(f'Content-Disposition: form-data; name="{nombre}"\r\n\r\n'.encode())
         partes.append(f'{valor}\r\n'.encode())
-    for nombre, nombre_archivo, datos in archivos:
+    for archivo in archivos:
+        nombre, nombre_archivo, datos = archivo[:3]
+        tipo = archivo[3] if len(archivo) > 3 else 'application/octet-stream'
         partes.append(f'--{borde}\r\n'.encode())
         partes.append(
             f'Content-Disposition: form-data; name="{nombre}"; filename="{nombre_archivo}"\r\n'.encode()
         )
-        partes.append(b'Content-Type: application/octet-stream\r\n\r\n')
+        partes.append(f'Content-Type: {tipo}\r\n\r\n'.encode())
         partes.append(datos)
         partes.append(b'\r\n')
     partes.append(f'--{borde}--\r\n'.encode())
@@ -932,6 +949,97 @@ def descubrir_operaciones(forzar=False):
 # ─────────────────────────────────────────────
 # SUBIDA DE IMAGEN Y PUBLICACIÓN
 # ─────────────────────────────────────────────
+def _tipo_imagen(datos):
+    """Tipo MIME y extension de la imagen, mirando sus primeros bytes.
+
+    No se puede dar por hecho que sea JPEG: Telegram sirve tambien PNG y
+    WebP, y X rechaza la subida si el tipo declarado no coincide.
+    """
+    if datos.startswith(b'\xff\xd8\xff'):
+        return 'image/jpeg', 'jpg'
+    if datos.startswith(b'\x89PNG\r\n\x1a\n'):
+        return 'image/png', 'png'
+    if datos[:6] in (b'GIF87a', b'GIF89a'):
+        return 'image/gif', 'gif'
+    if datos[:4] == b'RIFF' and datos[8:12] == b'WEBP':
+        return 'image/webp', 'webp'
+    return 'image/jpeg', 'jpg'
+
+
+def _url_publica_oferta(oferta):
+    """URL publica del mensaje en el canal: https://t.me/<canal>/<id>.
+
+    Devuelve '' si no se puede construir. Los enlaces de invitacion
+    (t.me/+hash) y los de canal privado (t.me/c/...) no llevan id de mensaje
+    en la ruta, asi que no sirven para esto.
+    """
+    identificador = str(oferta.get('id') or '').strip()
+    if not identificador.isdigit():
+        return ''
+    partes = urllib.parse.urlparse(CANAL_TELEGRAM.rstrip('/'))
+    if partes.netloc.lower() not in ('t.me', 'telegram.me'):
+        return ''
+    nombre = partes.path.strip('/')
+    if not nombre or nombre.startswith('+') or nombre.startswith('c/'):
+        return ''
+    return f'https://t.me/{nombre}/{identificador}'
+
+
+def _og_image_de_mensaje(oferta):
+    """URL vigente de la imagen, sacada de la pagina del mensaje en t.me.
+
+    Las URLs `cdn4.telesco.pe` que guarda bot.py en el JSON dejan de existir
+    a los pocos dias (devuelven 404), pero la pagina publica del mensaje
+    sigue viva y expone la miniatura en su og:image. Es la misma via que usa
+    bot.py al crear la oferta.
+    """
+    url = _url_publica_oferta(oferta)
+    if not url:
+        return ''
+    try:
+        respuesta = _peticion(url, cabeceras={
+            'User-Agent': USER_AGENT,
+            'Accept': 'text/html,application/xhtml+xml',
+            'Accept-Language': 'es-ES,es;q=0.9',
+        })
+    except ConnectionError as error:
+        log.warning(f"  No se pudo pedir la pagina del mensaje: {error}")
+        return ''
+    if not respuesta.ok():
+        log.warning(f"  t.me devolvio HTTP {respuesta.estado} para {url}")
+        return ''
+    coincidencia = (RE_OG_IMAGE.search(respuesta.texto)
+                    or RE_OG_IMAGE_ALT.search(respuesta.texto))
+    if not coincidencia:
+        log.warning(f"  La pagina {url} no trae og:image")
+        return ''
+    return html.unescape(coincidencia.group(1))
+
+
+def _datos_imagen(oferta):
+    """Bytes de la imagen de la oferta, o b'' si no hay ninguna valida.
+
+    Se intenta primero la pagina del mensaje en t.me, que da la URL vigente:
+    los enlaces `cdn4.telesco.pe` que guarda el JSON caducan a los pocos dias
+    y devuelven 404. Si t.me no responde, se usa la URL guardada como ultimo
+    recurso. Asi la imagen se publica igual aunque la oferta sea de hace
+    semanas.
+    """
+    url = _og_image_de_mensaje(oferta)
+    if url:
+        datos = _descargar_binario(url)
+        if datos:
+            log.info(f"  Imagen recuperada de t.me ({len(datos)} bytes)")
+            return datos
+        log.info("  La imagen de t.me no se pudo descargar: se prueba la guardada")
+    url = str(oferta.get('image') or '').strip()
+    if url:
+        datos = _descargar_binario(url)
+        if datos:
+            return datos
+    return b''
+
+
 def subir_imagen(url_imagen):
     """Sube una imagen a X y devuelve su media_id, o '' si no se pudo.
 
@@ -943,8 +1051,20 @@ def subir_imagen(url_imagen):
     datos = _descargar_binario(url_imagen)
     if not datos:
         return ''
+    return _subir_datos(datos)
 
-    tipo = 'image/jpeg'
+
+def subir_imagen_de_oferta(oferta):
+    """Sube la imagen de la oferta y devuelve su media_id, o '' si no hay."""
+    datos = _datos_imagen(oferta)
+    if not datos:
+        return ''
+    return _subir_datos(datos)
+
+
+def _subir_datos(datos):
+    """Sube los bytes de una imagen a X y devuelve su media_id, o ''."""
+    tipo, extension = _tipo_imagen(datos)
     parametros = urllib.parse.urlencode({
         'command': 'INIT',
         'media_category': 'tweet_image',
@@ -975,7 +1095,8 @@ def subir_imagen(url_imagen):
             'media_id': media_id,
             'segment_index': str(indice),
         })
-        cuerpo, tipo_cuerpo = _multipart({}, [('media', 'oferta.jpg', segmento)])
+        cuerpo, tipo_cuerpo = _multipart(
+            {}, [('media', f'oferta.{extension}', segmento, tipo)])
         try:
             respuesta = _peticion(f'{HOSTO_UPLOAD}?{parametros}', datos=cuerpo, metodo='POST',
                                    cabeceras=_cabeceras_x(json_body=False,
@@ -998,7 +1119,29 @@ def subir_imagen(url_imagen):
         log.warning(f"  X rechazo el cierre de la subida (HTTP {respuesta.estado})")
         return ''
 
-    log.info(f"  Imagen subida (media_id {media_id})")
+    # Si X deja la imagen en procesamiento, hay que esperar a que termine: si
+    # se publica antes, el post sale sin ella.
+    cierre = respuesta.json() or {}
+    procesamiento = ((cierre.get('processing_info') or {}) if isinstance(cierre, dict) else {})
+    espera = 2
+    while procesamiento.get('state') == 'pending':
+        time.sleep(espera)
+        parametros = urllib.parse.urlencode({
+            'command': 'STATUS',
+            'media_id': media_id,
+        })
+        try:
+            respuesta = _peticion(f'{HOSTO_UPLOAD}?{parametros}',
+                                   cabeceras=_cabeceras_x(json_body=False))
+        except ConnectionError as error:
+            log.warning(f"  No se pudo consultar la imagen: {error}")
+            break
+        if not respuesta.ok():
+            break
+        procesamiento = (respuesta.json() or {}).get('processing_info') or {}
+        espera = min(espera * 2, 10)
+
+    log.info(f"  Imagen subida (media_id {media_id}, {tipo})")
     return media_id
 
 
@@ -1092,7 +1235,8 @@ def _variables_publicar(texto, media_ids, reply_to=''):
     variables = {
         'tweet_text': texto,
         'media': {
-            'media_entities': [{'media_id': str(m)} for m in (media_ids or [])],
+            'media_entities': [{'media_id': str(m), 'tagged_users': []}
+                               for m in (media_ids or [])],
             'possibly_sensitive': False,
         },
         'semantic_annotation_ids': [],
@@ -1980,10 +2124,14 @@ def publicar_una(oferta, operaciones, preferida='', con_imagen=True,
     log.info(f"  Texto ({longitud_post(texto)}/280): {texto[:120]!r}")
 
     media_ids = []
-    if con_imagen and oferta.get('image'):
-        media_id = subir_imagen(oferta['image'])
+    if con_imagen:
+        media_id = subir_imagen_de_oferta(oferta)
         if media_id:
             media_ids.append(media_id)
+        else:
+            log.error("  No se pudo subir la imagen: el post saldra solo con texto")
+    else:
+        log.info("  Imagen desactivada (X_CON_IMAGEN=0 o --sin-imagen)")
 
     id_post, error, operaciones, preferida = _publicar_texto(
         texto, operaciones, preferida, media_ids=media_ids, etiqueta='post')

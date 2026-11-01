@@ -7,9 +7,10 @@ de lo ya publicado.
 
 Para el descubrimiento de los ids de operacion y la subida de imagen hace
 falta una sesion real de x.com: eso se prueba a mano con
-`python3 publicar_x.py --revisar`.
+`python3 publicacion_x/publicar_x.py --revisar`.
 """
 import importlib.util
+import html
 import json
 import os
 import shutil
@@ -18,8 +19,9 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
-RAIZ = Path(__file__).resolve().parent.parent
-spec = importlib.util.spec_from_file_location("publicar_x", RAIZ / "publicar_x.py")
+RUTA_X = Path(__file__).resolve().parent
+RAIZ = RUTA_X.parent
+spec = importlib.util.spec_from_file_location("publicar_x", RUTA_X / "publicar_x.py")
 px = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(px)
 
@@ -352,6 +354,57 @@ check("una hora invalida se ignora",
       px._parsear_horas("08:00, 25:00, 12:00"))
 check("sin horas validas se usan las de por defecto",
       px._parsear_horas("nada") == HORAS, px._parsear_horas("nada"))
+
+print("\n== 17. La imagen: URL vigente y tipo real ==")
+check("un JPEG se reconoce", px._tipo_imagen(b'\xff\xd8\xff\xe0' + b'0' * 10) == ('image/jpeg', 'jpg'))
+check("un PNG se reconoce", px._tipo_imagen(b'\x89PNG\r\n\x1a\n' + b'0' * 10) == ('image/png', 'png'))
+check("un GIF se reconoce", px._tipo_imagen(b'GIF89a' + b'0' * 10) == ('image/gif', 'gif'))
+check("un WebP se reconoce",
+      px._tipo_imagen(b'RIFF' + b'\x00' * 4 + b'WEBP' + b'0' * 10) == ('image/webp', 'webp'))
+check("lo que no se reconoce se manda como JPEG",
+      px._tipo_imagen(b'cualquier cosa') == ('image/jpeg', 'jpg'))
+
+canal_original = px.CANAL_TELEGRAM
+px.CANAL_TELEGRAM = "https://t.me/GangasOfertasChollos"
+check("se arma la pagina del mensaje",
+      px._url_publica_oferta({"id": 12634}) == "https://t.me/GangasOfertasChollos/12634",
+      px._url_publica_oferta({"id": 12634}))
+check("un id que no es numero no vale", px._url_publica_oferta({"id": "x"}) == "")
+check("sin id no vale", px._url_publica_oferta({}) == "")
+px.CANAL_TELEGRAM = "https://t.me/+ABC123"
+check("un enlace de invitacion no lleva id de mensaje",
+      px._url_publica_oferta({"id": 12634}) == "")
+px.CANAL_TELEGRAM = canal_original
+
+pagina = ('<meta property="og:image" '
+          'content="https://cdn4.telesco.pe/file/AB.jpg?x=1&amp;y=2">')
+coincidencia = (px.RE_OG_IMAGE.search(pagina) or px.RE_OG_IMAGE_ALT.search(pagina))
+check("el og:image se saca de la pagina",
+      coincidencia and html.unescape(coincidencia.group(1))
+      == "https://cdn4.telesco.pe/file/AB.jpg?x=1&y=2", coincidencia)
+pagina_al_reves = ('<meta content="https://cdn4.telesco.pe/file/CD.jpg" '
+                   'property="og:image">')
+coincidencia = (px.RE_OG_IMAGE.search(pagina_al_reves)
+                or px.RE_OG_IMAGE_ALT.search(pagina_al_reves))
+check("el og:image se saca aunque el orden cambie",
+      coincidencia and coincidencia.group(1) == "https://cdn4.telesco.pe/file/CD.jpg",
+      coincidencia)
+
+cuerpo, tipo_cuerpo = px._multipart({}, [('media', 'oferta.png', b'\x89PNG', 'image/png')])
+check("el multipart declara el tipo de la imagen", b'Content-Type: image/png' in cuerpo, cuerpo[:200])
+check("el multipart lleva el nombre del fichero", b'filename="oferta.png"' in cuerpo, cuerpo[:200])
+check("el multipart lleva el borde",
+      ('boundary=' in tipo_cuerpo) and tipo_cuerpo.endswith('boundary=' + tipo_cuerpo.split('boundary=')[1]),
+      tipo_cuerpo)
+cuerpo, _ = px._multipart({}, [('media', 'oferta.jpg', b'\xff\xd8')])
+check("sin tipo se usa octet-stream",
+      b'Content-Type: application/octet-stream' in cuerpo, cuerpo[:200])
+
+variables = px._variables_publicar("hola", ["123"])
+check("la imagen va en media_entities",
+      variables["media"]["media_entities"][0]["media_id"] == "123", variables)
+check("la imagen lleva tagged_users",
+      variables["media"]["media_entities"][0].get("tagged_users") == [], variables)
 
 print("\n" + "=" * 56)
 print("TODO CORRECTO" if fallos == 0 else f"{fallos} FALLOS")

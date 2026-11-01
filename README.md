@@ -15,7 +15,10 @@ esos JSON y los muestra en un catálogo por categorías.
 
 ```
 bot.py                 Bot de Telethon
-publicar_x.py          Publica las ofertas del catálogo en X (API interna de X)
+reenvioCategorias.py   Reenvía cada oferta al tema de su categoría en el grupo
+clasificador.py        Clasificador compartido por la web y el reenvío
+temas_telegram.json    Id del tema (topic) de cada categoría en el grupo
+publicacion_x/         Publicación en X: script, pruebas, estado y log
 categorias.json        Diccionario de palabras clave por categoría
 data/*.json            Ofertas (generados por el bot)
 assets/style.css       Estilos compartidos por todas las páginas
@@ -226,18 +229,20 @@ git push
 
 ## Publicar en X (Twitter)
 
-`publicar_x.py` publica las ofertas del catálogo en X. **No usa la API de pago**
+`publicacion_x/publicar_x.py` publica las ofertas del catálogo en X. **No usa la API de pago**
 de X: habla con la API interna de X —la misma que usa la web— con las cookies
 de una sesión del navegador. Por eso necesita la cookie `auth_token`, que se
-copia de las DevTools.
+copia de las DevTools. El script, sus pruebas, el estado (`estado_x.json`), la
+caché (`cache_x.json`) y el log (`x.log`) viven en `publicacion_x/`; el `.env`
+sigue en la raíz, compartido con `bot.py`.
 
 ```bash
-python3 publicar_x.py                 # 4 ofertas al día, una por franja
-python3 publicar_x.py --simular       # ver cómo quedarían los posts, sin publicar
-python3 publicar_x.py --ahora         # publicar ya las pendientes
-python3 publicar_x.py --revisar       # comprobar la sesión y los ids de operación
-python3 publicar_x.py --limite 3      # publicar tres ofertas y parar
-python3 publicar_x.py --verificar     # listar los últimos posts de la cuenta
+python3 publicacion_x/publicar_x.py                 # 4 ofertas al día, una por franja
+python3 publicacion_x/publicar_x.py --simular       # ver cómo quedarían los posts, sin publicar
+python3 publicacion_x/publicar_x.py --ahora         # publicar ya las pendientes
+python3 publicacion_x/publicar_x.py --revisar       # comprobar la sesión y los ids de operación
+python3 publicacion_x/publicar_x.py --limite 3      # publicar tres ofertas y parar
+python3 publicacion_x/publicar_x.py --verificar     # listar los últimos posts de la cuenta
 ```
 
 ### El horario
@@ -258,7 +263,7 @@ En Termux el reloj del sistema suele estar en UTC, así que conviene instalar
 Se cambian con `X_HORAS` en el `.env` o con `--horas`:
 
 ```bash
-python3 publicar_x.py --horas 09:00,13:00,18:00,21:30
+python3 publicacion_x/publicar_x.py --horas 09:00,13:00,18:00,21:30
 ```
 
 El catálogo y el estado se releen en cada franja, así que las ofertas que
@@ -293,7 +298,7 @@ La respuesta es visible al abrir el post y el post principal queda limpio.
 Para volver al comportamiento antiguo, con los enlaces dentro del post:
 
 ```bash
-python3 publicar_x.py --enlace-en-post
+python3 publicacion_x/publicar_x.py --enlace-en-post
 ```
 
 o en el `.env`:
@@ -330,7 +335,7 @@ Application → Cookies → `https://x.com`, y copia el valor de `auth_token`.
 
 ### No se publica dos veces la misma oferta
 
-`estado_x.json` guarda el id de Telegram de cada oferta ya publicada junto al
+`publicacion_x/estado_x.json` guarda el id de Telegram de cada oferta ya publicada junto al
 id de su post. En la siguiente ejecución se las salta. Si el fichero se borra,
 el script vuelve a publicar desde el principio del catálogo: para eso está
 `X_SOLO_ID_MIN`, que solo deja pasar ofertas con id mayor que el que se le
@@ -342,7 +347,7 @@ Los identificadores de las operaciones de GraphQL caducan, y en 2025 X cambió
 el frontend entero: las operaciones ya no se llaman con un id numérico sino con
 ids de Relay (`wR5Z_lEibLvkew3tF9w-Sg`) y se piden a `api.x.com/graphql`. Por
 eso el script **busca esos ids en el propio JavaScript de x.com** en lugar de
-tenerlos escritos, los cachea una semana en `cache_x.json` y los vuelve a
+tenerlos escritos, los cachea una semana en `publicacion_x/cache_x.json` y los vuelve a
 buscar cuando X responde que no conoce la operación. Si alguna vez deja de
 funcionar por esto, `X_QUERY_IDS` permite ponerlos a mano.
 
@@ -394,7 +399,7 @@ se prueba la otra. En octubre de 2026 la vieja era la que entraba y la nueva
 decía que la petición era automática.
 
 Además el script **acuerda qué mutación es la buena**: guarda en
-`estado_x.json` la que funcionó por última vez y la prueba primero la
+`publicacion_x/estado_x.json` la que funcionó por última vez y la prueba primero la
 siguiente vez, porque gastar un intento con la que no entra también se nota.
 
 Si las dos fallan, no conviene reintentar seguido: en el `226` y en el `344`
@@ -434,12 +439,18 @@ publicando a mano sin problemas mientras la API ya estaba bloqueada.
 
 Si la oferta tiene imagen, se sube a `upload.x.com` y se adjunta al post. Si
 la subida falla, el post sale igual sin imagen: es un fallo degradado, no un
-error. Se puede desactivar con `X_CON_IMAGEN=0` o `--sin-imagen`.
+error (queda un `ERROR` en el log para saberlo). Se puede desactivar con
+`X_CON_IMAGEN=0` o `--sin-imagen`.
 
 > Ojo: las imágenes del catálogo vienen del CDN de Telegram (`cdn4.telesco.pe`)
 > y caducan. En octubre de 2026 las 100 URLs de `data/general.json` devolvían
-> 404, así que los posts salían sin foto. Con `X_CON_IMAGEN=0` el script no
-> pierde tiempo intentándolo.
+> 404, así que los posts salían sin foto. Por eso ahora, antes de subir nada,
+> el script reconstruye la página pública del mensaje
+> (`https://t.me/GangasOfertasChollos/<id>`, el canal de `X_CANAL_TELEGRAM` o
+> `TELEGRAM_CHANNEL`) y saca de su `og:image` la URL que sirve en ese momento.
+> Solo si eso falla se prueba la URL guardada en el JSON. El tipo de la imagen
+> (JPEG, PNG, GIF o WebP) se detecta por los primeros bytes, porque X rechaza
+> la subida si no coincide con lo que se declara.
 
 ### En Termux (Android)
 
@@ -450,7 +461,7 @@ ni Chromium, ni root, ni navegador. En Termux:
 pkg install python tzdata tmux   # si no están
 cd ~/ErroresDePrecio
 cp .env.example .env             # si aún no existe; rellena X_AUTH_TOKEN
-python3 publicar_x.py --simular
+python3 publicacion_x/publicar_x.py --simular
 ```
 
 Para dejarlo publicando en segundo plano:
@@ -458,7 +469,7 @@ Para dejarlo publicando en segundo plano:
 ```bash
 termux-wake-lock
 tmux new -s x
-python3 publicar_x.py
+python3 publicacion_x/publicar_x.py
 # Ctrl+B, luego D: sales de tmux sin parar el script
 ```
 
@@ -466,7 +477,7 @@ Sin tmux, con `nohup`:
 
 ```bash
 termux-wake-lock
-nohup python3 publicar_x.py >> salida_x.log 2>&1 &
+nohup python3 publicacion_x/publicar_x.py >> publicacion_x/salida_x.log 2>&1 &
 ```
 
 Para pararlo:
@@ -610,6 +621,7 @@ python tests/verificar_iconos.py    # los <link rel=icon> resuelven y existen
 python tests/validar_contenido.py   # volumen y limpieza del copy de cada categoría
 python tests/validar_orden.py       # orden ofertas→texto, clases y JSON-LD
 python tests/test_publicar_html.py  # el bot regenera y sube el HTML correcto
+python publicacion_x/test_publicar_x.py  # textos, estado y operaciones de la publicación en X
 ```
 
 `auditar_seo.py` barre las 39 páginas y comprueba lo transversal que los otros
@@ -844,10 +856,64 @@ Todo en `.env` (ver `.env.example`):
 | `AUTO_PUBLICAR` | `0` | Publica `data/` en git automáticamente |
 | `GIT_REMOTO` / `GIT_RAMA` | `origin` / `main` | Destino del push |
 | `PUBLICAR_CADA_SEGUNDOS` | `60` | Frecuencia máxima de publicación |
+| `GRUPO_DESTINO_ID` | `-1004484167619` | Grupo foro al que reenvía `reenvioCategorias.py` |
+| `SESSION_NAME` | `sesion_reenvio` | Sesión de Telethon del reenvío (separada de la del bot) |
+| `REENVIO_SIMULADO` | `0` | Clasifica sin enviar nada (equivale a `--simulado`) |
 
 ## Categorías
 
-Las palabras de clasificación se editan en `categorias.json`. La búsqueda
-ignora tildes y mayúsculas, y las coincidencias son por palabra completa, así
-que `pantalón` y `pantalon` funcionan igual. Cuando dos categorías empatan,
-gana la que aparece antes en el archivo.
+Las palabras de clasificación se editan en `categorias.json`, y el mismo
+diccionario lo usan `bot.py` (web) y `reenvioCategorias.py` (grupo) a través de
+`clasificador.py`. La búsqueda ignora tildes y mayúsculas, y las coincidencias
+son por palabra completa: `pantalón` y `pantalon` funcionan igual, y `gel` no
+manda `gelatina` a higiene. El plural se tolera en cada palabra de la expresión,
+así que `cepillo eléctrico` encuentra `cepillos eléctricos` sin duplicar el
+término en el archivo.
+
+Gana la categoría con más palabras clave distintas. En caso de empate gana la
+coincidencia más larga (la más específica) y, si persiste, la categoría que
+aparece antes en el archivo. Por eso `papel higiénico` va a higiene y no a
+papelería, y `silla gaming` va a gaming y no a oficina.
+
+Las marcas que solo tienen sentido con un modelo detrás (`POCO X6`, `Moto G56`)
+están en `PATRONES_EXTRA` de `clasificador.py`: `poco` a secas es una palabra
+corriente en castellano y mandaría a móviles cualquier oferta que dijera "un
+poco de…".
+
+## Reenvío por categorías al grupo
+
+`reenvioCategorias.py` copia cada oferta nueva del canal al tema del grupo que
+le corresponde, para que quien siga el grupo pueda quedarse solo con las
+categorías que le interesan.
+
+- Los ids de los temas están en `temas_telegram.json` (categoría → `topic_id`).
+- El reparto usa el mismo `clasificador.py` y el mismo `categorias.json` que la
+  web: una oferta que en la web sale en "Ropa y calzado" se reenvía al tema de
+  ropa.
+- Si una categoría del diccionario no tiene tema, el bot se niega a arrancar en
+  vez de mandar todas sus ofertas a General sin avisar.
+- Usa una sesión propia (`SESSION_NAME=sesion_reenvio`) para no pelearse con
+  `bot.py` por el mismo archivo SQLite. La primera vez pedirá el código de
+  Telegram, como el bot principal.
+
+```bash
+python reenvioCategorias.py --clasificar "Zapatillas Nike Air"  # sin conectar
+python reenvioCategorias.py --temas        # comprueba los ids reales del grupo
+python reenvioCategorias.py --historial 20 # simula 20 mensajes, no envía
+python reenvioCategorias.py --simulado     # escucha en vivo, pero no envía
+python reenvioCategorias.py                # escucha y reenvía
+```
+
+Antes de dejarlo en marcha conviene ejecutar `--temas`: imprime el id y el
+título real de cada tema del grupo junto al mapeo de `temas_telegram.json`, así
+se detecta un id cambiado sin publicar nada.
+
+### Pruebas del reparto
+
+```bash
+python tests/test_reenvio_categorias.py
+```
+
+El test comprueba que el diccionario y los temas cuadran, las trampas típicas
+("gelatina" no es "gel", "un poco" no es POCO, "sin cable" no es electrónica) y
+una muestra de títulos reales del canal con la categoría esperada.

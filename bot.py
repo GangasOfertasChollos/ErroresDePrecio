@@ -8,9 +8,16 @@ import shutil
 import subprocess
 import sys
 import time
-import unicodedata
 import urllib.request
 from pathlib import Path
+
+# bot.py se importa tambien desde tests/ con importlib, sin que la raiz del
+# proyecto este en sys.path. Se anade para poder compartir clasificador.py.
+_REPO_DIR = str(Path(__file__).resolve().parent)
+if _REPO_DIR not in sys.path:
+    sys.path.insert(0, _REPO_DIR)
+
+import clasificador
 
 # ─────────────────────────────────────────────
 # CONFIGURACIÓN DE LOGGING
@@ -208,72 +215,40 @@ PALABRAS_CATEGORIAS = cargar_diccionario()
 # ─────────────────────────────────────────────
 # FUNCIONES DE PROCESAMIENTO
 # ─────────────────────────────────────────────
-def normalizar(texto):
-    """Elimina tildes y convierte a minusculas para comparaciones insensibles a acentos."""
-    return ''.join(
-        c for c in unicodedata.normalize('NFD', texto)
-        if unicodedata.category(c) != 'Mn'
-    ).lower()
-
-def precompilar_patrones(diccionario):
-    """Normaliza y compila las palabras clave una sola vez al arrancar.
-
-    Antes se recalculaba normalizar()+re.escape() en cada mensaje por cada
-    palabra (~190), lo que multiplicaba el trabajo de forma innecesaria.
-    """
-    patrones = {}
-    for categoria, palabras in diccionario.items():
-        compilados = []
-        for palabra in palabras:
-            palabra_norm = normalizar(palabra)
-            if not palabra_norm:
-                continue
-            compilados.append((
-                palabra,
-                re.compile(r'(?<!\w)' + re.escape(palabra_norm) + r'(?!\w)')
-            ))
-        patrones[categoria] = compilados
-    log.info(f"Patrones compilados: {sum(len(v) for v in patrones.values())} palabras en {len(patrones)} categorias")
-    return patrones
-
+# El clasificador vive en clasificador.py para que la web y el reenvio al grupo
+# de Telegram repartan las ofertas igual. Aqui solo se envuelve con el log del
+# bot: si cada uno tuviera su copia, un cambio en las palabras clave de un sitio
+# no llegaria al otro.
+normalizar = clasificador.normalizar
+precompilar_patrones = clasificador.precompilar_patrones
 PATRONES_CATEGORIAS = precompilar_patrones(PALABRAS_CATEGORIAS)
+log.info(f"Patrones compilados: "
+         f"{sum(len(v) for v in PATRONES_CATEGORIAS.values())} palabras "
+         f"en {len(PATRONES_CATEGORIAS)} categorias")
 
 def clasificar_oferta(texto):
     """Clasifica la oferta en una categoria en base a coincidencias en el diccionario.
 
-    En caso de empate gana la categoria que aparece antes en categorias.json,
-    porque max() devuelve el primer maximo al recorrer el diccionario en orden.
+    Gana la categoria con mas palabras clave distintas; en caso de empate, la
+    coincidencia mas larga y despues la que aparece antes en categorias.json.
     """
     if not texto or not texto.strip():
         log.debug("  [CLASIF] Texto vacio -> general")
-        return 'general'
+        return clasificador.CATEGORIA_GENERAL
 
-    texto_norm = normalizar(texto)
-    puntuaciones = {}
-    mejor_categoria = None
-    mejor_puntuacion = 0
+    detalle = clasificador.explicar(texto, PATRONES_CATEGORIAS)
+    for otra in detalle['todas']:
+        log.debug(f"  [CLASIF] {otra['categoria']}: {otra['puntuacion']} "
+                  f"coincidencias -> {otra['coincidencias']}")
 
-    for categoria, compilados in PATRONES_CATEGORIAS.items():
-        total = 0
-        coincidencias = []
-        for palabra, patron in compilados:
-            if patron.search(texto_norm):
-                total += 1
-                coincidencias.append(palabra)
-        puntuaciones[categoria] = total
-        if total > 0:
-            log.debug(f"  [CLASIF] {categoria}: {total} coincidencias -> {coincidencias}")
-        # '>' estricto: conserva la primera categoria en caso de empate
-        if total > mejor_puntuacion:
-            mejor_puntuacion = total
-            mejor_categoria = categoria
-
-    if mejor_categoria:
-        log.debug(f"  [CLASIF] Categoria asignada: {mejor_categoria} (puntuacion: {mejor_puntuacion})")
-        return mejor_categoria
+    if detalle['puntuacion']:
+        origen = ' (etiqueta del canal)' if detalle['origen'] == 'etiqueta' else ''
+        log.debug(f"  [CLASIF] Categoria asignada: {detalle['categoria']} "
+                  f"(puntuacion: {detalle['puntuacion']}){origen}")
+        return detalle['categoria']
 
     log.debug("  [CLASIF] Sin coincidencias -> general")
-    return 'general'
+    return clasificador.CATEGORIA_GENERAL
 
 def extraer_enlace_amazon(texto, mensaje=None):
     """Extrae enlaces de Amazon (amazon.es, amzn.to, amzn.eu, amazon.com) del texto o entidades."""
