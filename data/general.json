@@ -1,5 +1,35 @@
 [
     {
+        "id": 17243,
+        "date": "2026-11-04T15:22:42+00:00",
+        "title": "Hollow Knight",
+        "price": "23.99 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B07PC3V9F2/ref=nosim?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/gTgdJLBKJ10JOCLPu9Qr4Zbv4AtPp1v-0IlOKiqakjb4rvlIFEmikqsqMfvYQ1TLxwtVWE58VsJmypBkTgYs3q_txci7ZayjjR8HtSjhEZFu9Qj-bK7C9nQNBRM5IlM1kTYso_tGJPcuKpqLzvgYu-DB7G348IPxxfXZqHNcY_hhxWKZ4A_jonAOC00HvnMZexXhc4Vu4h-zn96sS_M3olD6QDfSacwgTJ1JXKVTMmav_LiQj42ymkTwqUqfpE2a2r7W8nZuDWUbLuBXbD2X0pyRGRd_kUNjCnkbzkBzzVj3ekEoLeXey7JRzfKYb3RU1zd_d1K1ksj-1Td-hZ-3zw.jpg",
+        "categoria": "gaming-consolas",
+        "description": "Gaming y consolas Precio recomendado: 29,99€ 23,99€ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Hollow Knight",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
+        "id": 17242,
+        "date": "2026-11-04T15:22:24+00:00",
+        "title": "Polo Blue Edt Vapo 200 Ml",
+        "price": "64.95 €",
+        "old_price": "",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B000CCZ7ZE/ref=nosim?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/JeKbx2rhoKwksMm982f28xQ6dim4VD3a5yeryoJo8_88H-ps1tPoTlWKaH4Sq3-jgNQYgldn8jYxOULSIBjHcUHG3H5rNXUwQYedfyZeI0cQtpgaLLgfZA17qjgPfHMLSchkeb1iIuIURSuecWstt3caEJBV7PQxamB828_rMdgRX0B31eT4NF9Hdmjog9i-brONQKnGgRbU30XnLy6VIEJ1qsr7lsRYamDKWCVE7Vrgr_mPpTuP_KzLN_UbCj_Uytoa-1hPNJWFouYvUENL1w1u56Xbl6aXvuNKa7-zEsQeCdN8BLl9XiHGKwvJ1j7CCVyFpbxuQp_-ydfbMlRC3w.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Higiene y cuidado personal Precio recomendado: 89,00€ 64,95€ Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Polo Blue",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 17241,
         "date": "2026-11-04T15:20:33+00:00",
         "title": "hummel hmlCore XK Poly - Sudadera con Capucha para Mujer",
@@ -1466,36 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Pantalón corto deportivo, ligero y cómodo, ideal para entrenar y jugar al fútbol. Canal: https://t.me/GangasOfertasChollos",
         "brand": "ADIDAS SQUADRA",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 17141,
-        "date": "2026-11-04T11:43:39+00:00",
-        "title": "Lee Twin Pack Crew, Camisetas para Hombre, Gris (Greymele Navy), S",
-        "price": "14.97 €",
-        "old_price": "35.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B08CVRPNLX?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/NkxiZZGFye6MnKes1I5V609to8L-klvletDpu-DA60-5hhID5gIJJpYggHy6xG7LmIipRnX8hP4_I98jfCPk8Z3KeN9bMRCYWRdS4BOKbOc0SqYVDQmayltpG-xMTPVylzOguVpcjXoaYAsxCswcnCnoz17bPm0atlA5hGGQpJbFxxCJgcQdjUnQes0ceu1MrYu-3SZmgRGZ-AnMN-demtzqdbgeE39j2LdlLvDsZ-1yRGJ2bQbvKQibPn0A-s0nmypJroVtDkkjmQkjqkAOZYcOS4MrDDbCnwO0pYiagm2IThQc6tMBTR8tI3IQFRAeyeJ-7_cqS8_IsclkBYLcYA.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Lee Twin",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 17140,
-        "date": "2026-11-04T11:38:42+00:00",
-        "title": "Sony ULT Field 3 - Altavoz Bluetooth portátil con ULT Power Sound, batería de 24 Horas, IP67, Resistente al Agua, al Polvo y a los Golpes, Correa Desmontable para el Hombro, Compacto - Negro",
-        "price": "119.90 €",
-        "old_price": "",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DZ76B7XQ/ref=nosim?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/QAR-_sGUZRGdIHd7Cb_MW69bN-2xP-MnCd8uYYuP1VAIRTGZlRQRqwclkUx6EL8VBKISMvjdL3cJW5BXIDBNpKaFu5G333QMbQP9SQ-N7-IvKwEAeOJqUlrsXb0990eRUxKAS2S1HgKWbec1squzcRTn59CrojPD38-8KQJyLy_L276ZLgBbWRyRW2oDpS3FFXdPlJ8uvvOXwviFpzMUqmFdLgluZz2l-s4c4JkCC6_hcFHzA5Temc1cif_61WYzRF7dBdqNVwBmxYrIOouPQPKXIhkBHUNmJn7eCor2KMzQXbkEoViU7NSRzLrMHGEaWxQi5JTGdQFYf0WqMJV32w.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Móviles y electrónica Precio recomendado: 199,00€ 119,90€ Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Sony ULT Field 3",
         "gtin": "",
         "mpn": ""
     }
