@@ -1,5 +1,20 @@
 [
     {
+        "id": 19698,
+        "date": "2026-11-11T13:00:47+00:00",
+        "title": "FERPLAST COLCHONETA IMPERMEABLE PARA PERROS 98 x 65 CM",
+        "price": "28.12 €",
+        "old_price": "55.40 €",
+        "discount": "-49%",
+        "amazon_url": "https://www.amazon.es/dp/B00BEF0WS0?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/jbj4yPLy5qxS7GETbWx1FudbVnx61BPCXFkkHPqLky0RFz6RTijwYzOYMWb5fvyaNk8-2xAeE09-RWpIBvhbpCdIL4SkizRufGOs1rl-GtMEmEo4jX-vcE7z2XZCMr2zXdxS4Ng0NNmkrxh7mDc-bn6anKP-1iVtpxt7gfmFvEC8BIRQ-dUUMf9Q3zjGHGalBWeKyUf-Y15RCwfRq3Iq4srWrxHLCpbnUU9z8ZvV60_g8iBncrUdgRO5eYWTDZCP_rOh0F6m-4yugWD3312o1NeNX9xhXtouYD4x73JcptuQRZm_T3X1QJ06RCfMRNAuAbYzn92wrHz7d67bUiX2aw.jpg",
+        "categoria": "general",
+        "description": "Colchoneta cómoda, lavable e impermeable para mascotas. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "FERPLAST COLCHONETA",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 19697,
         "date": "2026-11-11T13:00:04+00:00",
         "title": "MATEIN Mochila Portatil Hombre Impermeable, Mochila Ordenador Portatil 15.6, Negro",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Boss Reloj",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 19574,
-        "date": "2026-11-11T00:40:29+00:00",
-        "title": "Colgate Kids Bluey, Cepillo de Dientes Infantil 2-5 Años, Pack 4",
-        "price": "3.00 €",
-        "old_price": "7.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0GXGQ3TBW?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/uDdYAK8BPX2ZJS_y8-S5xnqTZ7c8OBU1_VfOssOYxEWCisB3GPfMKOQ3IYMc0e4cBHJx-1XMvdlG-EBUiAZX_Iykhc7NtBVrc6udzMphTF6ZDSgQQy1F5pjNV3ovbd29_QyWQ_mK4-lz-1BpPU_9sgrMWeFcaIvLqSjpcNN6opRkX8dMx7ihNWD1PQwh5sI0sPkUroANf8CyTnBcf0Fy11wNnrj6p4UumYmMT36F6j6N1rATGu_8BlkVYSp9gHxzywxq565Wu5UkYs005kPwIJ0VFcwXlbpYKWlzEgl1-kMbnduFzIT5952HE9CXOV2SvWIJBKzTQ1A3CwkgQ1El4w.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Colgate Kids",
         "gtin": "",
         "mpn": ""
     }
