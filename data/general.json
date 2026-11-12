@@ -1,5 +1,20 @@
 [
     {
+        "id": 20125,
+        "date": "2026-11-12T09:45:16+00:00",
+        "title": "CECOTEC POP MAGNET – SET 5 UTENSILIOS DE COCINA",
+        "price": "13.90 €",
+        "old_price": "28.90 €",
+        "discount": "-52%",
+        "amazon_url": "https://www.amazon.es/dp/B0H6Q9M4TX?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/mQZJgRNZd4PiQHc5-FPZaJ97vPqGru9a2XYBF3KFbDfTlz4g9ZcqzfF6mIEX4UN1ocpPssM2N9yEI85ojQ3KcHagNLNw7WbN8mp3Dv90zauRPcjWUBZAN2FHjsVBEdmDpHCTYUbu7wzYcAA7Ci4fD5m0wUDjY4ANEiUbPVAQhHeVVUhzWLbcmWAUV5HbnCAfv45PJKTt2nYXR4B3qbypgm0kPnJsPyvFgtHhZ98qIAiLJXj3zb0Y8MW9ELLmP9SzlnYKi6ePWG419TB1EPCjId2B-a7bw4dVnOF-cCsBY8AJuE-MED2sFbjE268v535lQU5Yz95Ff4KpDXQ6uqJw6g.jpg",
+        "categoria": "general",
+        "description": "¡Magnéticos, apilables y aptos para lavavajillas! Canal: https://t.me/GangasOfertasChollos",
+        "brand": "CECOTEC POP",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 20124,
         "date": "2026-11-12T09:37:06+00:00",
         "title": "OOBA Ltd. Hotel, Juego de Mesa estratégico, Juego Familiar",
@@ -1483,20 +1498,5 @@
         "brand": "Educa",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 20022,
-        "date": "2026-11-12T06:09:55+00:00",
-        "title": "LEXIBOOK, Disney Stitch, Pizarra Mágica, CRT10D, Pantalla 28 cm, 1 lápiz y 6 plantillas, dibujos multicolor, azul",
-        "price": "9.99 €",
-        "old_price": "29.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0D4LHNF79?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/JuA_FyunZAQVY-LkWo8QLGidKsX4eEts2q8fWMZfJXYZNNuHElxkyFruOfpvAKtFqooPRbhhJ5yfHZFNIRACutFdhbM4Ail6YDmORM2G8SjFYwaMn0jD3aaP1-Ss8tnWxYNRPM1ncHjcd71qKJ1AKf9jgCFICFxxmVBEDKCD1qecAzPiZL1MI25ygYjrdYe6vVx0uqDiShQ4eD-JHFW-h--Pu2UjxjXfBnDEufAA6wEKMCLtPITse43FTEOeJqPXLWIFsuBDQSf4WD1hHOkeoVnRFaj0nzgAA5uCsMH2lJjNAW_8YBxShTNJf4fH7QNeAIKq-cR-FUqlqpo9UNEwlg.jpg",
-        "categoria": "papeleria-oficina",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "LEXIBOOK Disney",
-        "gtin": "",
-        "mpn": "CRT10D"
     }
 ]
