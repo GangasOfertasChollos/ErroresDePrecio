@@ -1,5 +1,20 @@
 [
     {
+        "id": 23926,
+        "date": "2026-11-20T15:10:29+00:00",
+        "title": "Tech Deck - Finger Skate Pack 4 Fingerboards",
+        "price": "11.09 €",
+        "old_price": "16.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0778W6Q2W?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/BUwSTb0fapamZUlcSD3AXBaEv5JJ5hUUAKf1h1bJuwpiZYMrON2H6YaP4wOjMX_ysD7EGG_w-N-xO0fbiIGqZmTEhuTbmsrR4bCJ8lnKAZhh9MtysS4jCFLr-I5pVC7AGLQfk8Hh9VDDUlzzoIWt0dJKnQfDoae2QqNaXcilSB6GlFwkgoIeWSGwljGuU9-_SHDV5s6zFsOb0G0KE48UoBhUI6Ybdsrt3wnUGU5FwdXP6V97QdGUVBuNcl7QOeYvHeEaWEguIpbpsYYMEGPm3JOJG7owG0-7VGHX1Fm7tVvs91Ot490wnukmuKzY1hfIQmjcGiDbolgHQEtldF4yaA.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Tech Deck",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23924,
         "date": "2026-11-20T15:07:29+00:00",
         "title": "King C. Gillette Gel 3 en 1 para Barba, Rostro y Pelo Hombre, 350 ml",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Levi s Iconic",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23802,
-        "date": "2026-11-20T11:07:15+00:00",
-        "title": "FURminator deShedding, Cepillo para perros medianos de pelo corto, talla M",
-        "price": "25.99 €",
-        "old_price": "45.11 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B07NSNDHH1?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/coV7hZcLoy7ei0El8fmOY_DWiNCa0JV_1ia3OND-w61BWn2CiDmlq1dW9PPJ4uzmrfUjSGy-zY9aQ2JTRL6lC_rQL3j9fhOpHeHqgP_Cziob0Qvf8Rg8X-6LUXEfVkMU0Taouo-GCIxk11Kw8-ZHlOVsarLrFSDeuMxnQjqat1ozph12LobtMNEbCN4XGmpN4XlhB3binEmAkTTicyoxJyZi4lLGSU3tu8LKKG_o36I9z5cemdlL16ZfnzEsmE5SeSLMFp8vg9Zc655-PfcGIoha9fXDKIgjkHD9AJLpmWmBnLvQ1VVifHZk_2WQykhFMbufL3I0ht6dl0hCkVKPxQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "FURminator deShedding",
         "gtin": "",
         "mpn": ""
     }
