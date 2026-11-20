@@ -1,5 +1,20 @@
 [
     {
+        "id": 23921,
+        "date": "2026-11-20T15:00:29+00:00",
+        "title": "Maxi-Cosi CabrioFix i-Size Base ISOFIX, 40–75 cm, Negro, 0–12 kg",
+        "price": "99.99 €",
+        "old_price": "169.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09LVM3L3M?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/sNCosKY8kf1tPDsKvAPXZVb79woA8nmYFB03HLSLYaEs-MsemtuRRhUaPtfvGpNWB2OW5xEHlYi6153ztht4-b5u24U4zNiwmYWJjA1ALeenGLpwO2p4nupNWU6BoYe3l3xi0flEKtn3WHfSeM4_zA3_YizuzjM9WDt35K7WUb5PqaJuUlYJnfVLWZMdh8n-J_Jg3nwYWk8Eh0MoRUwUJhOSxvZ918pd8Lj9w7P3BpazAdPhXUyypuglNylnX9Xxok5HoK8zDABLa7HCn7ZaTvBuhZFf6fTYrGmi0z4wxZ05IBK--tH2psX0Vkf0sMKG70I-paBL9QVMHHhkQW6-sg.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Maxi",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23920,
         "date": "2026-11-20T14:55:28+00:00",
         "title": "UGREEN Cable DisplayPort a HDMI 1.4 4K 30Hz 2K 60Hz 1080P 120Hz DP HDMI 2M",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Levi s Ribcage",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23798,
-        "date": "2026-11-20T11:00:14+00:00",
-        "title": "Pepe Jeans London Original Basic 3n Camiseta Slim Fit para Hombre, Negra",
-        "price": "11.47 €",
-        "old_price": "24.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09RMT1G8V?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Ly37yRcveaKp1jxsn-1RU45quNfQdujMsGgCUFdeo3jFjwas3awOZuaU_KqMttQuF_LBYZiPOpiXreoUDgiginPjoB3zC3XBmexH6WDht0ZOvMdTMk6SAb7T3wWRKeY2vApqrJlTDFf48EebaP6joDVPmD9WJ_p0o7qz_7sqnHPEZhWWr6b6jqgdwdWBCzj2Ia3D2mBgl3IJ9xHm0kJuCTr6bXoRzDO4aIPDeqI6p5exT6262ucH0wSVh19Ty1roakg_yT3sD926kB7u6l-WXRhSdVRpmUj_1MrM8daDcmwN8yBxm6u2ILbHpOrplRLo4vlmkfEYiVfUekxRaUa70Q.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Pepe Jeans",
         "gtin": "",
         "mpn": ""
     }
