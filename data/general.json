@@ -1,5 +1,20 @@
 [
     {
+        "id": 23920,
+        "date": "2026-11-20T14:55:28+00:00",
+        "title": "UGREEN Cable DisplayPort a HDMI 1.4 4K 30Hz 2K 60Hz 1080P 120Hz DP HDMI 2M",
+        "price": "9.49 €",
+        "old_price": "15.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0D53TVX8J?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/kww1ITaWwdihj1yb90763UtZad7aj1kp0hkZyKM27gxrUZnDV6Q0mnkXXoejz1RGDPexrdLpV8xWndKNaxGeRQkWruyS2CuUDX6oylmr3aNY7IFMtoRpzrbojINtq2rT58dnyTemSN_Hn0cq_-WZA2xtP9GZMhvApSfaWFAIAPfJUcrViof8iinpHaEYooDCg8HS3tlg0VtsNPpfmAz_dz5utKhUr5AG88jFKLiRi_6U34tqiHY0V281QJUykZ-fLLYnsIYwsFI_ZPCbVld-SeRtC0z6SGG6pwR39qLLRlqanBngILcDs3BeXKjNO1aZigJTpFq-P2xhOQD3YpyhCQ.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "UGREEN Cable",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23919,
         "date": "2026-11-20T14:51:28+00:00",
         "title": "Philips Avent Tetina de biberón Natural Response: 2 tetinas de biberón Philips",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Pepe Jeans",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23796,
-        "date": "2026-11-20T10:51:14+00:00",
-        "title": "FIT KING 3 en 1 Botas Presoterapia Para Casa con Función de Calor",
-        "price": "149.99 €",
-        "old_price": "299.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0GW7MTD14?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/dlTANG9JAzfY7HNxBCBrr6lSKMhpSOq7nZInUAwTu8NPn7Vz1Jn-HYF4iWOIoLL6jfMfGL1tiOWHWk1K6XDXbpZpE8VEjdM4mc0HO4PK8busLzkpy3mbMuKOnchLgiqCwj41nb8iicUakIJ-RHIi3RynKgKa3han5wj8-8kCa8qLySIgFuqcotO29nwl3YlJMuwwmH7E0srMSP5OAjyRocUsnUvJ8UkDq5l_Y6MAB-mCinnH4IXSJ3dZYlzwx5_Nu00xJ6NRWa1m3F9sMPKiwSI7Grh0xOCj5eYAlubaf0UXOZ8a2ahVicRQ24NAsEr3VF0F7WSZHx0c1gZJ_HaH0Q.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "FIT KING",
         "gtin": "",
         "mpn": ""
     }
