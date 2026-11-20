@@ -1,5 +1,20 @@
 [
     {
+        "id": 23928,
+        "date": "2026-11-20T15:15:30+00:00",
+        "title": "NESPRESSO VERTUO POP – CAFETERA DE CÁPSULAS + KIT DESCALCIFICADOR",
+        "price": "54.00 €",
+        "old_price": "114.99 €",
+        "discount": "-53%",
+        "amazon_url": "https://www.amazon.es/dp/B0FRS4CNYF?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/ksSQuSTYzGHhVZLvBbL_onoyetsoIA0EfPv9P2hf9O6lkljdw1gH67tM7is5REWB17Gw8ExtgxZT8D-Djkse027f_8_ANTXcfH0swPY7b1r_znntyXjWjn8cV2d4I8uGSvsKOzuK_74Lz9_W5zdPIF3Je4Wlf4J9jbamtgX_ZAeDgmh1Za-F4FKJpJ7Dy5mOcrfg8n5vf-oBElSHHEOcos7M0qTpkFGJkVJXoI889nXtB3U-j7H-7AtdxPf_6pwmzr_bJcD0tGX-Ve9-arDGU5FmDEZqLyv7ghWI5-xSDTnqjqquLVohP9ugoZ-if8apDR-fiKByvCmRjr0ko8HStg.jpg",
+        "categoria": "general",
+        "description": "Cafetera compacta con 4 tamaños de café y preparación con un botón. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "NESPRESSO VERTUO",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23927,
         "date": "2026-11-20T15:13:29+00:00",
         "title": "Tommy Hilfiger Pantalón Corto Holgado Hombre Shorts Track con Bolsillos Laterales, Rojo (Dark Magma), XS",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Dripex Guantes",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23807,
-        "date": "2026-11-20T11:14:01+00:00",
-        "title": "Levi's Big&tall Classic Western - Cuchillo, Camisa, Hombre, Med Indigo â€“ Acabado Plano, XXL",
-        "price": "41.37 €",
-        "old_price": "85.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0B29KHBKC?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/lRW_c84aBjRKoP3QAqjRjNwym7CPHNb5KlzlYFi_hYwcr0FDSKZkRaZKNd6Y5S59_P-HkJvPq-r42w-ZnFK0qO-KESceTbNKSMhxGtN1VtGVkLBWIAEX2L7JvE6RY36barSjRshbcZJOcBOiPhSc770_nDOdwLz5SO1AQxQGYladpVC1THwvA_k7fVoi7lI-5H2qGEe_XbK1Bln3KEARL1Wd4PlJK28SlZS8sazsPaYm6y-CCpO5gS-2HTxJ0j_bmhdjoR8DXy6B7j-adYpbLn46OkDSbxLHpFtqTX74aot0KGLR4uZ3afkvsQpxWGSCmt4c3d_E9zZa2k--X-4jDg.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Levi s Big&tall",
         "gtin": "",
         "mpn": ""
     }
