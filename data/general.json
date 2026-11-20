@@ -1,5 +1,20 @@
 [
     {
+        "id": 23916,
+        "date": "2026-11-20T14:44:28+00:00",
+        "title": "Trust Remo 2.0 Set de Altavoces, Jack 3.5 mm, 16 W, Negro",
+        "price": "14.99 €",
+        "old_price": "24.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B005625WR8?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/GxH5Cl0R3-42yU3IHf3Sug1vhHZOKKZB7BgfpKSb5qmTXnrisDBBsYsGyAqMLLtebaaCOah7FEQ1-MS2xKJDxEkmFdJ3183evaUv7Lx2kqOKM-pS4sHjAt_4PkbZXYu8dVxS0yuZKSY7YledkOwJN7eKdLqYL2O1YHQAdNeCyjBgfHsaAFb2o4HYU-wr_NXfPT43aYl2d6wi2uzIJlqMgbUYfXBYa074yfCh30mY0763rUYjwylbNVmIr_hQeV0VmDNQqZDHRL7qabf6dX3LXnVPIo4xAFonqf8oKZUqTq7CvdNezk-3CY6upiAXdd5PehI7JVSFr--dzphYmZPd9A.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Trust Remo",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23915,
         "date": "2026-11-20T14:41:08+00:00",
         "title": "Cricut taza de cerámica, set de tazas de café blancas, 340ml",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Cecotec Limpiatapicerías",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23792,
-        "date": "2026-11-20T10:40:58+00:00",
-        "title": "Calvin Klein Cupsole Sneaker Hombre Classic Lace de Piel, Azul (Coal), 45",
-        "price": "38.14 €",
-        "old_price": "99.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0F4RFFWKL?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Y58ZGzYAScPRXlaGF5ADfUhHpnaed8NWIGTOfSoDWBgckOACmi1gl1djLDxarzd5-kAidsZSRkmQLICM9OSmCdNo896jyBrKzG7Tsr231ltAYx3FthOj9SGLFLSnjtl4Nib-8BYHQ--1DVe_AfVUpnhOetKJH8Lncifu9Mh_PG9ef4KVFEEP_WSjUQEZd89xRe9Ro9a2cxvzLCI1iCWt9Ynfps0U8D8NkQjJdoXHXeAmMHJPyvcjxr3AlDimIK5bvuZ4eTUvIJ57s-fyn9pq6uX7-wxA8l-m3kIibyRK-zDq3M4wT7eBM2B9G11dfRaMLcf9c9jPrubD5w4OW7JbFQ.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Calvin Klein",
         "gtin": "",
         "mpn": ""
     }
