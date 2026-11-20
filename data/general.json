@@ -1,5 +1,20 @@
 [
     {
+        "id": 23924,
+        "date": "2026-11-20T15:07:29+00:00",
+        "title": "King C. Gillette Gel 3 en 1 para Barba, Rostro y Pelo Hombre, 350 ml",
+        "price": "5.99 €",
+        "old_price": "9.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08B93G2B2?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/BonLp-_z4Z04WT2ln2rsk-orb9qJdUs_Bp3t0u-OM1vaDCMGI_g8e7NCOKu-LSLdZ5BEUs1W1fsGGmbfEih5Y5kuWxIFRuuV8DYy3SWmF_E__Tl9K80kVrKoKAQdyv0sdlTfdNvKtZa8bAE-yHRnoHvFh7sXmUbbIgwm9MF4uXzVPsj-MnSJ7u69RDM4tHSAugw_ABDqtSRHjJMN3BLW6Of_BEGO5BCqYOCoZXpE304pvO0PkXpqm56iMyC-2fxg2JAFKUCb0Spwf3yeRHWcIlr7MMywaLxLVWHm3EOuyqAGZ9YddgNF77-OI0QA4MjoPyLIeeM98exGhpJNvZUIsA.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "King C",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23923,
         "date": "2026-11-20T15:03:29+00:00",
         "title": "Chicco NaturalFeeling Biberón Anticólicos 0 Meses, 150 ml, Azul",
@@ -1481,21 +1496,6 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "FURminator deShedding",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23801,
-        "date": "2026-11-20T11:03:34+00:00",
-        "title": "Cecotec Patinete Eléctrico Bongo Serie S+ MAX Infinity. 750 W y 36V, Tracción Trasera, Autonomía de hasta 30 km",
-        "price": "294.84 €",
-        "old_price": "497.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0BHJFV7DF?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/gpv8rgYg3bYZpD6z078VxngsoQkp7UDeSRhS9Z2yqeAEmxNsRo9ByW35mh8aRkzhXpPe4qnz_SOsNAbUwdRNyAbZ3o6mxqtcPHoJaKivBWJhxPHvPF-Rbv4FcQN7eKaLvmoUzJnQzoB5kBwSr13KmzRxtfDGfMNfKgQPLSCtstRo1Yxt8J4LHDEcwGi029JHFL47HRKin7jodMMfydOTnKJry_vgj3yjqByRjfcUSaGKLzuedgHcz8mZExjNBRMXeLZO_KY0IHIpYRo657OQuDsSN7czwKaUdlj40PFwEyB2b1AxYgauwjjKa0mi0VRn13kWYe2GDBCoHrBSQiKIRQ.jpg",
-        "categoria": "juguetes-infantil",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Cecotec Patinete",
         "gtin": "",
         "mpn": ""
     }
