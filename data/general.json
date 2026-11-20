@@ -1,5 +1,20 @@
 [
     {
+        "id": 23917,
+        "date": "2026-11-20T14:45:29+00:00",
+        "title": "REISENTHEL FOLDABLETROLLEY – CARRITO DE COMPRA PLEGABLE",
+        "price": "13.84 €",
+        "old_price": "35.95 €",
+        "discount": "-62%",
+        "amazon_url": "https://www.amazon.es/dp/B0736LYLXX?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/MiqPvlfCHm-cMCuYj-FcJ8rxPdsMBJngxdtYgAInzZy1OgcCjhilE50125r4wYwzwroRaRiW5ilkXBWx72rm1haN00wDa7EjmMlpGMndYJ7RnmaDqiFeU-26id38jKafVnMVpRXNRP3DvLX3l0xnELOIPM5JhJfnZGjhwxpp49cCNmtV4FCx3HytXa2sCgJC93F65zxOvcXnnOdHEK4Sb7PO1Ozuo0mLcR2VQkKQnEv0jfHhRpMwmK3jkdddgufXMK0Az0TGGHe3VIbTMXnloTACK4-z783vqYL6iepljjx4Tk2hKm1iILtaGdb-w0DuHld_pg4vizkoNXKMlOO8tw.jpg",
+        "categoria": "general",
+        "description": "Carrito plegable de 2 ruedas, ligero y compacto. Ideal para compras y pícnics. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "REISENTHEL FOLDABLETROLLEY",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 23916,
         "date": "2026-11-20T14:44:28+00:00",
         "title": "Trust Remo 2.0 Set de Altavoces, Jack 3.5 mm, 16 W, Negro",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Marvel Legends",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 23793,
-        "date": "2026-11-20T10:44:14+00:00",
-        "title": "Cecotec Limpiatapicerías Multiusos Conga CarpetClean 20000 Advance",
-        "price": "139.00 €",
-        "old_price": "248.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0HHSB1Z16?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/K-bNAwa-59pDOu7TR8eHukyEcK83i_y8IDVieXfzWuCB0p1oAbD15nwMk7OcDhznf-fEwcYTZR1-u5jrKxwNZBiEaK0wgsk6-n_36hxyWfrBimWpwnaP9bGqW-4p9aLPsL8OygEGFlCjePYJ2uOWiGNz-yKji1Ll-OFJR265Tl9jZOcviT0wK6ILmfi-w5MO405j5CMUGtOj8tFnodsSVk_9XSJotanhFX9znGRd5xe-TQWT2Ej-RtA7p6eDR2zWA5mG_UsLOuwqN6qyQg44u9E1XHTfAADsWJ1GyjkR1nC8mtW-BVcmKKzfDgs3fd9XfgSP-sVMh-r4dOvbsklrcw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Cecotec Limpiatapicerías",
         "gtin": "",
         "mpn": ""
     }
