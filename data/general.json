@@ -1,5 +1,20 @@
 [
     {
+        "id": 24262,
+        "date": "2026-11-21T07:22:16+00:00",
+        "title": "Bizak Juego Escapa como Puedas, Escape Room Familiar rejugable (64361145)",
+        "price": "12.99 €",
+        "old_price": "29.98 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0C5CMMHPR?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/lqc74YUGXGW7sl5CaUsCq0Db50BZg8QcnmJQB5O8oYfNqP-uPE9P7W8VAkBtzn1oKnRcZGkTmT9QY5stLR6yvbXQhrzyrsidpStZiHWsHD94NHvhnA7mkQsprzoLeftZVJlHjE_tQ6K1NYlAn9KS4gSrZC2cr6YlZe75YOxkyhgz20-ATVkOFLgbjoRg2hBHWyLvZilAkzyWUgL36o5pgUyVYurzzS5L8qKHZTJfoY23MHwlqMYOGBYtzAoQo6CYcYLrR-lVsOUpx-HHPFFEm8HMpcMiMSSodrsJIHDa7IFuR-irlKCPRlExoEAckmK4d0ixRJ4XPYZkF4e-YDC0aQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Bizak Juego",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24261,
         "date": "2026-11-21T07:17:56+00:00",
         "title": "Beverly ISOLATE CFM, Proteína Aislada de Suero Premium (Whey Isolate), 30 g Proteína, 1 Kg",
@@ -1483,20 +1498,5 @@
         "brand": "Michael Kors",
         "gtin": "",
         "mpn": "MK3191"
-    },
-    {
-        "id": 24157,
-        "date": "2026-11-21T01:10:23+00:00",
-        "title": "Dr. Martens 1461 Smooth Black 44 EU, Zapatos casuales",
-        "price": "88.89 €",
-        "old_price": "185.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0075D2PWG?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/eY0ASQUpnWcIt2myoSuVgsCgFoaKt4TptUM6oCw_9sfsCM2cWyVhFfX1-1c8eRblwf3gg4ZSYN8J3dmrgc8dLwjVx0NSlK__xBWOxNQ8YQoaNskHyX22A-IO_C0IlvVhtqCIMOjrhtMTYg9cQl2l5zBWzdK2vFiCmA6bxdqTRwCR1K0HTbJhjNs3vh0uFmCY-YN1PtjLgOuZ7CRmye8JZDKNGhoEWswL_RbjWZNvOHxHUcmx4D_Kc6g7dbNlv029Aq3lKDDz1AyM64z9fAH3HlCvWMEVVkdt39kHOH-ofg2U9AIbxLWMzRmc0cIpOHuGWKPXIvOdVDZvZhPHMSli_Q.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Dr. Martens",
-        "gtin": "",
-        "mpn": ""
     }
 ]
