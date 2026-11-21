@@ -1,5 +1,20 @@
 [
     {
+        "id": 24263,
+        "date": "2026-11-21T07:24:26+00:00",
+        "title": "Joma Sudadera Faraon Negro Media Cremallera, Hombre, Negro-100, L",
+        "price": "12.95 €",
+        "old_price": "26.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0107S4WX0?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/gVBgEUmsVdf_XHsBry7QfZoRVLiGaT8XeHxgIbq0Uf4oIi8X9LwPKoAKvVdfc-J7KnCbq9i4lFVME0iKDVK7MKu1FSzFNsJ2Nz3O3WZixVhisdhMYxiGtHl1ZxHIHW00IU7_Z6lwvn-eJgGN_xedALe3rLbIm9aclTwlwUwHX2127sas5ywGGR_01AMDTYCEENT9iuc-tTizNk71BrHjkepj9Uz5aupZ-9v7tNjTKoht2Q3xfAqqJ9VSM_cVrhwmAeMPJxoOx26bMZWg15aZ8v6CTid1D_UCUTxyKMNePowRpBaYWxtUH5Vd3R95SSnPpTfOAed7_RGUPhRpq6nawg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "Joma Sudadera",
+        "gtin": "",
+        "mpn": "Negro-100"
+    },
+    {
         "id": 24262,
         "date": "2026-11-21T07:22:16+00:00",
         "title": "Bizak Juego Escapa como Puedas, Escape Room Familiar rejugable (64361145)",
@@ -1483,20 +1498,5 @@
         "brand": "adidas Campus",
         "gtin": "",
         "mpn": "H03472"
-    },
-    {
-        "id": 24158,
-        "date": "2026-11-21T01:13:55+00:00",
-        "title": "Michael Kors - Darci con Correa de Acero Inoxidable en Tono Dorado para Reloj de Mujer MK3191",
-        "price": "117.96 €",
-        "old_price": "213.30 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B00944CZB0?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/M_MmTFbrRWBOjO7lKxZEvdufbsPBoRK_Ta9TfcSOKLRPacxqXKERDMlKSS1c-hr7wG2lFROp6fzmy0wQiDgQGOOJaFKCe6G2jE_x6w9wQqnFWOAaanRW1rSyUNgpHt1YAfkBiTGvCproQU3nNWGZbwf76gjGp2L6dEGi1wDh_bXT3bkDEdbd9_vLFLomi7rZjkreAYI-w26ssWOQjPX8g5axOjoyc9xRXcfy-L30dCGhaMVkow29n2lT6OSnEbXl7NbiE0fMD9br2a8VMMahzfDUFZrw1yazYIA5D67lKBqjm9vOiBpxch0zEvkDYtcSbq7FXvoCpYSimaJinwlOmA.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Michael Kors",
-        "gtin": "",
-        "mpn": "MK3191"
     }
 ]
