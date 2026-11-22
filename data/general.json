@@ -1,5 +1,20 @@
 [
     {
+        "id": 24690,
+        "date": "2026-11-22T09:37:23+00:00",
+        "title": "Deshumidificador eléctrico 2000ML, silencioso, con temporizador",
+        "price": "59.99 €",
+        "old_price": "99.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0HJC65JNJ?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/Xd5s2fUC8VJWSGoFEB7oQ5-s4Z_cfxSlQkKg8Idt0Hd2neEGmuFppJpvBzVANr3Lbq8u8UfA-xT2E5uD_UQfQE0XgfPCSO-dsna9UluEHJoQOIFs07AJFNDcnoa1RaWAolADbIyPUWZhwGjCbVUE8SD8pTc3WHZ0m2iyAHiNkECRgV3d4ncobkkvhWpUokOP6p_ZSaEgGcJ8PzZZlhiHs5BXMjBCIhWxPWA4xhw132xxkLH0sOAlM6KPNqW7bfhPEb4kqN2w8Q6E98sW7ULu36yBcdA9w0UYaittHNG4RAeFH68PcABEpJFoqkjS5ALNPzbBcowYhN0hd1cAaN-iiw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Deshumidificador eléctrico",
+        "gtin": "",
+        "mpn": "2000ML"
+    },
+    {
         "id": 24689,
         "date": "2026-11-22T09:35:51+00:00",
         "title": "MARCO TOZZI Botas de moda para mujer Marco Tozzi 2-25367-47 Botas de moda, Negro, 40 EU",
@@ -1483,20 +1498,5 @@
         "brand": "Vans Gilpin",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24580,
-        "date": "2026-11-21T19:37:28+00:00",
-        "title": "Tapo S110E-Módulo interruptor inteligente WiFi+Bluetooth,monitor de energía",
-        "price": "13.20 €",
-        "old_price": "24.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FYHQZ56F?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/vFg7j5msfN6MUO0aBTDfGfhMcgztHOjtRvJQLo7iVW3RB7Ku5wr7Q13ywlwrjXYa6pHPdYpWXyFyVDrYy2GYOVapuJPho8VGPqnlO8U2Q2mbC8O7h_ggb11LghfHnUELnghuvIdQhVWw_OU7B1ExlwMMfMYOQe6h4OK_tx7w4YRkAuk_9NWtEfAX8Ycg09bO-5Q9nzglht8U-B5ltKrJeEVcTlp_mafRTzP_v6DLqBolNYgrXgJa6eLo2iKlG6MdUpnuQ4u_Cqz9oBZ2YvtIBtTXV7xM_Nq1cJkkhRazsLDM4j8MPg1QruBxqUWBz-tMHEQtWQSexNFqV1TlhX97LQ.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Tapo S110E",
-        "gtin": "",
-        "mpn": "S110E-M"
     }
 ]
