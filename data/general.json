@@ -1,5 +1,20 @@
 [
     {
+        "id": 24684,
+        "date": "2026-11-22T09:28:07+00:00",
+        "title": "Tostadora Philips Daily Collection, 2 ranuras, 8 niveles, negra",
+        "price": "15.99 €",
+        "old_price": "31.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B01N9XBDTI?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/OlCrdtQN0SFrMasOxcL35UiyOotWkhGStRycJadLgMVVc_kS8mCFgURrJThEp0sAjQmaE8wlj3YfRswzI-mRK-jg759MOvCom6-s2bms0SGV529i_sfuUSv6mrre1wciCaOnwN89s0bOsQNkYvhi0TOL4uUhzvCxG18Qh1v0eD3BjGlI5omDbfmdK23_qVHLLYaxWORnIDbxhfnoHQS3DCZ9YoJhq7DufIDp11RMnwUS7w2YjQFz2WYSCoke3oyVaO6Jv16tVXLLxIKsaq68HfxzVmWwy0-AsuBqcz9La5RrLBwTbd6YADmarISE7Q1SidSjcNr70yx_x1iOMVBhbQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Tostadora Philips",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24683,
         "date": "2026-11-22T09:23:55+00:00",
         "title": "LÄSSIG Bolsa húmeda reutilizable 2 piezas/Wet Bag Little Forest Fox",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Russell Hobbs",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24573,
-        "date": "2026-11-21T19:20:50+00:00",
-        "title": "Cecotec Placa de Inducción 4 zonas de fuego Placa Bolero Squad I 4700 TitanicZone, Potencia 7400W, 9 Niveles de Potencia",
-        "price": "259.00 €",
-        "old_price": "439.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FL7K9LLT?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Rbr1gCHly1Xv6LiY9DxQHYWJohgYtOJ8eDs7O6TkD5oopuqel35-7oKoUttVBQENy0lMCB8L3hd2q2K8yUumkStDtUfm3JSwGVFJUUBIbMsbyhG4_EtSvMCk2EbAAVWDd-wk02L8__SqwqpJRzaq0lZg9EgLM4nh_RKa6Ys56g8wZ_QjCGAekCvd3VcsDdzkrbNdSCMHwsNvjSJ628g4LJeD9Ndg1J_c8NCJynEwHUWAth8kAS9-qrczs0Mrp4PHIE9fciRWbm0VcCCEW2kPoBMH6ocIBWkWKIZZKREFQi_rtOMwIvgTmrQIEXClgQlsU84TWTH7HFHa0JVpsd-HpA.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Cecotec Placa",
         "gtin": "",
         "mpn": ""
     }
