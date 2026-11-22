@@ -1,5 +1,20 @@
 [
     {
+        "id": 24894,
+        "date": "2026-11-22T17:17:19+00:00",
+        "title": "Olay Regenerist Crema Facial de Noche, 50 ml",
+        "price": "13.78 €",
+        "old_price": "29.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08S131M9X?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/RLjzW1WBCV7wmYVwfrv15f89OFA3spJyKSXrsScCf1kU3xbg2CLw4nX8lUCiwD_JvM18wdx6t4VzQmeysLIV0DRFEcuinWUto5tKjgh-V_8gQZyU2Oe-19HYoWqMgUPf_EjnJB5FexTpB64n9joMWGAydQpm-1JDPF28sqyQo8w0cXzZmXojgSGFN2GIv7RzxNUu4i8OXC-wBbHYfTaiBjx7GpfnkbrSW3zIsciJGoS25InEeKhs4w4whQEtcay4afqDA4lDhu8w3JfNOuOjBB-Jn5f4Dcn02rAZySTXRXSxD2J7iVQHU09I0-m6jdefeCr2fHo591WYYeRdGb9XDQ.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Olay Regenerist",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24891,
         "date": "2026-11-22T17:14:26+00:00",
         "title": "Rilastil - Xerolact PB, Bálsamo Hidratante Anti-Irritaciones",
@@ -433,20 +448,5 @@
         "brand": "Philips Sonicare",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24579,
-        "date": "2026-11-21T19:34:20+00:00",
-        "title": "Braun Mini Depiladora Facial para Mujer, FS1005, Blanco",
-        "price": "19.99 €",
-        "old_price": "34.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0H1CWKZ8J?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/vf1TNwA-21Dl9CYdIHDW25b25zHnERuydHPORtQNVsZzSMK-gp5wCL-cxcrcJo8f7XdzG1E1_FV_QcQ6bUx_NkhbwKT0V3i56IpxLxULE92otVEfptsO7xfjqvUvNpeMvjbltywwKeZtUVy66HsvD5x4AC1fn5ZpjEKnclrrFwAYv5EpRVTvQ0QjXGmZ2mte4WfUVXhK4K5dOUJlhzqzOMBobdYu7adLk41l9tyzMPNJvJ0Ba4-E8_TsMCJYne3UuJRqfnktMZn_JJL-UFN1lM1wtCRWLMBLfW14_qAoCRl4uuUX6DRVO4K75wWFmvBkK9aosjBmQQQUhjiQVpApuQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Braun Mini",
-        "gtin": "",
-        "mpn": "FS1005"
     }
 ]
