@@ -1,5 +1,20 @@
 [
     {
+        "id": 24753,
+        "date": "2026-11-22T12:02:47+00:00",
+        "title": "HEINEKEN CERVEZA LAGER PACK 24 LATAS DE 330 ML 🍺❄️",
+        "price": "13.99 €",
+        "old_price": "20.88 €",
+        "discount": "-33%",
+        "amazon_url": "https://www.amazon.es/dp/B07CNLZ8HV?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/XrUVkprdfIwv6dZc8KsBdDiIdZua-W-OjB6jjNelg5msCW9QpjxygXr-b1bSQTD17P6B6jfdqGxquJUhXYkE5fHRBwfK3BccZbZ3fpsbF4rVuEZleOaRgSxwtjEsjzrOfhxeN5zzmE8jWT2OKBQMqDngbErss09_zxlyckKeVDk8T-lEyUyWSdFjFKmmwsGubrx-nuIksGfy3CAGRnywgOXhzPlqH6W7LtTjaBVPwij8wL7SLZ1NuykW7pRxv93kGZ_rs8dcFM6OlnwPtvKkvV7f_rCyBJYSswco60m05hnTzGABYZLY21wRtHxEHxGuiK2lTzTMuQJFE9_-LlS4iw.jpg",
+        "categoria": "general",
+        "description": "¡Pack de 24 latas al mejor precio! 🍻 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "HEINEKEN CERVEZA",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24752,
         "date": "2026-11-22T12:00:46+00:00",
         "title": "APLI 19980 -Clips de Oficina Metálicos 28 mm",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "taopodo Reloj",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24637,
-        "date": "2026-11-21T22:00:26+00:00",
-        "title": "FLYPOP'S - Flipper de Agua - Juego de Habilidad, 14 cm x 7 cm",
-        "price": "2.99 €",
-        "old_price": "7.59 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CJM7Q24V?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/ZiG6mudMcQg8UQjuWQu6mYLCUIN_L-gQEByXvC3ESpcQh7l_pFoKOiuwHqaulOqb3WvKPZgXXhUaySv4_bypGfwnhLQ8-GVe90AuCdQtT66K6pOyeWm1yRbbA7AJsTH98vuN5fIY0uYeBXmGNZoj710Vam24Sv9-06ffFiohjJMxb0fBPRiKn_ABvILGEE0OmN-GZPf67Knu2uCBlxGyhRCxVbNCm25LZ_elFpOoeDW_ZQBQGZJhvujbxvQgt4oXTcH_EiKe2TJrVlOcvLUD4D41wE4JGp1ynP-FCNRDYYlPGviuAE4edf1gZOQGsaDm_IHwgtih9hjqKr-mLvBvZQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "FLYPOP S",
         "gtin": "",
         "mpn": ""
     }
