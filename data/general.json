@@ -1,5 +1,20 @@
 [
     {
+        "id": 24692,
+        "date": "2026-11-22T09:40:37+00:00",
+        "title": "Kit completo de cuidado del cuero Furniture Clinic",
+        "price": "31.47 €",
+        "old_price": "41.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B00C3Z8DAY?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/vqYlo6TUySr5GgC-NbOsaO4fA140wPJellsnimn1NvKYHBYGeT8uU5OLaIpuFs0UIKCTor_3wxBWsZg5ey6M0KmjUoEGi652zY5qD0aZIHp4lgw-OpEfmzkV_LNWBQLBsyQtvYdHv0DEuGQRfIBCLkWvJo-e8ZKORTX4TuF3rx_Kb8n1vGlkb2J-nDwFbf6toj0UHFgyjvVwOBH2F_9PhJ4KcfGxIAt3_Pz2O-jz2p60IV_-Mk-c8LdfceIDEXJPKYEcpKYBkq1T1JdhHwF5-JwfmYnBxa7hWIURnCES9CTQH_0jf3cQTWE-gwJfs_J5VMHSZyx3XHBMsSmRVRqy1w.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Kit completo",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24690,
         "date": "2026-11-22T09:37:23+00:00",
         "title": "Deshumidificador eléctrico 2000ML, silencioso, con temporizador",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Amazon Essentials",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24581,
-        "date": "2026-11-21T19:40:51+00:00",
-        "title": "Vans Gilpin - Gafas de sol, color negro",
-        "price": "14.67 €",
-        "old_price": "25.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FY77BHSP?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/oblDN1HFPMX8xiTNRgF5oahGZsVDxLWE6sk8jbPZfmCZSNE_rj104xRJJvai-q5LFTSiONRaxQWFYx7_qi3Qa5chuqzKUtM2URcrdUhAI3PrN9mr35RuDiWkwVc18ohsgy_Z1vcvp8o58kd3G0t_8Lgj5A7Jzs76099_e25sVf5P4DMkvEC--HdPRXWuuyUGQIq3n-SMsXNxZyMHPLFZGV-cgKRp_s0TFPb6Soh89ARhLKIreuqlu5Qvu1IdfqiflbwwolmiDmLPnD7vZ_S_dYfiSxRq5tLmH_AkgzvrXOUkS6AqiLRV1OD7oc-9UHO2pwJkYYVqmMUZ5vZiCRFqPQ.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Vans Gilpin",
         "gtin": "",
         "mpn": ""
     }
