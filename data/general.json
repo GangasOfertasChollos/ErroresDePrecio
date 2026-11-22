@@ -1,5 +1,20 @@
 [
     {
+        "id": 24765,
+        "date": "2026-11-22T12:20:36+00:00",
+        "title": "Gillette Fusion5 Maquinilla de Afeitar para Hombre con 12 Recambios",
+        "price": "29.99 €",
+        "old_price": "49.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DT47D1B5?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/XhqJEEmjsYbWwD2MIzx3OGKVtaZzzFHgUON0PzLdA18xNO2IwBpoygd7bEbQYgzUixp5PP_NSafff_C4JvDhxRpbTXa9PQtwn2o2tORho3wuq9CXS4O4ZSCE87esmdnXPVRqaWvBS_S4Z12FP3dSuqiiBDs6V5KJpTk2NndihM7o6v20wXuVvaO8ZLc82oSnRuaIgZW5T8jvV9RYHJNTVv3rRkcT1caNnqugXJhbufPFD0FUzFb1BDkMtjVmCJQQk7FS_tJYT5WXkLSmtBca_H3N9Fe4f1wg9intfXfrudmxnYhp3R-iVUfxRdhxU2F7O9-Hq2ZU26kYe2qnjt4-Og.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Gillette Fusion5",
+        "gtin": "",
+        "mpn": "Fusion5"
+    },
+    {
         "id": 24764,
         "date": "2026-11-22T12:20:21+00:00",
         "title": "Battlefield 6 Standard Edition XBOX Series X, Disco, Videojuegos, Castellano",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Zapatillas casuales en azul marino y blanco. ¡Comodidad y estilo para cada día! Canal: https://t.me/GangasOfertasChollos",
         "brand": "VANS RANGE",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24646,
-        "date": "2026-11-21T22:30:17+00:00",
-        "title": "VOSFEEL Lámpara de Mesita de Noche Tactil, Regulable en 3 Niveles, Lamparas de Mesita de Noche con Cargador Inalámbrico",
-        "price": "21.86 €",
-        "old_price": "39.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DT97BG26?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/rX7bI6ALXhZPPGH0wXHYKsBH_zCEqmrnV9eLAnTlViBp4YvCY0-id4Vp50VKH0qq4cafS8SfJ6mPXiAIHgE_0MgVeMGNbNk9AcWONj9960L60H8Hle77-Wj1H9tq1-8WcyFyROApmFLarM5i8KiqDrc5QoetUjYZkDFU6hYjrrqSSZIG0Jv0ELBjHC1h14CpGahN7_sn9OtFjMlM_tpFp2pYaRt0pOW8ISIMc5VVWSxxEyWP4uIaVhWEwbhpaaflioKjFj8TIoLuFJEFZw9JAujNKvPMn1tH5cTV_8BJTEzONOqAR2UJkEDzxZ3I-D4TWGgp9xx3A4eKvYtt7RCQTw.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "VOSFEEL Lámpara",
         "gtin": "",
         "mpn": ""
     }
