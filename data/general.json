@@ -1,5 +1,20 @@
 [
     {
+        "id": 24888,
+        "date": "2026-11-22T17:07:53+00:00",
+        "title": "APLI 20065 - Pack de 2 Lápices Infinito HB Retráctiles",
+        "price": "1.10 €",
+        "old_price": "4.07 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DTYXS33Q?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/VpLkwJ6B6c6p0afEVMeOwhCcrYv4vzx7uY99BMkoN7MFMpSvFwCUy_r-O_1b6gFpIoupAOSrrCbeD_tBir2E9gy_-r3Q7EpgZUxxKZJHNNRm6SXX0onw3AVXT08AE8qO3cpxoc9cJDk1qg9C5xaE_Yx8ZRBYYOWfqiu4czrhUajThcy2YnD1J9kL6f2BB7P0SqUhvqehUzF90oPO10HzNvZrjQOdhGDZVGfWglnXv9iiv9ezuhnqeOqg-1-PKFvCVK9ruDwT4QG_UEUeO4EtCOGq46VYAaBCSwQ3daBaoRf3-aDK3RzmOilupvNT3tDy6MG2mKuJUd7xjxGeXtdR6w.jpg",
+        "categoria": "papeleria-oficina",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "APLI 20065",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24887,
         "date": "2026-11-22T17:06:57+00:00",
         "title": "APPLE – AIRPODS PRO 3 CON CANCELACIÓN ACTIVA DE RUIDO",
@@ -1483,20 +1498,5 @@
         "brand": "JBL Auriculares",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24781,
-        "date": "2026-11-22T13:03:50+00:00",
-        "title": "SPARES2GO Revestimiento antiadherente para horno (paquete de 2), 40 x 50cm",
-        "price": "11.45 €",
-        "old_price": "14.25 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B00PSLJF6Q?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/YmaLo38LJ6DNNJv1YS4gNpzIIb6UYxXyZdcqwNeBvg_60Wk0tDjY2_vdVXQ8Gb0xmUF7_CJ9H4PvXMNI-FA96Ukw3Vikca3fD_81peKkJ-dH3LQubFAMLZs-xKTNgAt5FU3TrfbsYHLoDk8yCZALEeofKvPkmTl90rprbqUtJ-BRjLdVlBVWakuQCpnZsyAklGQH7I1ZaslP9_dc9Fik8rs22VoY6vpp1Ab47oQj7K3-D3WtRc9N_imJJJhkKpLJqiLyrA6Qfo-EKJDif6g7jORoO4j9SFBnyYnYRg8gYCqfJiIrVZhEHF6Bw0uWr3njr2X_lWorIUypi9GmpR8qgw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "SPARES2GO Revestimiento",
-        "gtin": "",
-        "mpn": "SPARES2GO"
     }
 ]
