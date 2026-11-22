@@ -1,5 +1,20 @@
 [
     {
+        "id": 24839,
+        "date": "2026-11-22T15:20:20+00:00",
+        "title": "Name IT Onlbelia - Gorra de Manga Corta para Mujer, Cloud Dancer, XS",
+        "price": "8.39 €",
+        "old_price": "17.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08VDXNW2X?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/XXLWdai3K5QjAY1Qfj1oZJx3doYrADWwYyBAxpwnSpnepGK_EiQQWkc2Dx7QeWA2Hm8668FE3wWz8vYBxYLouKvf8nv_lrsucHZ9NsmW1pdHmmCtuiy2I05ElaoOitJ_RLSTtagu0EKMWBsPudnXnJHcj5aY38SO6BjHhfIyR1AONBTe-i9DBn14pEkyH6FWuTC8ONauekZ4K5KxIHpO3BzBA65fJ5mAtdS3nYaCKRciun8B7Qkyga_wMMDR8Ztn1kB2E6Ft36pJKPArjK36qu9PQvebu8-1QjbyyPPx6odAj6MMuNpn_b5_cRkiK_gd7ge9TVhoqLChbvlnvxYDPg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Name IT Onlbelia",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24838,
         "date": "2026-11-22T15:17:08+00:00",
         "title": "Tommy Hilfiger Reloj Analógico de Cuarzo Multifunción para Mujer con Correa de Malla de Acero Inoxidable de Color Dorado",
@@ -433,20 +448,5 @@
         "brand": "MARCO TOZZI",
         "gtin": "",
         "mpn": "2-25367-47"
-    },
-    {
-        "id": 24688,
-        "date": "2026-11-22T09:34:36+00:00",
-        "title": "Tommy Hilfiger Runner Sneaker Hombre Low Top, Negro (Black), 44",
-        "price": "49.01 €",
-        "old_price": "109.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FDFMRGPD?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/AdKuRFxulYC9RZp43ft9QCwfBzTp97OwugQtcCae1JB7pBSTdysGcnRCCMhBtQiTr65QER8V2MBaLfRby8qjw-_Y2vvUVKK4ToEy0w_-lW9nhRX1fj9l0GquAlbAkUMtXHtDH7Ynwnp5p7RAS-fYZ5hcRfwlO6TeayQNw0fJPsjnpIVK99Ul0Zsfqusj8nJkjslpOnGEKGL42rm5J9WGD2fy436WSnSe9L9RReQXB-JLBLeahexpWg5IzTi4pZGItkPSc7fWqQBHPbl84s_Z7l_6t9ss1bNMV-1f6Cgg-ORs45w3tgi10IGHzHnJSDC8LPibxDh9sB5_yT_eat7s4g.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Tommy Hilfiger",
-        "gtin": "",
-        "mpn": ""
     }
 ]
