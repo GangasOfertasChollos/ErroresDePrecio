@@ -1,5 +1,20 @@
 [
     {
+        "id": 24892,
+        "date": "2026-11-22T17:15:20+00:00",
+        "title": "SWITCHBOT – LÁMPARA DE PIE LED INTELIGENTE RGBICWW CON 16 MILLONES DE COLORES",
+        "price": "45.99 €",
+        "old_price": "89.99 €",
+        "discount": "-49%",
+        "amazon_url": "https://www.amazon.es/dp/B0FJFX6JK9?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/Q55ENuGVB8G0UrMo-7r4XLY6rWLM26L5Ig3N6JqtuBW2YeRr16U8i3TOdCPG8qLNbg1EyNaJQWig5N9QOzQQ1WSSiM-h8efO5Dpfy8Cgj71KX5UxeEszm-RXYGrW8tDzDxL2vPBXnH4YAuOpkNCb9RofU9u7YckYSz6EL2_ah0y6GNLUjX99OWLKGB2TEEdGzIZj7orZqljPjsPwdD9NcV8nC6J5uy_y9golhAsiuqdZ-hLOj9pYyk_NWAo-BW3OeitVRxhq3d3kjAoMOVMMwi9m9BgOE6zyEX1Yvc7q2_ZqyqTUumT2LpzN0cMeflblFnMWjJTV637nTsAk5qGoUQ.jpg",
+        "categoria": "moviles-electronica",
+        "description": "¡Ilumina tu hogar con millones de colores! Compatible con Alexa, Google Home y Apple Home. 😍🌈💡 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "SWITCHBOT",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24889,
         "date": "2026-11-22T17:10:21+00:00",
         "title": "Music Sound Headband Bluetooth Basic Audífonos Auriculares Stereo Supraaurales Bluetooth Expandibles, Azul",
@@ -431,21 +446,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Garmin Instinct",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24568,
-        "date": "2026-11-21T19:10:27+00:00",
-        "title": "Skullcandy Hesh EVO Cascos Inalámbricos Bluetooth Over-Ear, Aislamiento Acústico, 36 Horas de Autonomía, Negro",
-        "price": "49.99 €",
-        "old_price": "99.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B08G1Y1V26?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/H-7KXcBunWlZFdKwuxGEotSOVXrwFBKMENmFAnXjpKnuZIkyoqdt5Znaen4QlflbSGPzNc7vs6-bJGhxt5gtWhSdtCH5Bx8CJRPN4bTFqiATcjhgI49dgPVAO_yR39zZOmmjPSwyUZTmorqCpx_gfBzHnXj7u4nPR-XDOe6PioDVGVrjiOS6OfRxS51I3e8ec9B_5C26IC0p8sfFMzF3wD57bvIZDbxNGVvQHdhx4lO9ne8tc3r_P0_3Boh651_h5DFBFpTdFhG2GVLiJn6wWwJhPiT4zvPgXexBpHA9HsnlaMpFoe_kQhcpAcOrx0hRCaWA-QqAKtpwcPQOyaMmaA.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Skullcandy Hesh",
         "gtin": "",
         "mpn": ""
     }
