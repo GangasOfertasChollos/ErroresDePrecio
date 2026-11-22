@@ -1,5 +1,20 @@
 [
     {
+        "id": 24735,
+        "date": "2026-11-22T11:17:21+00:00",
+        "title": "Koala Spain Tapón Champán Hermético, Acero Inoxidable, ABS y Silicona",
+        "price": "4.00 €",
+        "old_price": "7.40 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0CC6PH96B?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/P_2BNRIJMkeFLxComW1ZMFDd-jgJHqutSVqdlTAzYTRfa3ncc3OcYYQ3ETJuFivuZ9ZGuLKmSa22Bo2qRq-Gwb6xPTG5w6AUIcRuucdo0Smiu0AUiNHl0lMywAt4FYshm-m4tL9TMa9g35ffuNw0EuT5PMeLfjp7urHCANP9eul7cZAypBErMsYmUs39PqoawfEzn0tXij_7SrhyWaBvmWLbhiSKNFz6QDNIKYvQ5RqiGPPVbxa61a0p037A3R2iaua1kg50kVz6unUrCmT6aqr8e52kE497Da3MeoFCBV7bUZovisICT552Y0cIcpHog5UM-wsBDO8xXJpJhc2Nug.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Koala Spain",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24734,
         "date": "2026-11-22T11:15:48+00:00",
         "title": "NATURAL ELEMENTS – ASHWAGANDHA KSM-66 ORGÁNICA 600 MG – 180 CÁPSULAS",
@@ -1483,20 +1498,5 @@
         "brand": "Mattel Games",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24622,
-        "date": "2026-11-21T21:17:23+00:00",
-        "title": "Gafas de Sol LIU JO LJ757S 240 TORTOISE 55/17/140 Mujer",
-        "price": "44.46 €",
-        "old_price": "76.18 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09XF5TD3J?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/mswv7ORxv9x8wWv0Qsj-BntLnhNDlzjAOi7Akd4m6EMkq_y5MLM_81LJtSPRutCdXI8gGsKcuCH-jAn4tJK44nn5e2lM6QFCNz6YWNpmwvzIxXEoWoN6IstWj0xSjys9RM2WpvjHllJO3tIIEE3ca03bLEU8CeKQzef5yhNCxNpA3d825almtC4PWlAyzeJo-b-nGsRrXnQCNTh8YqBlQ1vCFcWJdnDvuC-W96PrgNLP0JMl1GU-69CcEVwS-qQzKBUckTgzm5wUv5uqPJkoqzXv2GBLDdfjEAEXVDhP0wkEEw8AxT2i-C6_QFTvWPEXpXloPhh69ZXo98cJeb1S0A.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "",
-        "gtin": "",
-        "mpn": "LJ757S"
     }
 ]
