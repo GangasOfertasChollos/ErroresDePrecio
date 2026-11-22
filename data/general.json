@@ -1,5 +1,20 @@
 [
     {
+        "id": 24747,
+        "date": "2026-11-22T11:41:35+00:00",
+        "title": "Chilly's Original Taza de Café, 340ml",
+        "price": "17.00 €",
+        "old_price": "33.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DH9X3284?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/uCNj5Sd8FR6BnhN3yrJOKznH14FqLZjiyzYUpQDjVDw0d3yPRZHC9QnT5WbFOEgL8KdbVSBVwVFk3PM83hASbBz-NxhEi3ed-N5e420HO3P_WXmbVD3hQnqoGoPEz2xvmG7104RXwsXMfOmlcMJ_k3f3oDOiqRI9hmnpvhNhrMnt3Gr9QKNqqZu2Pe17J1iuivUY44heUPXuXpfF_bzbpPO0tBwZSuIeCKsxubp_X2hL3lfQBPIxLnhv3xpc2QDXDUweeIKm4UYOS189Vo09UMgAB0N0SlvmIGsxswNPXvUo--vSP_6_RNlQZ0cT-4C13VtdycD5IJsFPB3eWjkVpw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Chilly s Original",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24746,
         "date": "2026-11-22T11:39:45+00:00",
         "title": "Sorel Joan Of Arctic Boot WP, Botas para nieve impermeables, Mujer, Black Quarry Collection 2024 2025, 37 EU",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "PUMA Zapatillas",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24631,
-        "date": "2026-11-21T21:45:26+00:00",
-        "title": "SUPRADYN ENERGY EXTRA – 30 COMPRIMIDOS",
-        "price": "9.63 €",
-        "old_price": "15.97 €",
-        "discount": "-40%",
-        "amazon_url": "https://www.amazon.es/dp/B00J5G3BC4?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/AC2SiitPMbGrdzjBgKTiYUADtMGt-oD93wiSPjZzwB9Uu8yrur3y1tnUbxsDvQLrRle3ir9T6EzU2dcTMsdTskzIX74iNo54-7bszXi0DIYcAAzo8zx2urZYUVEE51CVtESc9VKp1ps2xydAwQQeW9cdsskshtmUgYw4bYl9cqUAFyTYB-1JIiY4SZUe8upYOqmJTroKMC_F_Thmj6Xv9AekFOiCoXIZdXsSukfwn2sM_NnYas_QO7ooDJm2btK7VlxX4okVTHOqCBMRatkBq7NEmmG_NqTUgDKegg2pGaADwxmGnlwS2QyqysSoeshMG0noo06NefvIM61MYq5S1Q.jpg",
-        "categoria": "general",
-        "description": "Complemento alimenticio con multivitaminas, minerales y coenzima Q10, pensado para situaciones de sobreesfuerzo. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "SUPRADYN ENERGY",
         "gtin": "",
         "mpn": ""
     }
