@@ -1,5 +1,20 @@
 [
     {
+        "id": 24855,
+        "date": "2026-11-22T16:00:10+00:00",
+        "title": "LG OLED65G64LW - Smart TV OLED EVO AI 65\" 4K Sin Reflejos, Gris Oscuro Titán",
+        "price": "1533.68 €",
+        "old_price": "2599.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0GYPYSKGW?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/sY0k0XeABp2cTIpQpmSvV51cgdUxr72io5BCZdRHGtFIWBPNNvvfbsH_-xJFe_hXf1e-uB0G-a_DTE5ezzk-KXnYGHQNHf_XO86lK3z6qyC9X-gFoiDKc4azGmYvf5UksO90SJisXZdXcvbVLnQ0dQQ-shj4rVNRS-w175UBZAClVVvkHVZwsHJmDIs8mvcv3IDUFLYWm4sAWaprJabPvOL2YRUPCNUxgtWx3evsH34q6ah3NbSOx4kpIlOrmlYvFUpgp1-RvA8U0VvvdA26Yw4eEVQnQc7fSqHGRE7svWZTP4MISi0bpYyKDD1O9xTcotNb243ME8Rkh5Zpz7fKDA.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "LG OLED65G64LW",
+        "gtin": "",
+        "mpn": "OLED65G64LW"
+    },
+    {
         "id": 24836,
         "date": "2026-11-22T15:14:20+00:00",
         "title": "Tapo C210P2 - Cámara de Vigilancia WiFi Interior 360º, 2K 3MP, Detección IA",
@@ -431,21 +446,6 @@
         "categoria": "moviles-electronica",
         "description": "Cupón extra de 30 € Proyector 1080P nativo, compatible con 4K, WiFi, Bluetooth y enfoque automático. Canal: https://t.me/GangasOfertasChollos",
         "brand": "TOPTRO",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24544,
-        "date": "2026-11-21T18:10:30+00:00",
-        "title": "Logitech Lift Ratón Ergonómico Vertical, Blanco",
-        "price": "34.99 €",
-        "old_price": "69.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B07W5JKHFR?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/YW0Jcf1FRRgMKHcaiQQPPpV6yioAW58gdRYNGHZrC2xireIyDnq0-SDkRV28oKVPGKRX8GTxmqHJjM-qxjTgpHmGYxITI3jNmKPv1B8DIwrtzLurNNsoG2bb10c4NG9_y5ARdCLuYf_ZqUEyiZLNLKwFqJf2JscAK9aKzsiM3codDJUnjuPN4dnU0vyQWhfgynSbvtwtKjTA8alQ8mt5mKiAv1Iyf2CzbZDNDd_muJVGx6mdOdQbVLTvpoEcTGshBwlXRAfxDIxvo9PXEGZMxklCudj2-mNEHAo47JeyAzOHR1oKrV39a_NOLUn9oU0eseVoQ6AekKpHy498xYWf3Q.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Logitech Lift",
         "gtin": "",
         "mpn": ""
     }
