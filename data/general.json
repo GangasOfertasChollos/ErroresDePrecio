@@ -1,5 +1,20 @@
 [
     {
+        "id": 24781,
+        "date": "2026-11-22T13:03:50+00:00",
+        "title": "SPARES2GO Revestimiento antiadherente para horno (paquete de 2), 40 x 50cm",
+        "price": "11.45 €",
+        "old_price": "14.25 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B00PSLJF6Q?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/YmaLo38LJ6DNNJv1YS4gNpzIIb6UYxXyZdcqwNeBvg_60Wk0tDjY2_vdVXQ8Gb0xmUF7_CJ9H4PvXMNI-FA96Ukw3Vikca3fD_81peKkJ-dH3LQubFAMLZs-xKTNgAt5FU3TrfbsYHLoDk8yCZALEeofKvPkmTl90rprbqUtJ-BRjLdVlBVWakuQCpnZsyAklGQH7I1ZaslP9_dc9Fik8rs22VoY6vpp1Ab47oQj7K3-D3WtRc9N_imJJJhkKpLJqiLyrA6Qfo-EKJDif6g7jORoO4j9SFBnyYnYRg8gYCqfJiIrVZhEHF6Bw0uWr3njr2X_lWorIUypi9GmpR8qgw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "SPARES2GO Revestimiento",
+        "gtin": "",
+        "mpn": "SPARES2GO"
+    },
+    {
         "id": 24780,
         "date": "2026-11-22T13:01:29+00:00",
         "title": "GARZA – ENROLLACABLE ELÉCTRICO DE 25 METROS CON 4 TOMAS",
@@ -1481,21 +1496,6 @@
         "categoria": "juguetes-infantil",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "POP Funko Marvel",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24660,
-        "date": "2026-11-22T00:02:39+00:00",
-        "title": "Reusch Attrakt Solid 5270515 7700 (9.5)",
-        "price": "12.72 €",
-        "old_price": "26.44 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09P1V25KD?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/fZAJZF8gO6MY2BlzU-TpYsxbHH4ckqTGRPiP-dBF9Mx7puVER7lYoknmMzrKWI3T6stUU5Nr4zJITj7TYU5V7JBd5aEpemcH0zfrJXnUQkQBNr0VfeSntsCjy7BlCp2A2QPoMu8lw1olAKyApEOGd2jld4rDUy90i6AyV0sS7r0Q1p1Faae41I9ozlaFk7AeH2Qg_LoQZKy8GZZHMu6I96TRhFp5OCuJ9IdGIVGPj8V7j2HKWXRG8u4eZeloFLyzNK5ZJdU21__UW4STYpfVlI6-rKq4KTZTVDxSxKFWyjSUmoIkzCqGu95DXWR8bnN80mKDm4oVMTUunp-KU00Izg.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Reusch Attrakt",
         "gtin": "",
         "mpn": ""
     }
