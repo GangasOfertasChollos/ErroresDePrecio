@@ -1,5 +1,20 @@
 [
     {
+        "id": 24851,
+        "date": "2026-11-22T15:44:03+00:00",
+        "title": "NESCAFÉ – ESPRESSO CONCENTRADO VAINILLA (500 ML – 16 TAZAS)",
+        "price": "3.32 €",
+        "old_price": "5.45 €",
+        "discount": "-39%",
+        "amazon_url": "https://www.amazon.es/dp/B0GLYY3BCY?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/hgz31mURy7jXS2qzBs0d7MmyE3OPoNuatN0rdxlD2ctZkVD2uAhzxPsT5fG9MBBqbiPRrhDDhujjpXmp8msousHbM_TC8o7fWp0yZjMRnWzQsoZCsfdFnsvTsvXTu2Lc4wHw73UKRcxOZtwNq04CpfvvI_EDb2_C_I-sGHGjpn17IZNLJQrVmrEip3xHl2t2U67yExfEqFJJB43TuWjf0evFxzmdtNcohuR3RlnsiX_EK7LEpgthgMEQ-jPTZQd1v0ZXUPzR0nfQL_z_Ks_4byWYimo0xG2lqePRBIRzeGxPOvk8pf1M2CYXC134zDGeNKkAE5sc6xrsJsyLTfqSkQ.jpg",
+        "categoria": "general",
+        "description": "¡Prepara deliciosos cafés fríos y lattes con un irresistible toque de vainilla! 🧊☕😍 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "NESCAFÉ",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24849,
         "date": "2026-11-22T15:37:21+00:00",
         "title": "Alpi Nature Anis Estrellado Entero 250g, Vainas de Anís Estrellado para Cocinar y Vino Caliente",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "¡Disfruta de un masaje relajante con calor en cualquier momento! 😍💆‍♂️ Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "BEURER MG",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24739,
-        "date": "2026-11-22T11:30:43+00:00",
-        "title": "Uni-ball Estuche PIN de 8 piezas de marcadores calibrados 0,03 a 1,2 mm color negro SET CLÁSICO I",
-        "price": "9.46 €",
-        "old_price": "17.30 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0D7Z8GH9J?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/IZnDKkkBqt51xPBL4I747_CzOS40kRbsVOiuNwecKHsUpYc0SMYk2MDNHw6LFguJp8WebAjoaP2ZOlA2S3w4EA5rKnxMNj3Bf6s0EoYhYVJoLP4XPQx3mnhk0tzk-uPHYwDjnODn2BVgWmksEjXAiNvaeupDJOwKXPJdCzJ3nCP7aVROjbGys1eBSuME1bqUw6gLvRfAdM-jpiHsOFm3ztGMIdpyOwgtYppTOzx2PI7Jqll2EX7ug94zZYYBCQwjA5N_Ddtt0z7uTTpHlsHNEZoJNbg0YFQQTOTYLeeeyd666LK8nRHv8NjraQGf04R6SgXHASndGJj1aCiXLPrshA.jpg",
-        "categoria": "papeleria-oficina",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Uni",
         "gtin": "",
         "mpn": ""
     }
