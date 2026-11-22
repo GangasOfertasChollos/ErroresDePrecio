@@ -1,5 +1,20 @@
 [
     {
+        "id": 24865,
+        "date": "2026-11-22T16:24:18+00:00",
+        "title": "Lipton Mango maracuyá 330ml, Refresco de Té, Pack de 24 x 330 ml",
+        "price": "12.00 €",
+        "old_price": "23.76 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DVC7F9N7?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/giIuIEgaYgSbyxtuz3GkpQnq0T9bGOUJ4JdhKSUIjBcWBGg7MOKwVDVe7U2dPji6WZPP0bYB0n8RoLCISwK1N3mKBDhvK2gH6rta39zhHGevTJlPzFFnac4N6ZY5Twh6WKIwKjvterASShSCKwZbixX6iw7P-CAiHOInR7i9ef72GI-4IHabc0OpDqLjKwmkjRmtB04lUCleHInBVLB8LSVoN4p_K9hMV7Q9jMpQJXLphwZQMMgJPJZ9BFrBHdm261wiyIN-VKkN8q3aK7weIMLq8dnrXj2bFF_jDs9FaXk6pAwnF_0wwihsXfcgAlRLrN-sO0M5zdyLkYHoNINDUw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Lipton Mango",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24864,
         "date": "2026-11-22T16:21:23+00:00",
         "title": "Gillette Venus Comfortglide Spa Breeze Cuchillas de Afeitar Mujer, Pack 10",
@@ -1481,21 +1496,6 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "Wella Professionals",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24755,
-        "date": "2026-11-22T12:07:23+00:00",
-        "title": "COSRX Snail Mucin 96% Power Face Serum 3.38 fl oz 100ml, Serum Hidratante para el Rostro, Cuidado Personal",
-        "price": "12.35 €",
-        "old_price": "25.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B00PBX3L7K?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/GfLH-hEy9O7Kwk57EqbNU42jCtJYQ0_1XLVCT4caWsFf0jyO4wbQ6yC95q0I0tRTgoC9v-lDUtNK21rL3tBHGBcSZKYWdxanrXBTE_3Ptv2vfkqeQ70GeDHTgTylK8-h36GmjcBOaOXdeOT120Es0YtmfvbE0j-Lrz1Q8UMyzdtonbVDEGF8u_jg_LPIaqcn9yGTfibXzhMvSkn0DDu6IefT6BCZjYOI-SX-UrJ5VZBSTz4sZBNvkgZ1KYJ5z4oGl7qB0NsFdZcTK2H1TBjtNhimpwhN6F7Xx9hllcG8OTWXmEBQ0AqcczLWalvRVoP6nptOU6medTy4SK7Ym7nnSQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "COSRX Snail",
         "gtin": "",
         "mpn": ""
     }
