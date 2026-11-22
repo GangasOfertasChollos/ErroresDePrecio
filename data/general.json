@@ -1,5 +1,20 @@
 [
     {
+        "id": 24738,
+        "date": "2026-11-22T11:27:40+00:00",
+        "title": "Funko POP! Movies: IT Chapter 2",
+        "price": "11.20 €",
+        "old_price": "16.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B07PBB2SDB?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/RexHRss5XW_LCDFsfEdtryMmJFBQDbt_fXMUqjK6AfxSdm0HQvAxT-ERxvFLNVq0U72cXRTn0e8qXMQAbnsj4sTvgMZnwuE5AIX1uMEYtm0wOFVrqHanWrKvzFrz9E2mMtv9_T7NHaHflg5o3z9rCWHI_W6MLYhIZmSZOk9S5JQFVmNrBVZuCK6tMGEjeiWF9d9_q2MOVSDS8Z3qmC6St3joRYmSs4sEwPYD2OwSw5--IEVlIHBCY2ImYlRxZlREPJODaNo2zBq6-VJ5DUE0UwkRWxkyWk8MLXiAtaOH0gD-twP-XB2ZHlT8mL3NxeT6EFyqXvfIBAxmNHAATA5z9g.jpg",
+        "categoria": "juguetes-infantil",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Funko POP",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24737,
         "date": "2026-11-22T11:23:59+00:00",
         "title": "EDIESI, Colchón Coche Hinchable, Colchoneta Inflable Individual para Asiento Trasero, Negro",
@@ -1481,21 +1496,6 @@
         "categoria": "papeleria-oficina",
         "description": "Lámpara de escritorio moderna con iluminación LED y 2 modos de luz. Canal: https://t.me/GangasOfertasChollos",
         "brand": "PHILIPS",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24625,
-        "date": "2026-11-21T21:27:25+00:00",
-        "title": "MEGA BLOKS First Builders Bolsa Grande de Bloques Azul, 60 piezas de colores",
-        "price": "8.99 €",
-        "old_price": "17.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0083F2XCW?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/dXWd9-3TWYgXijz2-_La_Qgv2eotmLij3k1g7Yveh_yQztC2uHFDyDE4--S8Fc6GVrQFgOcOVt4ayUlcAbtxuxV--WA9gC9ttiwesodlCI9ZDqRd8JDYcotR5zYCaSwpJsFlV7bq62QO54Rn1GRaC4PP0V90UfsR6yk0gifPJ8L6xsjcCTloTVxPJy9RlKrORjPE1Uv-dHeTl26Z-xPi5B1hsh7Oz72beaq0UxwzV9z7D8wNuznpdhSKPbM0A-TU4evMeoWUOWUruk5TfY5I1SahQpAeYGub_AWRk7lGYb81Z11u4A2MigdAnQ1D48zbDFLxd6rH625EV7Ld0lyK7Q.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "MEGA BLOKS",
         "gtin": "",
         "mpn": ""
     }
