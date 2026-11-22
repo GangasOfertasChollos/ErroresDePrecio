@@ -1,5 +1,20 @@
 [
     {
+        "id": 24682,
+        "date": "2026-11-22T09:20:36+00:00",
+        "title": "mundohuevo Regalo Pack Original para Amigos, Pareja, Familia y Oficina",
+        "price": "8.93 €",
+        "old_price": "15.90 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0H2NF7WG1?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/o_eDg0J6niIq9mvNJkcV8gofGDbcrYq96Aaw7jkejLyR3-r1JKQ12GR8wVgPdlD0DrPxN4cMoL8-E-ORKqoLIR-ZG9H0HPQGOKeIcErDiXEPkDC-SZTQ-jvUGu-ZoJ5CtCW0SO3xPEEXFso9Rf3BfEmOyFBg01FFU6C_s2HHwaoHjI6p-na4Sm9pjEifcVcKT5jvIlKX6tMT9gQbhUE2yFXRAItiSxQkAYWf97CPmpT6SRCNKgtFubGStBjSiEsPqNTYMM_E0tsKczqJlIQBdZ_Oiscmn95QBSGp9PdxurKIliV--gmhpLiIg8Uw9CF7GCzCdmjqwDwZN3cu6mvEZQ.jpg",
+        "categoria": "papeleria-oficina",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "mundohuevo Regalo",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24681,
         "date": "2026-11-22T09:17:06+00:00",
         "title": "Wella Color Fresh Mascarilla Color Copper 150ml",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Garmin Instinct",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24571,
-        "date": "2026-11-21T19:15:25+00:00",
-        "title": "MONOPOLY PANINI PRIZM – MUNDIAL FIFA 2026",
-        "price": "14.99 €",
-        "old_price": "44.99 €",
-        "discount": "-67%",
-        "amazon_url": "https://www.amazon.es/dp/B0GHPVM5KT?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/I2KjRF0iBDhBtolcLzQF0NLHPg9lRI71iOyyJ86_Zk-xxCh6N460JtEC6DaXYLc0m6sS2_Ukc1IUuLsoUWvHy1CXY60W5kAACazxs551iIdApH4HSjdaALNynLAm2nj6xn8Gf9QeG4I_nRNJpNdy7zVRdY-_kMxOBz2UbpmF_GcKSfFZiOgjCPjklT8135aabwvKZQ6MNRcf1jhiU0MHlDCrae5Y_zpfsCvw-TUxTfYk5ZuUng5mz610F2tu24RvGKllO3Q6BzovVKkCUX9_u6ZXyEQm-ZYtiHM-JklnTIwWwmrIPS3Zj0p78psJHlCcLwcRVjjGrDcgmYpifSHRpw.jpg",
-        "categoria": "juguetes-infantil",
-        "description": "Monopoly del Mundial 2026 con cartas coleccionables de fútbol. ¡Ideal para regalar! Canal: https://t.me/GangasOfertasChollos",
-        "brand": "MONOPOLY PANINI",
         "gtin": "",
         "mpn": ""
     }
