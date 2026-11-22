@@ -1,5 +1,20 @@
 [
     {
+        "id": 24838,
+        "date": "2026-11-22T15:17:08+00:00",
+        "title": "Tommy Hilfiger Reloj Analógico de Cuarzo Multifunción para Mujer con Correa de Malla de Acero Inoxidable de Color Dorado",
+        "price": "96.94 €",
+        "old_price": "199.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09BN2F48P?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/bdrROwFNmTd9ru0TxFfSu-j_r44VvCGyAvgt2GFAJkiJWWzKO4h1qM3gsQtl_g4K0Mo_700QPAFbEWH2Uenh_0vt1HjPy4-2rPV7lNwglhj_7V-C7u7Y_i2v5ma4axoxrRgn_k8uRskA-3-1agWDcnamgRwINOGWWyZ75VyUU-27Kys2z1p9P1kGpdOVko6kZKk4mpJyepYcfDzPUbX43bBQYlmps7mXmoPSzKzXBCrO0fa-pA1_F_fCLkXNEjkBgOhTG_X6n_K2Ncf2yF3xIzbXkVs_F4A-7wF34Z-P_AMEwGXSzvGTzVZnLrhFtRVQqU6lvHLl6NEeuWSgp9wu6Q.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Tommy Hilfiger",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24837,
         "date": "2026-11-22T15:15:12+00:00",
         "title": "MEDISANA – ALMOHADILLA TÉRMICA HP 650 CON 4 NIVELES DE TEMPERATURA",
@@ -1483,20 +1498,5 @@
         "brand": "OBSBOT",
         "gtin": "",
         "mpn": "100FPS"
-    },
-    {
-        "id": 24725,
-        "date": "2026-11-22T11:04:01+00:00",
-        "title": "adidas Unisex bebé Essentials Climacool Track Suit, Black/Gold Metallic, 12-18 Months",
-        "price": "20.00 €",
-        "old_price": "40.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CZPNZ4RV?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Iw8Urg7G04AnafFlZ7H3Mmb5wZ47V1mEZ_czh16S3XLc8HvrdPnxI5Pw-mDb9C_5AzlEZwj0LCyOsoD5nXgQwRMl2GO_HH5736QYsVBXnXWGwp7t4kfTFncAELVGI2E4dKKiLckw-b2mHHwQkaClN4Y0Plnk8RQYRpbs9XwNGG4prXsP6dDouAeyURp4YRyQ1ho2Vmn_wZgbN-20cuubNDcy5YcYjLCDFtoGGNTvS5Q9-VLHW5oT3RV4Xn7rkYo6OMhWyPgbR3hev2kXmJgAbcJpp1NFbA1_f4dFPIAr1oEKTRUtqTcjVhztTEgKJID8ph-S1OBN4vq0a5pwrKFSjA.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "adidas Unisex",
-        "gtin": "",
-        "mpn": ""
     }
 ]
