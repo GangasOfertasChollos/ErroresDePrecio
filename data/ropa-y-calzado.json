@@ -1,5 +1,20 @@
 [
     {
+        "id": 24876,
+        "date": "2026-11-22T16:50:54+00:00",
+        "title": "Under Armour Hombre UA HG Armour Comp Mock LS Shirt",
+        "price": "18.79 €",
+        "old_price": "40.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08LP16LMG?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/LyPhgBBGDHOdXo88XuJ2YYa8IL4w9sw5AZN8atKOQaFQK21xvkO-HND9vdUJpolCL-sq-L8Y2hiY2IBY0crTpNM2soW3XnaedeRbJa51QOPaz5FsqMfU59xbQNB6BHVGtXR8HDohu5OKVtghsgEmxPyUqz59soPHzGEqbsyLe7YIM-HIZgwF0PKmuUc9Dyv50IYxxOIbM8bOUTgkexRfVfFdMy-g0ow8420tusxCrnXPNlMkosBxVeQkirNx1XTG6vJ8_wv8e1Bk8mr4Lfzz4oEzk9rswIhulFXzMNsz-VrdmuJA14VyxlnNPnhJTywHjACK74acnT3IMibjsxqEOQ.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Under Armour",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24868,
         "date": "2026-11-22T16:31:05+00:00",
         "title": "Invicta Aviator Reloj Cuarzo para Hombre de acero inoxidable - 49mm",
@@ -431,21 +446,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "VENUM Gladiator",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24709,
-        "date": "2026-11-22T10:17:08+00:00",
-        "title": "Leversic Suéter Navidad Mujer Jersey Invierno Suéter de Punto de Invierno, Negro,L",
-        "price": "16.99 €",
-        "old_price": "35.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FJRH2VB7?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/AoNUQijfwJqjgMcQ1Swkq92w4R2l1lpdcvis9u8xTCzWFwnUxwbLqytDcBbRNcI8bkwIPsAn5ZDgI79IVhq9HoLw8rlV-lzAc7KxdEXiG00ZebgGN2RPhlr9kDCC8Kn5oPXoIroq1ylEXGW3sRFFK4kWyvsYLPSVXNxoHcOklds3mq8Ljw4Zk7uJ4-z9s6HV-_g3sx6OhU8Nem6KbnfJ92T2rTth4S15OH4QW-Twlxy53rQV2DlQGwPVB5xn-9eYLjx6g_TNEKxQELQUQCp5l1e3F7tpsDZPInWrQQ194R0JG5WCCho1-uCkj53Ew0d9LSBT2z3DGRLLELM6EF3MSw.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Leversic Suéter",
         "gtin": "",
         "mpn": ""
     }
