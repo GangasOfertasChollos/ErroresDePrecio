@@ -1,5 +1,20 @@
 [
     {
+        "id": 24816,
+        "date": "2026-11-22T14:24:00+00:00",
+        "title": "Tomylv Cartera para Hombre de Lujo, Negro Naranja",
+        "price": "28.87 €",
+        "old_price": "49.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0HFN15ZX8?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/dr6rvZ09Vq6JC3NtaHjDNc3T1_58tzL-p0fY1T8HSsdnVv8UL7OTtkgnKHecDTxe8hmXX5FQgYqy_uizSYJPMbm25mmq67boyef2OnRfh2OuILNAZ5VCHKiMklS8wROt_BRXAUBu76DvBeu54xmz7tPT9kDkUZ0Uw-dih8tgNufPT5M-mD0vis6nxOh17XV4SJP6j8IQf5PaBWFy15odDhblIkMXXXWaTudBUIVq21INksrNLYHSQHJCrjk8CkbLej_Kqtyc63ttuGDHwctimJoKgpjKoQWe4_rtXmSXlPGQs4KPgcZ2BCR06D1wfcSnq7pclI0N7vhmT6AU5bxACQ.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Tomylv Cartera",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24813,
         "date": "2026-11-22T14:22:28+00:00",
         "title": "PUMA Tazon 6 Fm, Zapatillas de Running Hombre, Multicolor Puma White Puma Black Puma Silver, 44 EU",
@@ -433,20 +448,5 @@
         "brand": "VANS RANGE",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24645,
-        "date": "2026-11-21T22:24:37+00:00",
-        "title": "Calvin Klein Ck Hardware Lv04f3678g Crossover - Bolsa para cámara para mujer, Blanco (Light Hay), Talla única",
-        "price": "53.00 €",
-        "old_price": "99.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0GGBFX8KH?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Y2GqnJwW2POHBf4RAJdhlnVcDSzpCqdfwWnokRjNw-I_IjJoqfRMm5xbauwVezJkDehMflbaTVagt59BI8biCnrQ5X2iUvQKfUkY_jdCpsAaWaTrtvD7ug_ecv6kdRDSuzqKXYz33CKoSwHiL7qS5qFopv0XANdnNl6uo2f4RZVBrR7Xg7AMLwsdKkOvCdey4i7s3XiA7PMdg_YopKpaRHJCRQ23nrzVe1-YJ3QcQPmiW1PTBZEAvLueIv4qspd5-GISn7xHU8FrOAhU6a9B-IjlkRBBR1wwoj76HlCa0urlw7L3u8oFiZkPbcy58XsMR2OcxQT7rcrYVV84KNwGtA.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Calvin Klein",
-        "gtin": "",
-        "mpn": "Lv04f3678g"
     }
 ]
