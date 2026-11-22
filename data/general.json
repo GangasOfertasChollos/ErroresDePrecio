@@ -1,5 +1,20 @@
 [
     {
+        "id": 24708,
+        "date": "2026-11-22T10:15:26+00:00",
+        "title": "BOSCH – SET DE 39 DESTORNILLADORES Y PUNTAS",
+        "price": "49.49 €",
+        "old_price": "70.58 €",
+        "discount": "-30%",
+        "amazon_url": "https://www.amazon.es/dp/B0G63ZQC9V?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/jC-F6l92s59yosELGm20OlPULqpBI5BaLGoT5lV8NaQyrcFSgBxMEkw0ViOBIdIqRpE0cjqO2bfQYVEkz_4IUh50kjpc4WX3uHUCCyowSLQvPrMjY1Skd6oWsFWAw_PwIQOprPIxWfG3aodgTUEyDQFP5-2HkIupmtMdKo3wkmNe4pmGRaU02MEc4FQKRR7zGAP5w4WYxJ8Uf-FA7TxU7AYRM04eAOY7PaMugT8CDJtVRlF2r32jZLj6Ul1x_n5uq0a4xTHPm8cuoZZ8McdQ3i6LCVT2vjdAe32oN4XPFO8ck54OtPcD5RSf4XIcckGBJ9FWbJSORuvYWDzk2tJ2tQ.jpg",
+        "categoria": "general",
+        "description": "¡Todas las herramientas que necesitas! 😍🔧 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "BOSCH",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24707,
         "date": "2026-11-22T10:13:41+00:00",
         "title": "De buyer crepera de hierro de 26cm 5615.26",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Bosch PRO",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24601,
-        "date": "2026-11-21T20:23:50+00:00",
-        "title": "GXTrust Acira Teclado Mecánico 60% Español QWERTY, Negro/Gris",
-        "price": "28.92 €",
-        "old_price": "49.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CZ11JN9F?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/kHX4-cXVk6iyI0JP3l9N3eTlFbjU_T9X6GelmgVz7zKacBN2b8Ns92PglQ6RqwnLVXU8zXwZgctV3jeOkOO_4HyAwrd_GqPF06oEUIkxkYm64w9mjE11_Q5O-NBaZeA5qnufU3M0_Zn38m5n5xhnBi6IMMav34Bd7GP2yXiS9FgOf3gN3-Uiz2O89N3Rre5F9FgPRDfpbX_mDOhnZ9wX9lF9yQcxe8TG7wWCpuMhaRsjnbjb0u2Iczo-6NhCOeI4GPms_ku3Lfhnv0xIWz1_kTSvaokUBvyhtQqwzdNMj7OJdRnBXdpdoEO498HWor_FsPReYhxllXll_T7fGpdhzA.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "GXTrust Acira",
         "gtin": "",
         "mpn": ""
     }
