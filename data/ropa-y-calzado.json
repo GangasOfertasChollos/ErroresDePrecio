@@ -1,5 +1,20 @@
 [
     {
+        "id": 24846,
+        "date": "2026-11-22T15:33:14+00:00",
+        "title": "LEE - Jeans Hombre - Corte Recto Regular - Daren - Cement",
+        "price": "37.75 €",
+        "old_price": "99.95 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0CRFBDCM6?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/AZOFdJlVsAAB_qAKWx5ni0SmFCqQ8gvMVudRz0lrTdEyHnKTubIdPE5b0dVqDKVpJsv17SKk4FD10oF0Cv9UINfuGC7fAzaaJbyJJEe3x-W4Dl17ZsSwZihnOAh8CUAxSOHz8cQOFZ4Bz7vkVJ2j73rNiuWhCmGvJbGLiSeGDFuor6cbny6V2GRV3GPLxMcYKNK8l6JmSZS_U78nXG_uiY1TatY0oTc49mHYOcLVN-s8I_TG7rcQVDxDSHCqgGltuqB68opZxMd-axTY4CM88qp-XPi0LAHlPRX0BYWI-Zsu6jAK-A-xmG93HlN__bCL5xAh4gopaRe5COq1Uz1kJw.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "LEE",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24845,
         "date": "2026-11-22T15:31:12+00:00",
         "title": "Lee Extreme Motion Vaqueros Straight, Azul (Maddox Pu), W34/L30 (Talla del fabricante: 34/30) para Hombre",
@@ -431,21 +446,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "PUMA Camiseta",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24698,
-        "date": "2026-11-22T10:00:41+00:00",
-        "title": "FALKE hombre Invisible Step Medium Cut Box calcetines invisibles algodón",
-        "price": "4.62 €",
-        "old_price": "11.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B099SH691T?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/N-G_ka2Sf292m0kEgi3y6FYcJIAPynKZ2FkEr2D5MNIsIWpTfrCVl1ob5ag6DfZpyGbGj56Vaz8No7vkbGghwhblAw4E0yd6J7IQGkuOAZAGqpJn1XvthZtz1OqCkf9syOxJf_aQe8dJ1_LXoV1iB7Q3TA7Vdma3sfQIEUorxoetqjQjlk2SJsp7gxnUrQvqv3LVJ7Mj4VGU3piqXR1FGs5OKox8fw33C5ZnsHFbQaViBF0kLjlK15nRIsNRlrD2hgLb3LTYVGvFYhGBKeAVU1XzslJUWqkrZWxPCCQvPZtnGbQzciEXB8orbuQV3m2XU83TghXqhp32HmwKX3dpCA.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "FALKE hombre",
         "gtin": "",
         "mpn": ""
     }
