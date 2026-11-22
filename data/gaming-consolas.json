@@ -1,17 +1,32 @@
 [
     {
-        "id": 24216,
-        "date": "2026-11-21T04:04:04+00:00",
-        "title": "ASUS TUF Gaming B650E-PLUS WiFi, M.2, 2.5Gb Ethernet",
-        "price": "139.95 €",
-        "old_price": "249.99 €",
+        "id": 24640,
+        "date": "2026-11-21T22:05:36+00:00",
+        "title": "GLORIOUS GMMK 3 PRO HE – TECLADO GAMING INALÁMBRICO 65%",
+        "price": "91.99 €",
+        "old_price": "155.99 €",
+        "discount": "-41%",
+        "amazon_url": "https://www.amazon.es/dp/B0DCGT2H61?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/G-RDpAQcG2dHDCKVW2C-KmsJnFwe_2D6TkK-sOhw_GD5eDbg5Igq8ncYHqknZZpJyLdEVbe8h7sbm-9Mr4pQu4U7EnaYDhrUuHfW9xpaME8lNAnuVESQcNeIC5VSpzWbt_NX0xsThKkaCym2cRZOqV_VDeFDAoEJ8eU2D14TfxF1bPslwOQP0pYKhIveNHusxsyz-ax46GpH6TCsk_JIdEgvUkQFBn3i-HyYFvXAPEDo7CfX5hcgs3xjqu6RgY6lssR6Jqvjcza9Cf7UjYuxFDre3-j5h-OR6fZBtG_nM0WZ339OYF6OhZ_vxREEJwkHvnetclk5gStCkiI09-ps3Q.jpg",
+        "categoria": "gaming-consolas",
+        "description": "Teclado gaming RGB con switches magnéticos y carcasa de aluminio. Canal: https://t.me/GangasOfertasChollos",
+        "brand": "GLORIOUS GMMK",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
+        "id": 24562,
+        "date": "2026-11-21T19:00:24+00:00",
+        "title": "Corsair MM300 Pro Alfombrilla de Ratón para Juegos, Negro/Gris, 93 cm x 30 cm",
+        "price": "14.99 €",
+        "old_price": "34.99 €",
         "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0F1Z5982Y?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/RXogvTbQameMPvPzXC2G1SVk3qH7vfNIY0IHaalp5tTXbS-E3StVvQIEEKyBSpIp9dulMVik2ZmWvJpfNiEJJ7aGgvlwAIkYs2YETl9-UM2gEWuam4DdEO7TLGKGfVaUeA4vTSu-Ll-62Rr6BSyiOaTWV33TfPXY8wZGIpUWwM5_rDpQlMmoimHunuJa1OoVl8w2bLHaxdMEMgjrHG_v9nZUcGPmfKhfN3vMiH8sKFHGBX9fwQLH6gQxxR1xaTDLSAvTenWQmW5OBFbMzuo-KBkzO43McCPbxPcSHHV1jOKS3EEEzH24uDc6OkQNdLmvMKVLx9IyBiENwhmniL3OfQ.jpg",
+        "amazon_url": "https://www.amazon.es/dp/B08JH7H1NG?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/oc8bAlXUqc4W4PujkEIoHZ3_w882U3L79Ko8uazGTF8GInmhlsOmTEJeKxXOJWYvk3mdJljxaBExZxFizuR72_twQYY1lIKyOKr4rFEGHy1lcZlGq3OrV6H0a5K0R7Z0hxBh9ciUpKVZr7vwyEhhyzkV9SjfGEej1KmV0yx_p9A-vTcI6XC1Hoqp18oOm091nPAOarzYdJ9oO1447C_MowjFR1WDnUVKH4_pdXOmhnas5FDH6uK-d-QfED1bdB-Rs0FiLZw10KLFkbeVivJhF88ZsoSiMqH9uYk3GA71loSr8LwzscKFVkVgJzixkCKz28ZdWY7BRb27Zz_Rxqi7Qw.jpg",
         "categoria": "gaming-consolas",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "ASUS TUF Gaming B650E",
+        "brand": "Corsair MM300",
         "gtin": "",
-        "mpn": "B650E-PLUS"
+        "mpn": ""
     }
 ]
