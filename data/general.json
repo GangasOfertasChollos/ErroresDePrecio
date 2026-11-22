@@ -1,5 +1,20 @@
 [
     {
+        "id": 24831,
+        "date": "2026-11-22T15:03:28+00:00",
+        "title": "Tabla de cortar ARCOS, estilo madera, fibra de celulosa y resina, marrón, 37,7 x 27,7 cm",
+        "price": "19.79 €",
+        "old_price": "35.38 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B07N8W1J6B?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/mJfLsoeyJO1U7qK1O4-zt9BSNI6i_pPQrmtm0G0IWLGf0ycQfjJOYc-Q-lngqlKRyBaIEfuJRuM-g02lRqDD6AqOWEuRpkWqPS6NQ6cILs-uhmwtmhO0_j5GoynQzkvrGm6s5izXPseZ4vQdFY8S34gYrA8VYuKDAs17F_d3j5c0AmP8Z1asoWUbJVwe5imfRGzJ-nUR88PCxjjrlyyT8m8t9hKjHPpijmIqqMkmnrDVujnJeMoHWLlcOMH3NaI_5Sbmxt7PpTy-4iCJ3AZs1iOTgJnFGym2AjgxqlhQY4OaoI19loOIiYppCMx5Jly99uEY3_wg2WjJfXCivCf2-w.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24830,
         "date": "2026-11-22T15:01:56+00:00",
         "title": "RUSSELL HOBBS – PLANCHA VERTICAL STEAM GENIE AROMA 1800W CON VAPOR",
@@ -1483,20 +1498,5 @@
         "brand": "JUST CAVALLI",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24715,
-        "date": "2026-11-22T10:34:12+00:00",
-        "title": "Comely Plafon LED Techo Redondo 42W 4700LM Lámpara de Techo Regulable Oro",
-        "price": "29.53 €",
-        "old_price": "52.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DZ6HMSP4?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/qllaiHgAfPLaRSFMq_jfTsaM-t1THRETDYPQYIkTfUSk0gjxbX2jZchycU5cfQ3GiiwdSwNvm3vblJavvkU4MdcB5wggsijBGI2tPpUuKJyXowTJRFho5puhFQqOEPlK_iNMIBnx7RDMuro4Dz90YUJbCVmWmpzreiLFVZ7BycTcC_7LoO5qssYzJORNDd5Xj5lM208erqtxCVAU595IZPV7huHj36PrzdKMr7nP7wOYA2Mx-nd9Br8DHgFAYxU2k7iP3qBGuuGZlUUm5nbnTJ0sQEPH8qnQNrK4syD8NAzJYOEWRd3Rn0_ch-gFX9UlaqI-gwIiMHjH5-nRjPaPNw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Comely Plafon",
-        "gtin": "",
-        "mpn": "4700LM"
     }
 ]
