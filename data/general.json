@@ -1,5 +1,20 @@
 [
     {
+        "id": 24695,
+        "date": "2026-11-22T09:45:23+00:00",
+        "title": "VASAGLE – CONJUNTO DE MESA DE COMEDOR Y 2 BANCOS",
+        "price": "60.90 €",
+        "old_price": "89.99 €",
+        "discount": "-32%",
+        "amazon_url": "https://www.amazon.es/dp/B0CMXBY4RQ?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/ED7YlE9vvsHGV6DX0YplJ1qVMuPha9pf0PQppFbzCXKTbaMefIIA7Wbd4kf3xu0SpX5InDCmNq35h2qnCjoEhiElbW106_N2Hk7DzF1snsFmm9SYZ9fQ_RnmSebtDoGZwClOJVF-YJmUNnCnjt4L7NaD398qCN5zD5lSvdEe3nsxDOBKMqIWSGN1hnEPCShZN_SpExt0AbV1WWncMldy-kp3uY1UfFSBMs1IN6lBQkBj_hkhkdYDMfn_SD4FmuHLh-drgKCwdfR1zk3YoUtrcFavZzsMezJkhbnVRjx_MSkzDQZorId40e3yQ4IUKYEqu3yZhdTLPp1B_H-21f_LzQ.jpg",
+        "categoria": "general",
+        "description": "¡Diseño moderno para tu comedor! 😍🏡 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "VASAGLE",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24694,
         "date": "2026-11-22T09:41:50+00:00",
         "title": "NUK Juego de mordedores con diferentes superficies, a partir de 0 meses, 2 unidades, multicolor",
@@ -1483,20 +1498,5 @@
         "brand": "Panasonic NF",
         "gtin": "",
         "mpn": "NF-GM600"
-    },
-    {
-        "id": 24584,
-        "date": "2026-11-21T20:00:24+00:00",
-        "title": "Edipets, Comedero Perro Gato, Plato Simple, Doble, Bebedero Triple, Extraíble de Cerámica o Acero Inoxidable",
-        "price": "16.82 €",
-        "old_price": "23.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09G6R6GTV?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/lhGY96Ikyfj_TevNzKqm7etL7KFWT91xgTCsCIL3ZmOFK1wV7RNfWEKjXGjBthQkweUXBnKcHL384w8pRB2muEfnxEmK448R7mdQeBUy37EwbuI2ry5RSW32fnp2yEZleFBQlHAqCxnCYlY_KRQibaWEKvZcwYZgjdJrcST9EEwvhX46uh2TadtJg2iIr2X6grClivPfgreug9X2D2D_EjmRoPLfLTcBcoyccDfij0bWA2OL9zok23H0v1V_EciYyp9W0uyIVPLVsoFz_11gi0WAElxf6J652DtfX-KYQHeIQr_P7xHZ5MtxEHNaMdvq2c0Eb46bMLfAsTWbure3Gg.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Edipets Comedero",
-        "gtin": "",
-        "mpn": ""
     }
 ]
