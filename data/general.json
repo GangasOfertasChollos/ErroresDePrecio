@@ -1,5 +1,20 @@
 [
     {
+        "id": 24734,
+        "date": "2026-11-22T11:15:48+00:00",
+        "title": "NATURAL ELEMENTS – ASHWAGANDHA KSM-66 ORGÁNICA 600 MG – 180 CÁPSULAS",
+        "price": "18.19 €",
+        "old_price": "25.99 €",
+        "discount": "-30%",
+        "amazon_url": "https://www.amazon.es/dp/B08ZDCP3HB?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/scqV_Otoo_unRH4vM08MZRcujgAcBql9sZ5gAf6RXEgJo76TIzuTcTvjVaroDJ13vdQq35D_oBWa1jX6b4L7GACO-3YuxjxQdYy3RV8C61sMI0DAlQUkWvT9U5iURXUUiYWzlUBD24M8sSYwLTMxj9BqrMLFWbRe307m2qxKtgub8G9gnY-m5miAxqzW96hiPNRZf3MSGDRcN3wv4XMXogtvkjjUxhjPN-eOa5KuzAzc0q1DRjXOcQ6AMdck-LdZ-3H5n6_FUFF0dyq7ZzFjNZS0xd8mIHXE1JkhHIVbh9iWHdTfQ9Nr2tBKB1JtOMxpVmC2rTd_1p0XwLCEZxLP0w.jpg",
+        "categoria": "general",
+        "description": "¡Extracto de raíz orgánica, vegano y sin aditivos! 🌱💚 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "NATURAL ELEMENTS",
+        "gtin": "",
+        "mpn": "KSM-66"
+    },
+    {
         "id": 24733,
         "date": "2026-11-22T11:14:49+00:00",
         "title": "Falechay Pack de 3 Camiseta Tirantes Hombre Camisetas Negro-Azul-Verde M",
@@ -1483,20 +1498,5 @@
         "brand": "",
         "gtin": "",
         "mpn": "LJ757S"
-    },
-    {
-        "id": 24621,
-        "date": "2026-11-21T21:15:26+00:00",
-        "title": "AGPTEK – CODERA PARA EPICONDILITIS",
-        "price": "9.49 €",
-        "old_price": "15.29 €",
-        "discount": "-38%",
-        "amazon_url": "https://www.amazon.es/dp/B0BR3M85FD?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/slHAOz2sClXZRSYu60YnytxgSRG3U9TYOp3Bo8wGDR0MoGcpFHlBRwvT805F0X8t6HF-KVtjwxFmZRt-MBHw0mmX6q8CSD--h3kXmk8whRE4Bop3RtpVymCCG4nbsnwOgjU3gycjj8ExR0HudF0YtZDsQh5wfs8YCkeNtlR9nzpoXYginFFLcqKHF0-zgglE8kJ0jn1B-vrKLWTNETLYlL-_DUmiklun3gvGfX_RLBkN5FMed_r8Cq59kXYQ-S3nLHLmjBwWEwzvOKWqfEJqlBjmLgsBSTQWfcWU4JoKmaQLDnEIcAYh5Tq8zUUwLQ75B2Yf0nuOb76Uor4TiySBMw.jpg",
-        "categoria": "general",
-        "description": "Codera ajustable con soporte de compresión, ideal para tenis, pádel y gimnasio. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "AGPTEK",
-        "gtin": "",
-        "mpn": ""
     }
 ]
