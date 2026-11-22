@@ -1,5 +1,20 @@
 [
     {
+        "id": 24821,
+        "date": "2026-11-22T14:34:43+00:00",
+        "title": "M&M'S – CHOCOLATINAS NAVIDEÑAS CRISPY SANTA, PACK DE 32 UNIDADES",
+        "price": "17.99 €",
+        "old_price": "31.68 €",
+        "discount": "-43%",
+        "amazon_url": "https://www.amazon.es/dp/B0D2DNYNXK?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/UFsdPHUznKTd7guMe6ap4JwNJJ57hCOCo_7hACOz_RPxMovjm9PKZwIikhbvTXHcN2ZVwmWSckGIFS71Kdiwz9W_yi6vjNF0X8hazLwXxYKUNykO_St3ssGTByW7Ct9OS9kGJI2sTeVxSg_bz51Ujj8XfQ27l-Riaj1XptVpwg85fwz6XSx3M6hlbJEF5VMAKq3xoG690DEE1_c2FtwMlUOqtwqCKsknKb6TDqCrFEbhFhgvmJ4EQFGn9LI8OwnhlMSfDUOIheMaej1MliT0UJjMGyQKCQQvTBBxr-MmGZEHSfwqHmnOPp2BoUdFWiO64ZsuF-eWBOEq9vjlcZvyUw.jpg",
+        "categoria": "general",
+        "description": "¡Deliciosas chocolatinas crujientes para regalar y compartir esta Navidad! 🎅🍫😍 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24820,
         "date": "2026-11-22T14:34:01+00:00",
         "title": "Tommee Tippee Biberones, biberón anticólicos Natural Start, 260 ml, azul, pack de 2",
@@ -1481,21 +1496,6 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "Faszin Plancha",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24705,
-        "date": "2026-11-22T10:11:37+00:00",
-        "title": "WOLFBOX - Soplador de aire eléctrico inalámbrico de 110000 rpm, mini soplador ajustable de 3 engranajes con carga rápida",
-        "price": "35.99 €",
-        "old_price": "49.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DSW7R4VN?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/C61bQesnndOKs0IkHw6laK4hjul_WiexXPsQ85a2YOdKZs6NN608zKkEwpr1najtMCxL3WH8bGs6u5Vgf3yt5cBCeYMNEIChpWK9vba8lW41NMCVrkRANrvPgIvrKqJ0iu_rNx4y7oLUT8RBWXHE0bA3EZPpsS1vjzL9tjmZbqoA5-dpfZopEBgO6ha89ceDUCJgmxGma6sSO2cEghjTHXrKr6flYVdVIoYfsfbNUCd24rIFixkI1X-yGcRX-T_BvKiL4OI-SZRCrSGjyOE-zcQiC0LGN5pN4Ya6ztqXCWT7wJRXvU7TrxJxyyJPnlclivrWB1MvLCtfcl-GW1UO-w.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "WOLFBOX",
         "gtin": "",
         "mpn": ""
     }
