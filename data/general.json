@@ -1,5 +1,20 @@
 [
     {
+        "id": 24800,
+        "date": "2026-11-22T13:45:59+00:00",
+        "title": "FALECHAY – PACK DE 3 CAMISETAS DE TIRANTES PARA HOMBRE 100 % ALGODÓN",
+        "price": "14.99 €",
+        "old_price": "29.99 €",
+        "discount": "-50%",
+        "amazon_url": "https://www.amazon.es/dp/B0DPZW5PTW?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/WjJkibhwcKP_fAKnb9KFgjw8KLUJx-FlBIrLIwodl1pU1r0W1waYsOD9ZShR4NtHAYdJzrcVj3OG8-HTy2B6Kfa5veZeC_XIKLwDvO2ith10Zd7TJXawjAwK1xMQ_3ti-LD0KUtE6j-QCV8IB9WcoxnVq-yAXojNDEg-2HMXkbCFpgvMDY0_ZU8qzHlFDF4Yqb-OO38X3bpEAYXtSi6of0HqICBY2J0f9kzHqcP30JTnTRcKjytmyjFXpLWsGQ6pq1ABZ_5FMADdIGpvpl0c7gO2U-3uaLWGHwXqtOO1UxqZA5xdfty5JRnvsG2XOkDHlcsI4XuhsCENLAvZtpWXDg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "¡Cómodas, transpirables e ideales para cada día! 😍💪 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "FALECHAY",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24799,
         "date": "2026-11-22T13:37:57+00:00",
         "title": "UA Hustle Lite Backpack",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "Tostadora Philips",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24683,
-        "date": "2026-11-22T09:23:55+00:00",
-        "title": "LÄSSIG Bolsa húmeda reutilizable 2 piezas/Wet Bag Little Forest Fox",
-        "price": "8.50 €",
-        "old_price": "14.95 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09KY2R8DL?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/LjT8B3P-BnDLp9c0mQZhSEex5MSpmqd_CrWgOGA_Glwcz3Xa1ThJkQxG-r5eeykGLYyIwCyLSd102WWXZguTq8_mv67h7YwrZKKfaGDMJItvjkmje6IZsFEZXxPu02FOzBpi1OBmOdIqTHWOKBC7GqGVOHt2WWbINWGufIwUjXh53TmPXyV-T-ghx7jDdipGMw6BfXWlImuX2D4V4OqnJlgDHv1rOkqdZY6LZ6u_rPga08BTcZ4Ml-IU2QJywskwoUeeXJ83_XDTxIrnXijkC22AFF37-DoGQc9K1N73CAxRjocDts_anlnrrVpreBRnlbCh2ctgmAN0dYhH0P8HlQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "LÄSSIG Bolsa",
         "gtin": "",
         "mpn": ""
     }
