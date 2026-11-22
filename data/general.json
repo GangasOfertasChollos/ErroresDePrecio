@@ -1,5 +1,20 @@
 [
     {
+        "id": 24826,
+        "date": "2026-11-22T14:46:54+00:00",
+        "title": "Calvin Klein Tarjetero Hombre Bold de Piel, Azul (Slate Blue), Talla Única",
+        "price": "21.43 €",
+        "old_price": "49.90 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0FW4VQNT8?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/dqLHZfkiJvzfMeIVFIMf7HVZDzYui-wG_PwWXnrmt1ZTsBVdIhZClzSYOx5p9wZewhmccBbPqKx6KrY_bSQv6HD2Oy8JLYprRdwWaEuwogXC-CF4yptNkJVHzitzEdRR7x_L1lB6VFB862L8rnhLmskdeQHhxEYKTd9QlgMaMI6smuctVkOoYw5FSLP6tzfifm0LHxVrAjv-1z6sDXBMNL2MzEKGlajUVHfEVWbyiH51oZdwH2SqkdQCnLcQMZBrvRSNZeh-Ql4o03nhC7nXJA7nmlgXt-8Wk4U_3G32fw2AnwdtdcxdHVTblxFS3d_NvQuDqwfCW-y3iwyQRdwJXw.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Calvin Klein",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24825,
         "date": "2026-11-22T14:45:20+00:00",
         "title": "BLINK OUTDOOR 4 – CÁMARA DE SEGURIDAD CON BLINK MINI 2K+ GRATIS",
@@ -1483,20 +1498,5 @@
         "brand": "De Buyer",
         "gtin": "",
         "mpn": "28CM-Di"
-    },
-    {
-        "id": 24710,
-        "date": "2026-11-22T10:20:40+00:00",
-        "title": "VENUM Gladiator 3.0 Pantalones Cortos de Entrenamiento, Hombre, Negro, L",
-        "price": "29.99 €",
-        "old_price": "59.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B01N03CKBL?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/VjqYEtVA8a98uZsuZ2p5tvrSuWUU5IcBsCGnxmcpX3BkSlw78k2olH4bPvxt5gozYmYqJry7Yd9ONPNQxwu0M1Sd8vN7oRQeWbJxW1OOK1b3y74xm3q-dcSWYxbcM7_gTwPBXh6ltUXJuvNYIw-cK-AnVtgKgTBE4fO2O3YLF22v_qDTmUjIiGUmVj1MlpS2STCZ24lIeoKvCMH6kVmFp6fGxp0XLfwzaaXjrJNdWq0cBTBgcay7UGikJ3m7bMm0mMyuSEl32scTmkrR7Qf4q-jdKwjk1NPMx0X-nijjbPRgxqOrk2vAaEUBpPdZ48WHvVOmfyleM8xpMGjlrkqTPw.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "VENUM Gladiator",
-        "gtin": "",
-        "mpn": ""
     }
 ]
