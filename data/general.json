@@ -1,5 +1,20 @@
 [
     {
+        "id": 24837,
+        "date": "2026-11-22T15:15:12+00:00",
+        "title": "MEDISANA – ALMOHADILLA TÉRMICA HP 650 CON 4 NIVELES DE TEMPERATURA",
+        "price": "19.99 €",
+        "old_price": "29.95 €",
+        "discount": "-33%",
+        "amazon_url": "https://www.amazon.es/dp/B07ZG3V3X2?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/YqtpNp36yv-bbChJjtFA1QLSrUzgC1UULmSDxUqHZhE6rwrdJ8_aUoeJukmfZGXpe8oCmAW3Sbe54AEs0dFtCl43DEDQI6g6vlKyY5dnbPAAB9Y9G72iGxt2tvsS9CaSE5qLANp-4DUnmdAFJNyqt2RaC1DnN1HU_d21czcPYqmJnhFFJT00D15Gj0XN6ANmPA6AGUgtTXFBWYQisJLpeE5Av7qERDd2qPol7Szj8ciNT5gGmW3bgTgvCXf3WJJjDSYtiQ2E6ZdJlKInxtIZAsY5G7eNThKdBWth5BZ4L-j2cQzHeXhHbv49guiu9Ec_PBOCK5LQlXzAwd7nNlmG4g.jpg",
+        "categoria": "general",
+        "description": "¡Calor y confort para espalda, cuello y lumbares! 😍🔥 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "MEDISANA",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24836,
         "date": "2026-11-22T15:14:20+00:00",
         "title": "Tapo C210P2 - Cámara de Vigilancia WiFi Interior 360º, 2K 3MP, Detección IA",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "adidas Unisex",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24724,
-        "date": "2026-11-22T11:00:18+00:00",
-        "title": "THE NORTH FACE KIDS ETIP GLOVE",
-        "price": "17.99 €",
-        "old_price": "40.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B09TPV6QQK?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/mYTGrrXS63_ztjswi7qQy75DNg1u5mi2ywNTHY0cjMDCya-Yr8K6absPiALHUsfLZruEznnrCIjnmRdafRZEmTmtCh5Yc9Sk17vhCHg-VUygcZ-rMDbfiN2irxr7WL1JxqMf8t792_jch7xS7JqIvmaw3entZ091LnFPUrWRFiDealmZFBdZBtMKWC3PJbtAgR23HSxqXW6pyClIr0KsFr74Q1tms4C3Chv7Si1021TUuHxL_Ohu3nYka35YBQBUhGTC7QExavX0T8H46x_HVOgS_aedLj01hUf2pcQ9cBTEFg-s-uVKtXlklhQ2y0IJ1VKE8V8mf4OvQ6HADkk2Kw.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "THE NORTH",
         "gtin": "",
         "mpn": ""
     }
