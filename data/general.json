@@ -1,5 +1,20 @@
 [
     {
+        "id": 24701,
+        "date": "2026-11-22T10:03:39+00:00",
+        "title": "Ice-Watch - ICE smart junior 3.0 Find My Blue, 1.75 pulgadas",
+        "price": "48.82 €",
+        "old_price": "99.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0F1Z39N8L?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/ZupHF-rBXqtiXrOMKqsWMY062R8pM8c2Y9UJoy6n9pwXFbjyeiwaCcRgobXiKPAAY1mrFTgJVtq-mgI8cJOQPzt3o4zPQEUT42ZfVeteow9I6vHRIwnRX12wfC8h6I7n4f31UQxV-hu85ZK-WKS0IbQNc6M83BY58Jc8lOV6QoYM8Sh-hCKPa2ddL5StVie1ryOvlb8u2f--Ar9ZaLLT1LWvuv2-tI2Z2P-7106kdxmKmLPcx_F-bryUjzWnHUKYJcJKw5-2plmVH8xbIy5hA6Xf2CrYX2eUZTuxnqzhhBRBmtY5zEnTVxBdoU7rT7XzJxa1dMIRlGN6GvId8bhqIQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Ice",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24700,
         "date": "2026-11-22T10:00:42+00:00",
         "title": "SISTEMA KLIP – PACK DE 14 RECIPIENTES HERMÉTICOS (28 PIEZAS)",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "GANT Vaqueros",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24595,
-        "date": "2026-11-21T20:15:22+00:00",
-        "title": "CONTROL ULTRAFEEL – PACK 24 PRESERVATIVOS",
-        "price": "9.90 €",
-        "old_price": "30.00 €",
-        "discount": "-67%",
-        "amazon_url": "https://www.amazon.es/dp/B09VCBXP71?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/JFRJJdK_LUZZtTgqV2raBPZBUUfgTz0huldkAvdLzk5FUi31ZgEmgNoRpu8iU6Hmhj46ZsqMTFYQEt8W9TOvz_weznBK147HQQDuNmZz2ZbLEXl-DN6q54-H7MFWGFbKMvdO160aCxbVNCl4XxZttOEm_Qha4TUN9FXee71-amUHdlsciAporjFN9ifM0q3vVFU7Srg2xdQr11EHbgbWNKT4FwXOu-4jUUH-DGJJOPizppVH8PGcCfO3IT9D0K0ebVsabXphWUuUfCTO5Z3UdLvvRR-TE0VnbWIIy9gVYWEckN3Q7rvOuSZx0X_0iWSRdcAANHgJixlIZKyWbk8gfQ.jpg",
-        "categoria": "general",
-        "description": "Preservativos ultrafinos de látex natural, con solo 0,04 mm de grosor. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "CONTROL ULTRAFEEL",
         "gtin": "",
         "mpn": ""
     }
