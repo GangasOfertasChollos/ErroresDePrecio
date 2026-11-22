@@ -1,5 +1,20 @@
 [
     {
+        "id": 24733,
+        "date": "2026-11-22T11:14:49+00:00",
+        "title": "Falechay Pack de 3 Camiseta Tirantes Hombre Camisetas Negro-Azul-Verde M",
+        "price": "14.99 €",
+        "old_price": "29.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DPZZTDBC?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/DO7E91A7sjHaiODu_TBKxM3Y9n0Ezd-C-lUAyX5buCzl_TCeCQPXI1ACqOSolLt-6x1OnoUE5jie8_NY6BWN4q5yegVUr_WxPkLiJgtvjhtUYWH5u93X9vpEsaWdB7Ex8m4MzLiVCrrGThgDPg8H_zdedt11xmOGjyDeBWiRp_F4cs0oEh59634YnmeDkFYKfSdSDq97w4hWwuxs_b8NaODt1gVYogiXuSVwee80ODCLemVIL9L4zxsfK3BmSuE_MoFSYtgw-TuBWTguYH5Xlc84Nl6rgK0kqrjcvFGdUZTcsYmDcUKa6J4pv5SWtG0SwJI2qezN5ZlatHcr1YnCdg.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Falechay Pack",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24732,
         "date": "2026-11-22T11:10:46+00:00",
         "title": "RENOVA Gigarrollo Cocina Profesional XXL, 1 Gigarrollo equivale a 20 rollos, papel blanco",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Codera ajustable con soporte de compresión, ideal para tenis, pádel y gimnasio. Canal: https://t.me/GangasOfertasChollos",
         "brand": "AGPTEK",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24620,
-        "date": "2026-11-21T21:13:49+00:00",
-        "title": "DEKIT GRUPO RIMOBEL Greta Cabecero mesita de Noche, Madera, Nordic y Grafito, Cama Individual",
-        "price": "53.99 €",
-        "old_price": "89.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0BYZM416J?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/QeelH7lDTb3H04bmMhgN1ZyNkuC1f9wBZkhO4fVKaKcd-4Yvm8nGJl3fAQ9OUOjLWDSySylRA4kVBxshxJlkQ-W7lgQ6dXOH3QtwqnLNlwZqqaCs6vU-O38CjFgqjhhEeG32fgEqRgGyhsppwnRbXcaIR_G8OJ-uUGaRfVkrHV0b7uWRPFgtV5uNtUr8au08iEHY2gkaF8rT8J_EpSeIuH0mmFqqfZZhjtVT-_YFHbSbuDuYyy8kCmU8CrcfoFUhd8jEQ8_4bwYWIozP7TJK2JyyOKulL8FUwGPInB5GLM29FfTyHFfASYL4oPE8jhPyUcorrZUAoD2wdAVGyYQEFw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "DEKIT GRUPO",
         "gtin": "",
         "mpn": ""
     }
