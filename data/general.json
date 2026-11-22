@@ -1,5 +1,20 @@
 [
     {
+        "id": 24713,
+        "date": "2026-11-22T10:27:37+00:00",
+        "title": "Victorinox My First VX, Navaja multiusos suiza, color Azul Transparente My First VX",
+        "price": "17.37 €",
+        "old_price": "35.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B001CK0C46?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/DfArN-yMeLhn8PvzDw84Ok6Keat4hRqDVG78Q6G5zL6lgJ2pkBN1NiYiWdCF8R5WNNKFjbmjRpJ9Ywh82noFmLIE_Gk12iyaSzaC4gHgFnWzRnXZjnNXRl3oyq5lsrsBTX_d4KTNjej1JB8i8gs7nZHU16Sj10E0mHR7X1vuTa1ULiWo0kQubUhUT0Q2QnwbeuM8JLuqowhkZWVg2c7-wIQikOBDNvVtaeH4SHkyjlcLv5Nd76V61si-AkQsTjcHVDmu2BDJrYJI2PqOImgr3F6E67goKP7duuUfxkw0eutq4UI0ubpEygQcq82UUtB4mxL8wNmSLyvpaAqUSww9hQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Victorinox My",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24712,
         "date": "2026-11-22T10:23:50+00:00",
         "title": "TP-Link Tapo P110 - Mini Enchufe Inteligente Wi-Fi (con Monitoreo Energético), Paquete de 2",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Bestron Porcionador",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24606,
-        "date": "2026-11-21T20:37:30+00:00",
-        "title": "Neutrogena Spot Controlling Pack de Hidratante 50ml, Limpiador Facial 200ml",
-        "price": "13.77 €",
-        "old_price": "23.10 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FKXLS99K?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/DrLVHljUWGSgGqTU0bzM_y8QfVafafJkoTf6eNFp40th0vftGcWVana1Cv3x-7MRMRAaC5hH6N_NMHl8iDCaij81zxEv6nYokn829dL28ceby6IKqLTHbMIXQW0GXCcH6GMX3WO8qgFLfPqZ5Y04Ib-HN3JdbBXbOaWPNCDUchN5MzIeM8nVrGQYocBjvrN0MAkIHU2hH5NM6CJ7FCA4mjTePeCGNEMIT6MTccZwfQqA4f0g-wwFucEiuwNYMzFiosmgbeVH6v-PuFnsP-UQSiPhrGS9xbfHts6TuEfbnB67LhAzy4Mx0C0fiEYyitxlE450cC0ZNMI44rWhFE6Rxg.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Neutrogena Spot",
         "gtin": "",
         "mpn": ""
     }
