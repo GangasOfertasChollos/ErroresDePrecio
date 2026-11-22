@@ -1,5 +1,20 @@
 [
     {
+        "id": 24891,
+        "date": "2026-11-22T17:14:26+00:00",
+        "title": "Rilastil - Xerolact PB, Bálsamo Hidratante Anti-Irritaciones",
+        "price": "13.30 €",
+        "old_price": "29.60 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B08R1FQWKH?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/ekckHucbRRZ2-Oakl_Q3uV_fjj_sOo4n3klxktkv5yK194tbWynnNun8atu05fAoc_XOFQFzMU7S_V488hLHCFdSsLMdyh-eAF3AHmITn1neOvPdJHZva6fuHqrxSnqnRPie4ydECEJrbCgy6eEVrwdRXfr0Kyc2xWs7iJbjNKHNH5CvwJkEb304W9UQ-DPhmOGnOFt0XtCBn1dRY_m5y89FDVz03tdykPo44oA-HRJQt5Ac9iXnE7PH2dFkHzA2jtWXY5yiS7FFsgeiup79CzUIowgEzrH7EgHy_P-MIiip8ztdSz7uRA1JEP0NxC1DK_jBq3MU4F92IVPpShPxNw.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Rilastil",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24879,
         "date": "2026-11-22T17:00:25+00:00",
         "title": "Bourjois Butter Tint Lip Glaze, Bálsamo|Brillo|Tinte Labial, 04, Rougemelt, 4, 2 g",
@@ -433,20 +448,5 @@
         "brand": "Braun Mini",
         "gtin": "",
         "mpn": "FS1005"
-    },
-    {
-        "id": 24576,
-        "date": "2026-11-21T19:30:55+00:00",
-        "title": "adidas Vibes Spark Up Eau de Parfum, 100 ml",
-        "price": "10.36 €",
-        "old_price": "19.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0D5RLGXKY?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Yg7yckA489qTVa8Lv3xt-BmF-xHv5ttMe__C3t0ezq49eKW4MPpEg7F9iyN7KQVxP3TatrKz3_aGPQU446b9vHBYuXyhrHukVcIdUgRZgHM7WQQEFpYT3L7MWSenBHNtiz8cfZcyZv-fIUmtSU72bYVqNw7QhBgNyICxAqYfezCz_6sX1lxWhwnUkMF9nm4PMGOhnlNvPiqLB_vMpwukJB-KW4wvQeZsjunqr-D40Yu9c0b_QEjkc-diTIsOfBKMlJvvW5J6xWjeg7MMBa5xn05jHnYIk2PG3unaAliRnEk4RSQnsM9K1W2YXLnQCbQRb9UTnxU9VUbMhlOPFaY9Ww.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "adidas Vibes",
-        "gtin": "",
-        "mpn": ""
     }
 ]
