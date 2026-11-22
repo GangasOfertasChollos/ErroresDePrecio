@@ -1,5 +1,20 @@
 [
     {
+        "id": 24807,
+        "date": "2026-11-22T14:13:59+00:00",
+        "title": "Canon Pixma G650 Megatank, Impresora Fotográfica 3 en 1, Sistema de Inyección de Tinta, Negro",
+        "price": "216.85 €",
+        "old_price": "299.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B093QG1Y8C?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/Sng2nuQd_oCiirsWbysh8cJrYPTe_9zTv1VCqnQbHVPRtArspGFaOCYv4bYjtXGNC3Bmqwe-n2roxEwMxdj8ioy1er5ey7wXvxZXsIm_8tnxhnx3WxXNm7R2Q0mEfcfp_VBWABhWB-htXZEGydrzf5imp-si816xaubvTYdoIK2QZDifJ1R-hmpDNiFoGhWGxxiI_lYoD57Amc1nF8OHgDuBJ4KIRI7vROWEoYAZp2uANHPKhvU21dJwKvgnTYPKfrMa4T2BBLs0ChfLrWHb685DciTK09nmeKZ8A_bIc0Eg2Aj-KiFje0t5QjFX7B_tAa8NndouZ3uM9MJysK4HHg.jpg",
+        "categoria": "papeleria-oficina",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Canon Pixma",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24806,
         "date": "2026-11-22T14:10:15+00:00",
         "title": "Twistshake Biberón Anti-cólicos con Tetina Flujo Lento de Silicona para Bebés, 180 ml, Rosa Pastel",
@@ -1483,20 +1498,5 @@
         "brand": "Kit completo",
         "gtin": "",
         "mpn": ""
-    },
-    {
-        "id": 24690,
-        "date": "2026-11-22T09:37:23+00:00",
-        "title": "Deshumidificador eléctrico 2000ML, silencioso, con temporizador",
-        "price": "59.99 €",
-        "old_price": "99.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0HJC65JNJ?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Xd5s2fUC8VJWSGoFEB7oQ5-s4Z_cfxSlQkKg8Idt0Hd2neEGmuFppJpvBzVANr3Lbq8u8UfA-xT2E5uD_UQfQE0XgfPCSO-dsna9UluEHJoQOIFs07AJFNDcnoa1RaWAolADbIyPUWZhwGjCbVUE8SD8pTc3WHZ0m2iyAHiNkECRgV3d4ncobkkvhWpUokOP6p_ZSaEgGcJ8PzZZlhiHs5BXMjBCIhWxPWA4xhw132xxkLH0sOAlM6KPNqW7bfhPEb4kqN2w8Q6E98sW7ULu36yBcdA9w0UYaittHNG4RAeFH68PcABEpJFoqkjS5ALNPzbBcowYhN0hd1cAaN-iiw.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Deshumidificador eléctrico",
-        "gtin": "",
-        "mpn": "2000ML"
     }
 ]
