@@ -1,5 +1,20 @@
 [
     {
+        "id": 24767,
+        "date": "2026-11-22T12:27:40+00:00",
+        "title": "TESMED Masajeador Anticelulítico Potente y Reafirmante",
+        "price": "29.99 €",
+        "old_price": "44.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0BPBTSW5S?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/qVPV6Ek8tWEEMd4RhMBb2sqKuw1knyfsJCBZJE9pG7inO2_hvCtdreF5cDK6Ai_5jziI-JoWLygqdLe3KiWX_T-26gvznpId5NCvJhEJrfYLPDqtEn7QejJ9eqlcy4SsvQCJCZMzc_0FRFdkqMsfry0bu5ZUq-P-3ojjinnaw4HCyeJ4cNRtKiE8atmhEoQT3zyeQ8oulhaNTank2xvwFUAxZeriEMDq3Wt9_1nPmQ5BdHZLlq0hsaSp1fPJN3jW9_ZzV5WddZu-bYvLCoORWw7Ka9QNcLrb2qtGXYV-HjRxXlV0jv04X7r_i7uVypWg-LLdPLrwSy-nf_sBkOy-YQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "TESMED Masajeador",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24766,
         "date": "2026-11-22T12:23:48+00:00",
         "title": "Cecotec Caja Herramientas 68 Piezas ToolBox EasyGo",
@@ -1481,21 +1496,6 @@
         "categoria": "higiene-cuidado-personal",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "BRUMMEL",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24648,
-        "date": "2026-11-21T22:39:38+00:00",
-        "title": "Kedoxi Luces Árbol Navidad con Anillo 16 Cuerdas 400 LEDs, Blanco Cálido",
-        "price": "15.21 €",
-        "old_price": "45.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0B5TRFKQ3?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/bJPe7k_dFHJlOy5tqApK4eSsKgj-Q039rSBbwE1w3h-wa4aYQS3eMp8A1UoWPlIXEorWM37sNE4aVNI8FYV3spKvGwY45GYPBijtklUeqmdwyDcMB8ZXpbzfypZrJJAt4BzEmdCgrMMUZf5j8vJBl4plyNHgBG_8HuCQRTCC5MOG_NvbVKYNAkNgsMVXNT2ucGH92wvV-NOll_R1yAKXFAsdO02pFhbswsBM6LXlU9V3eAtuw4iHIU5JCddR8LMaDTBKb9_Cd_5k_h0oXF0k71GYTIz0vBKLvxNGBDSZ2j5qndd8sneTxw8zSV22__pEptgEubWTzma7XP7eqBE61w.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Kedoxi Luces",
         "gtin": "",
         "mpn": ""
     }
