@@ -1,5 +1,20 @@
 [
     {
+        "id": 24766,
+        "date": "2026-11-22T12:23:48+00:00",
+        "title": "Cecotec Caja Herramientas 68 Piezas ToolBox EasyGo",
+        "price": "12.90 €",
+        "old_price": "23.80 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0GH25XMWP?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/qH7M-A-JLExC936epQZAZ04MCw7vzFljOyPmhKlFUECOgOeCxXT9hwi-2GlYOsN_0ZifHBjf7qomkOZmmyW49vXCy-JQA4nh8BZZj-81-HH7-eZrUlF5a1e3Xn8NDK0LuPVKTVJTM2QU_lpFmXwPzIe92uizISv1uMH4-Lic68nFKlgVykkhIEfFTl8vVQLPpKaf87-hY-E5Y0o-2Q2biGaC4bt_yaWlqDQJVFIPzi-laZhG7GJego6a-bfwRSfSEYCoNrjf-1tk4LeGbb6MRm0WmyGH8oL1WbVclten27s_E7dojCEVNQVysnNhwvlffxydqHMfNADtM3eEOnbSzw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Cecotec Caja",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24765,
         "date": "2026-11-22T12:20:36+00:00",
         "title": "Gillette Fusion5 Maquinilla de Afeitar para Hombre con 12 Recambios",
@@ -1481,21 +1496,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Kedoxi Luces",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24647,
-        "date": "2026-11-21T22:32:38+00:00",
-        "title": "VANS RANGE EXP SUEDE – HOMBRE 👟",
-        "price": "45.48 €",
-        "old_price": "85.00 €",
-        "discount": "-46%",
-        "amazon_url": "https://www.amazon.es/dp/B0949K9T7K?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/Z9O_F8tMIN4l0NJOn26xPA_4l9v-20HXvBmycytELlMNhnS7Ac19w5rrdWR8tOVgNAG-sCRoQz9oV8VZN05leLHRZVaViXzdXLhX2gBjD1hjmB4AfZIJl0VGaNTAfefFObsWShA8X2QuOrVEp4WIOIfrfHMwMqNCyttoYKnPl9oENXpdDLZaEvTpxk8LlAbPnVVASHmXzoYXDjAM-6ReHWqCEkkaZjWLgJrTqZNLvh4QlmoS-T8D0NRXuGRbnhxTHpyYDBRcZwUiWSQEvr608o5Ln57slGr_hTGxjKq_3W4TayXsnwBmn3PAUmPp58GJzcxYOE3B3kru8NuSDdAfJg.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Zapatillas casuales en azul marino y blanco. ¡Comodidad y estilo para cada día! Canal: https://t.me/GangasOfertasChollos",
-        "brand": "VANS RANGE",
         "gtin": "",
         "mpn": ""
     }
