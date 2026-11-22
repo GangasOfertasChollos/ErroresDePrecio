@@ -1,5 +1,20 @@
 [
     {
+        "id": 24673,
+        "date": "2026-11-22T09:05:24+00:00",
+        "title": "Sennheiser Sport True Wireless, Negro",
+        "price": "65.99 €",
+        "old_price": "139.90 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B09WDK7GGJ?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/OIhnNxkqEcMnKqsIZmyqq76FKov7ug-mmv8rewglAHU0EVAvW_SL7Hcl6BrD2LZp7QYT3aVleYEo9FZ6C1icUF7vWrGbFshBnMoQ-u2zJVsTzi55vneXs-dAyqu55iDgCaQuAOXX7zOd17YBgwajkha01amb2xCsq-jlyMWEhuoKBzpxK_CX8pvbAQMcN0UM32Q0G8GTwvy27lok_sPd_zm8GvtMio9raOAS2uRlbB-aPhqdXVxFHu9kaigdWfEFEgcZn49nChv8VwSMg02tUzdG5O4ZQMzooARlkKX5LYYISe-UYMAwX46Mg622JVITPGXafMkpxYKGyZ2eK0qTkw.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Sennheiser Sport",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24672,
         "date": "2026-11-22T09:02:42+00:00",
         "title": "LISTERINE MENTOL – PACK 4 x 750 ML 🦷",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Alessi",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24563,
-        "date": "2026-11-21T19:00:24+00:00",
-        "title": "APLI 20064 - Pack de 2 Lápices Infinito HB Retráctiles",
-        "price": "1.10 €",
-        "old_price": "4.07 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DTYW36F9?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/gPZ3cezMjgUhMc6S5lUp_ix5mm5HJYSyohOQJGyOajm-Hk5UewQ9dSF-_pFJsvLTMwrW-r164mlk7n9PnYxDlgZzGA-TsdPyC1h8T4p7dLCUSKzeKt0TxzTrIPxwKdDojbGLassuUyovfik7P_WkBW-YK87QK1VRkU_Drs8J48sIl7_5dquc53CIjvME0_NRhmEpQnWwxLqsF8eTzClfoTLcws-8loYJwAU4uh50IYTkha52L0_0cSlSymVMZAj6_5i9BsXce3OhcJBSD7Xgbr11-GCMwCsYQKBU1YOYZVL5Z6fJx-tY988HbPxF_crbhsmkt4vP0q3Vx1O1CJqgLA.jpg",
-        "categoria": "papeleria-oficina",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "APLI 20064",
         "gtin": "",
         "mpn": ""
     }
