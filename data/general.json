@@ -1,5 +1,35 @@
 [
     {
+        "id": 24680,
+        "date": "2026-11-22T09:15:24+00:00",
+        "title": "RUSSELL HOBBS – TOSTADORA COLOURS PLUS RANURA LARGA 2 REBANADAS",
+        "price": "28.14 €",
+        "old_price": "57.99 €",
+        "discount": "-51%",
+        "amazon_url": "https://www.amazon.es/dp/B01B0YVKBW?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/HkNXmSCWrUsWJtEu8T0OrlbfWoKUO52I3JL8tFG24YeBANg8zeFYFh7v_Zo3gu7Bn2nVcV1RwIFxibizwqZxJLuNFAEU5K7sI3n6UHCgquiMjHQ_-qfrGZL4t5vkJXQTdgsZBNYZ-6pSqnT6slf04aA6JehNyN-sRQ5DI22ObqF9q8dHZMt34sHtpm2jHrbT1lryfk8yQnrPod0ATBE-RC5QDLMZy99BVv-zEfyyv6a7KYGHXQtDK5pDLDD6Th9qf6pxXriKH7HtiBGyxLoneQpAt24GsudQH7tfRq-zzjFBC0550aSLTmkCUpYc5LtCsZQHzRaBgrAZjQDNa5otuQ.jpg",
+        "categoria": "general",
+        "description": "¡Tostadas perfectas cada mañana! 😍🍞 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "RUSSELL HOBBS",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
+        "id": 24679,
+        "date": "2026-11-22T09:15:23+00:00",
+        "title": "PETKIT CYBERTAIL Cuenco Elevado e Inclinado de Acero Inoxidable, Cuenco de alimentación Antideslizante sin derrames",
+        "price": "20.98 €",
+        "old_price": "27.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B083DMX4Q4?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/TuhfJjUqHu8CCBG4zUwwwRGsufDHqdih9cLwtwNY9c0rxX9tCVhMdTmMg9fmf4wQYj5HlVWoFvJrkzR3VNs7yKNlZ-0zbPa2MCkj6qPIchJdCSfs-_mg3YYTRIpabGr3WOBE0UeG-PMO-bz9Se23qxnHaQC_szeuXbbW6xAlp9vOR3x1yASg1965PzSoTSGVfydtJDLSgvdDsSfgRIokMncnOeRhZ7qAFFF93mR1jq0f8F7PUmCJIIHqQAHbrLwWtxkp3JiUpE2FBUaNNnUueyg8Z2qK_nKAk0XyYHm_X-vksmDvGuel8_AAHSG0NED1vF0JzcsrHrB8W1v_BHs6IQ.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "PETKIT CYBERTAIL",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24678,
         "date": "2026-11-22T09:10:35+00:00",
         "title": "PUMA teamGOAL Teambag S, Bolsa de deporte, Negro (Puma Black), OSFA",
@@ -1466,36 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Rowenta Turbosteam",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24568,
-        "date": "2026-11-21T19:10:27+00:00",
-        "title": "Skullcandy Hesh EVO Cascos Inalámbricos Bluetooth Over-Ear, Aislamiento Acústico, 36 Horas de Autonomía, Negro",
-        "price": "49.99 €",
-        "old_price": "99.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B08G1Y1V26?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/H-7KXcBunWlZFdKwuxGEotSOVXrwFBKMENmFAnXjpKnuZIkyoqdt5Znaen4QlflbSGPzNc7vs6-bJGhxt5gtWhSdtCH5Bx8CJRPN4bTFqiATcjhgI49dgPVAO_yR39zZOmmjPSwyUZTmorqCpx_gfBzHnXj7u4nPR-XDOe6PioDVGVrjiOS6OfRxS51I3e8ec9B_5C26IC0p8sfFMzF3wD57bvIZDbxNGVvQHdhx4lO9ne8tc3r_P0_3Boh651_h5DFBFpTdFhG2GVLiJn6wWwJhPiT4zvPgXexBpHA9HsnlaMpFoe_kQhcpAcOrx0hRCaWA-QqAKtpwcPQOyaMmaA.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Skullcandy Hesh",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24567,
-        "date": "2026-11-21T19:07:11+00:00",
-        "title": "Swarovski Collar Swarovski Infinity, Infinity y corazón, Blanco, Combinación de acabados metálicos",
-        "price": "72.19 €",
-        "old_price": "139.00 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0814ZGT9J?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/h1hDpgyHVDp0cXykuop0F4ne2v672pQ1QvXMRc5vTfxOMch4Zt8QiW421e-ry-VnzS3yBCxHCne-1m3g2PLq69Gz58xfOt8mQRD_PW7lq2mymbDl08Ai5hEStW4cGHD-Q8YCo4XjGE_X1hgyAWT1dHFWOSwmtHZOWoniy7UfaOdni4Vtz00GFKtkDXuoPZLMmA9rOzet97WqoJzhQ7-VN9g9n1BkeGxJ_QxB8Bwwee8aWJKy1_HnKEwBLRvWoBzYnSKIYhQt4K_xpqIHpqTvcxY8tqmASmVnAiAd9tZ6NbeIiJziABHEoPoinxuOocupf9_u_21bU5_gBIInwLpw2w.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Swarovski Collar",
         "gtin": "",
         "mpn": ""
     }
