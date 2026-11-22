@@ -1,5 +1,20 @@
 [
     {
+        "id": 24866,
+        "date": "2026-11-22T16:27:09+00:00",
+        "title": "PHILIPS i9000 – AFEITADORA ELÉCTRICA CON BASE DE CARGA Y CENTRO DE LIMPIEZA",
+        "price": "169.99 €",
+        "old_price": "349.99 €",
+        "discount": "-51%",
+        "amazon_url": "https://www.amazon.es/dp/B0DT71ZB58?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/vI8zFUq9oqxmjdJ00rI1kwntEVYXJtlnykw4mTqw69M8WgTlNQS7EH0_dI5hE-UxISgNcTOYbDuAElNVrn24e0syviZjstzG_XkykRN2cpAYtOYc0Pze0b8zhss82PrIIoVdTOqkTeo1XUqP5oiPJDXX3IO956ogzPqfpkyRdoq_1FqP8sQzer48a800Kqo8N9MVrmBC1WKEGNOtOGh-6xrVY8Ev4eFlP73KfMOtZuYJ2OXVEbsG1dOp54pExDGwJwSUjbJyR-Cfi1jWpNYaZpb46mEtekd4W3xHuSkkakARs02RUmhMaGIw8EApMWhJV7BK0XDDDHHM94pX6RQo_g.jpg",
+        "categoria": "higiene-cuidado-personal",
+        "description": "¡Disfruta de un afeitado apurado y cómodo, en seco o mojado! 🪒😍 Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "PHILIPS i9000",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24865,
         "date": "2026-11-22T16:24:18+00:00",
         "title": "Lipton Mango maracuyá 330ml, Refresco de Té, Pack de 24 x 330 ml",
@@ -1481,21 +1496,6 @@
         "categoria": "gaming-consolas",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "Razer Basilisk",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24759,
-        "date": "2026-11-22T12:10:29+00:00",
-        "title": "Wella Professionals OIL REFLECTIONS Champú Realzador del Brillo (1l)",
-        "price": "13.87 €",
-        "old_price": "30.80 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0CHJH4Y5G?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/sBcyp_aslFSpjX1Q7Ld18RVvOse6-VXSvaRi_fNKF7qArXamudkeh7MIXr_PH2G6nIPtUfDsXHjny52X8OS-Dgo_vHb0AXTtpUeSfZhs4aesYP6m700EqI27S3xQAHpNZ9JbHyZUMVUMRSQ-kQe1R9X7e66B8Ea80HbYPL0ahdZxY-NLgKZNG9y8y9aTLzjyV5DvAvFMyOaCWzX02KQRSH020oThqKqNjryjKEMXQhWvrYrLRLYljXfSvgpsHCP-jy7TmmeC_hC3DJKGlVVUb1Pif-soIh4Zn5dbbqicBaB-Tc5J71wyjRDmqMzEV2nMpgdo3Rs2zNs4Ib_yuJ0fPQ.jpg",
-        "categoria": "higiene-cuidado-personal",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Wella Professionals",
         "gtin": "",
         "mpn": ""
     }
