@@ -1,5 +1,20 @@
 [
     {
+        "id": 24710,
+        "date": "2026-11-22T10:20:40+00:00",
+        "title": "VENUM Gladiator 3.0 Pantalones Cortos de Entrenamiento, Hombre, Negro, L",
+        "price": "29.99 €",
+        "old_price": "59.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B01N03CKBL?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/VjqYEtVA8a98uZsuZ2p5tvrSuWUU5IcBsCGnxmcpX3BkSlw78k2olH4bPvxt5gozYmYqJry7Yd9ONPNQxwu0M1Sd8vN7oRQeWbJxW1OOK1b3y74xm3q-dcSWYxbcM7_gTwPBXh6ltUXJuvNYIw-cK-AnVtgKgTBE4fO2O3YLF22v_qDTmUjIiGUmVj1MlpS2STCZ24lIeoKvCMH6kVmFp6fGxp0XLfwzaaXjrJNdWq0cBTBgcay7UGikJ3m7bMm0mMyuSEl32scTmkrR7Qf4q-jdKwjk1NPMx0X-nijjbPRgxqOrk2vAaEUBpPdZ48WHvVOmfyleM8xpMGjlrkqTPw.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "VENUM Gladiator",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24709,
         "date": "2026-11-22T10:17:08+00:00",
         "title": "Leversic Suéter Navidad Mujer Jersey Invierno Suéter de Punto de Invierno, Negro,L",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Robot de cocina con 31 funciones, 850 W y bol de 2,1 litros. Canal: https://t.me/GangasOfertasChollos",
         "brand": "PHILIPS",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24603,
-        "date": "2026-11-21T20:30:30+00:00",
-        "title": "NESCAFÉ Dolce Gusto Café con Leche Delicato, 48 cápsulas (3x16), 561,6 g",
-        "price": "14.85 €",
-        "old_price": "26.97 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0B68Y8PLD?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/XVdk3bWBk3QSLhRrhqx_BMI6kfXdRKyeASutzUplBXr6A_MtDijJli0WvAgEA-_FYIuywBPGU5CbQLLC5Cf46sx0tfggf5O5_zJQ8hYLovqvx-3IHE9Gm_Hkw8tBSJJxuk7Xr9MVrIDiF7aY5z3WQ1h2KB4OhVCAglljxhLTfR0wtZLYUnHP2b_0lkIG37WFxkmEWg3soUKaixq3HV0LWwp9GMGeo-0AXPZPEnIzZTbc3HoYjpqYvpJ5TiI14M1bad_VuYm_ejH2vGdDq6Jg0So_fCgWowZBSgkD4_dKSky28tZRYtbHhdRRHeJgUjIlHmzfkWsTvEFgyrEPJWBfDg.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "NESCAFÉ Dolce",
         "gtin": "",
         "mpn": ""
     }

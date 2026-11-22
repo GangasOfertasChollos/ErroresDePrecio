@@ -1,5 +1,20 @@
 [
     {
+        "id": 24710,
+        "date": "2026-11-22T10:20:40+00:00",
+        "title": "VENUM Gladiator 3.0 Pantalones Cortos de Entrenamiento, Hombre, Negro, L",
+        "price": "29.99 €",
+        "old_price": "59.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B01N03CKBL?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/VjqYEtVA8a98uZsuZ2p5tvrSuWUU5IcBsCGnxmcpX3BkSlw78k2olH4bPvxt5gozYmYqJry7Yd9ONPNQxwu0M1Sd8vN7oRQeWbJxW1OOK1b3y74xm3q-dcSWYxbcM7_gTwPBXh6ltUXJuvNYIw-cK-AnVtgKgTBE4fO2O3YLF22v_qDTmUjIiGUmVj1MlpS2STCZ24lIeoKvCMH6kVmFp6fGxp0XLfwzaaXjrJNdWq0cBTBgcay7UGikJ3m7bMm0mMyuSEl32scTmkrR7Qf4q-jdKwjk1NPMx0X-nijjbPRgxqOrk2vAaEUBpPdZ48WHvVOmfyleM8xpMGjlrkqTPw.jpg",
+        "categoria": "ropa-y-calzado",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "VENUM Gladiator",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 24709,
         "date": "2026-11-22T10:17:08+00:00",
         "title": "Leversic Suéter Navidad Mujer Jersey Invierno Suéter de Punto de Invierno, Negro,L",
@@ -431,21 +446,6 @@
         "categoria": "ropa-y-calzado",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
         "brand": "Skechers Hombre",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 24546,
-        "date": "2026-11-21T18:13:48+00:00",
-        "title": "Calvin Klein Pantalones Chino Hombre Cotton Signature Slim Fit, Beige (Vintage Khaki), 34W/30L",
-        "price": "41.75 €",
-        "old_price": "89.90 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0DK43BQVB?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/W2Ghtk7F9wAR2UflhMUTH7kLfPqgKUIXkDEclP6rq7CAGVAcMhgApnxWj3y1dD8CcghSUrP87Ki2B9SLwZAd5C7IWzPRS6LQtKOjcHVevzcokQE41XxLLadG6dfEBLN8IUzR3E-1RE_KDqao2oj_ENaxdIU0VDcL-Vl2HabkSq5JO9IgdVxT2XfoJpmoLFdGbFLvI47j1bwJwVozg19Mu_O5Zq6k9u87EOeUux7MYgP9mCosMUjYQdJ8IYdNbnn1urWmMwEB3p8tbTEjGyOG5Gh2j6rDXnlqDzmVDFBkQuH_bxr9gZ0WY6A2rpB5Hsm8WGWT80Gr5DIRrr1ToIsSHQ.jpg",
-        "categoria": "ropa-y-calzado",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos",
-        "brand": "Calvin Klein",
         "gtin": "",
         "mpn": ""
     }
