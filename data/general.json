@@ -1,5 +1,20 @@
 [
     {
+        "id": 25656,
+        "date": "2026-11-24T14:45:32+00:00",
+        "title": "ARROCERA Y VAPORERA GRUNKEL 1 L",
+        "price": "17.52 €",
+        "old_price": "38.90 €",
+        "discount": "-55%",
+        "amazon_url": "https://www.amazon.es/dp/B0D1CCH39G?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/oEMPmwD1AI_-DQhAoN7AQOMnB7KQOLKHul7vKvZGpJqM6BJzm7YvtM5Sb8Kq58C6HEASPVrweN256H3JegRt8B-UYWgnG1MwxhuXP9DFPHZ943AIBLo9-j8iQvxkzCqsljaF0gApRaT14QdRDTzBKBg2ut5GduO_CMGd8R-75HKo8L5xZIjr4_R2IeygveDo9vrM1QZRLSsQJ2k62mZn35O9Wz_gwdeXuiAN4W1lEitt41Xs9fdzep1NkYSr8W_VSxtj1MT7ecGjWW49fuUc91hzNbgACYur_apYlIzwdh4h8YzCAoYFYVBscP6lVOgWklezSlzdw45V0Oi69M7slQ.jpg",
+        "categoria": "general",
+        "description": "Antiadherente, ideal para arroz, legumbres y verduras. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "ARROCERA Y VAPORERA",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 25655,
         "date": "2026-11-24T14:41:13+00:00",
         "title": "Sonos Five SNS-FIVE1EU1 - el altavoz inteligente y potente compatible, color blanco",
@@ -1481,21 +1496,6 @@
         "categoria": "general",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "Hellmann S Salsa",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 25538,
-        "date": "2026-11-24T09:27:20+00:00",
-        "title": "Bundle Amazon Fire TV Stick HD (generación más reciente) con cable de alimentación USB-C Made for Amazon",
-        "price": "44.90 €",
-        "old_price": "90.98 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0GSGTWBY1?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/lln1d4x9Ncc-HrSruAai-aR8jL4WbMj8V1MCGych6AtZj8jqPKJPYk7TT3LnrpyYz3UDlSHYroBiuAZTxYLOAwsqWfAStQDA0mmcClcBNcd10fGtY-Un_oAIbDj6ieLnxXLcVITsFzpQVjDUAXlvXsj-ldxKzvLHVUiPk9Kai4oSyM09ai7sho-rwSuu1Tt6Kp7Ukk_aWgypqNqNyo-ZOy5z_jTdWzO_YP_Cg8xhhxydEC6Wjcg-LsPNutO6nrl5XfhbftjDutJw-Q5Px03faB2bExU-5-vVLJhAaT5IrOMDYcsvYoOI-_32hGkPzL1LNeHZWJrWpdF1f7n1pymwIg.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Bundle Amazon",
         "gtin": "",
         "mpn": ""
     }
