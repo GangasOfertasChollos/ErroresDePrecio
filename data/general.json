@@ -1,5 +1,20 @@
 [
     {
+        "id": 27004,
+        "date": "2026-11-27T10:44:15+00:00",
+        "title": "UA M Challenger Training QZ",
+        "price": "25.50 €",
+        "old_price": "50.00 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0DMQ6TYQ9?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/rGFxFHamliIaBeLIs-7oi3AmdLZGWkxnak4jkDuABjSPpvceLuGBB6EajTy5H8ZBBB5rO7GU0ZrwovNV07wEeiqcp-vpvxPSK2IlfuZj8zHpiV3Un53xVehXSw1qhmW2qWsNJaA5KftpVrX60WeLFOvmLzkRu8R2OVdSjK5XqvHdXPxOoaTsQ5UuwW7uUS13j6-IfO_1pzrmaMUcm6H5VW1dJa30jGZZRw3wf5kGXcsvVfxOjm4DEKvOBHoppXRieByu4BQ5ZlvugX8QFaLa4obNVHs2-mgzxNjyFcuZ82VFLhiDRaFwndFUMYUNJEcSSINOAhJkLeTGaB2TsiTE_w.jpg",
+        "categoria": "general",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "UA M",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 27003,
         "date": "2026-11-27T10:40:46+00:00",
         "title": "GY 4.9W Bombilla GU10 LED 4000K Blanco Neutro 790LM (Equivalente a 80W), No Regulable, Pack de 10",
@@ -1481,21 +1496,6 @@
         "categoria": "moviles-electronica",
         "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
         "brand": "OtterBox Funda",
-        "gtin": "",
-        "mpn": ""
-    },
-    {
-        "id": 26883,
-        "date": "2026-11-27T06:53:23+00:00",
-        "title": "TomTom Avisador de Radar Coche – Radares Fijos y Móviles, Sin Suscripción, Tom by TomTom - Made in Europe",
-        "price": "39.66 €",
-        "old_price": "79.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0FMXSTSMR?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/dtjgFvcTFlRNMcowEejaMUclr071Pi0XT1MQIescFMBtK_AFP6o0NFQ5qbPIxteS2VRNY8D43r0QRKGNviDqPCMGxL0yVfCYQYk39SvI-ZXwijChBarCxJ9exv7k2h9DTgefTzpUbEsV3bgEDNf-qKk508KVEKNKPpa4SwaJpy-q4KJHASEBWBvPIdpYlY3a5pIa5lR6FbTtU7NFtH2-xjCFogHLe9mvoSgBUMo9GwWjuDF9AM52_HF6y8H8ONMjVk-L_G1cTLhp09zP16W6kIlDkaoVcmPkDrUAk43mWBSAXbYktREHCb8QllloRXQw9FLL8NQuxkBhllI20K6d5A.jpg",
-        "categoria": "moviles-electronica",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "TomTom Avisador",
         "gtin": "",
         "mpn": ""
     }
