@@ -1,0 +1,10 @@
+# robots.txt
+# GangasOfertas.com — Rebajas de enero 2027
+# https://gangasofertas.com/rebajas-enero-2027/
+
+User-agent: *
+Allow: /
+Disallow: /docs/
+
+# Sitemap
+Sitemap: https://gangasofertas.com/rebajas-enero-2027/sitemap.xml

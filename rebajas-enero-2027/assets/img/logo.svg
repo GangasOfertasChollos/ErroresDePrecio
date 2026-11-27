@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GangasOfertas.com">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#8df74a"/>
+      <stop offset="1" stop-color="#35d6f2"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#0d121b"/>
+  <path d="M16 24 L32 14 L48 24 L48 26 L32 18 L16 26 Z" fill="url(#g)"/>
+  <path d="M21 29 L21 48 M32 24 L32 48 M43 29 L43 48" stroke="url(#g)" stroke-width="4" stroke-linecap="round" fill="none"/>
+  <circle cx="32" cy="52" r="3" fill="#8df74a"/>
+</svg>
