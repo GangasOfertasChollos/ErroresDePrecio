@@ -1,5 +1,20 @@
 [
     {
+        "id": 27367,
+        "date": "2026-11-28T08:34:14+00:00",
+        "title": "Mini Proyector Compatible con 4K WiFi Bluetooth y Aplicaciones Integradas, Blanco",
+        "price": "69.79 €",
+        "old_price": "129.99 €",
+        "discount": "",
+        "amazon_url": "https://www.amazon.es/dp/B0HKHH1DT9?tag=gangas029-21",
+        "image": "https://cdn4.telesco.pe/file/LIGvH65yIsaULdQ1wXQhsrqddQ1tYrORAYQEbN47lboy-us394kTH5DK8oXxtmEhmEzUJYfL_O8IXAuKSTRMJaIn4hiQIdVsFWfDnJEvL16M16YotApaiFYK1X-KqkxPuZSDuCROGSIvhUyO7XdnKqrEM6bpV6_ukxUlkIbexX75FPRZhWiknkb4hqcIPBiLGjSZJNaTAAKVlb6K3cEu-AZVkQAo9gOZSK5LpLFECyCteyczeSR_nJblLMVCu5QZIeofLffNeM-y0YyWK-ingAFtCdB68PS9qBS3kVHOzn4_TGTCZEMcADewQOuQytTYXG2MwpCaq_bNQCvoUBUbyg.jpg",
+        "categoria": "moviles-electronica",
+        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
+        "brand": "Mini Proyector",
+        "gtin": "",
+        "mpn": ""
+    },
+    {
         "id": 27366,
         "date": "2026-11-28T08:33:41+00:00",
         "title": "PURE LIVING ÁRBOL DE NAVIDAD ARTIFICIAL 180 CM",
@@ -1483,20 +1498,5 @@
         "brand": "Batería Exide AGM12",
         "gtin": "",
         "mpn": "AGM12-12"
-    },
-    {
-        "id": 27260,
-        "date": "2026-11-27T22:17:02+00:00",
-        "title": "Lefant M210 Omni Robot Aspirador y Fregasuelos, Mopa de Rodillo, 20.000 Pa, 800 ml, ultrafino 85 mm",
-        "price": "189.99 €",
-        "old_price": "599.99 €",
-        "discount": "",
-        "amazon_url": "https://www.amazon.es/dp/B0G7VHWNTW?tag=gangas029-21",
-        "image": "https://cdn4.telesco.pe/file/CSXgzfJFKCWmSYgneAfQakC4aJ2f-uGnX4YjBLSjrZ42kkdvBpXBHeBUc30cFEYh5LwoKG0iSEfCtSE0a0nK0Gp07EcvEKbTw1b55-jIi6jL2aIP5WrjubpGkXIAEN2maI62IX3U-gxfGJWK2AoGFu7e7PBE9X64bbboS83MAVsxSF5UBnszxZvEQW5MmE5xTqWqQ5kRuKm03hKd7ao6j2QZWj5yQqIlVioGWLpAPMRAqJr52jD0E76lFXGkfND7E6izVHB2thiwDJA07KdvURAF1U5BGabRP0WWgGWjbu9pjL-yGZW6La2JFZSLipuTDNY-kYLuKGihOMdv59P_YQ.jpg",
-        "categoria": "general",
-        "description": "Publicidad/Enlace afiliado El precio puede cambiar. Canal: https://t.me/GangasOfertasChollos Categorías: https://t.me/GangasOfertasChollosCat",
-        "brand": "Lefant M210",
-        "gtin": "",
-        "mpn": ""
     }
 ]
